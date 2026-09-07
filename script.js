@@ -63,6 +63,9 @@
   function syncNavState(name) {
     tabs.forEach((el) => el.classList.toggle("is-active", el.dataset.nav === name));
     moveTabPill(name);
+    // Espone la vista attiva al CSS: serve a nascondere il FAB WhatsApp
+    // nella schermata contatti su mobile.
+    document.body.dataset.view = name;
   }
 
   /* ------------------------------------------------------------------

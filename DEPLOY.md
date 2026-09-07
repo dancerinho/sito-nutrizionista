@@ -111,7 +111,12 @@ modifiche.
 
 ## 2. Cose da completare prima di andare online davvero
 
-- [ ] Sostituire le foto placeholder (`placehold.co`) con foto reali della dottoressa
+- [ ] **Numero WhatsApp**: sostituire `390000000000` in `index.html` (2 occorrenze: il
+      pulsante flottante e quello nella scheda "Dove ricevo"). Formato: prefisso
+      internazionale senza `+` e senza spazi, es. `393331234567`
+- [ ] Far confermare alla dottoressa o al suo commercialista i riferimenti normativi
+      sulla detraibilità riportati nella vista Servizi e nel footer
+- [ ] Sostituire le foto placeholder rimaste con foto reali
 - [ ] Inserire email e telefono reali nella sezione Contatti (ora `[inserire ...]`)
 - [ ] Inserire la P.IVA nel footer (ora `[da inserire]`)
 - [ ] Caricare un'immagine social reale 1200×630 px e aggiornare `og:image` / `twitter:image`

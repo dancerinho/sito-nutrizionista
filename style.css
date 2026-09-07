@@ -757,6 +757,18 @@ body.drawer-open .burger span { background: var(--cream-50); }
 .link-accent { display: inline-block; margin-top: .3rem; font-size: .82rem; font-weight: 600; color: var(--acc-600); }
 .link-accent:hover { color: var(--acc-700); }
 
+/* WhatsApp in linea nella scheda contatti: resta raggiungibile anche dove
+   il pulsante flottante viene nascosto per non coprire il form. */
+.btn-whatsapp {
+  width: 100%;
+  margin-top: 1.5rem;
+  gap: .55rem;
+  background: #25d366; color: #fff;
+  box-shadow: 0 10px 22px -14px rgba(37, 211, 102, .95);
+}
+.btn-whatsapp:hover { background: #20bd5a; transform: translateY(-2px); }
+.btn-whatsapp svg { width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
+
 /* Pillole allineate su un unico asse e centrate nella card, con altezza
    identica: prima ereditavano il padding del .btn e cadevano sfalsate. */
 .info-links {
@@ -818,6 +830,80 @@ body.drawer-open .burger span { background: var(--cream-50); }
 }
 @media (min-width: 700px) { .app-foot { flex-direction: row; justify-content: space-between; } }
 .app-foot p { margin: 0; }
+
+/* ============================ FAB WHATSAPP ============================ */
+.fab-whatsapp {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: grid; place-items: center;
+  width: 3.5rem; height: 3.5rem;
+  border-radius: 999px;
+  background: #25d366; color: #fff;
+  box-shadow: 0 14px 30px -10px rgba(37, 211, 102, .65), 0 4px 12px rgba(22, 48, 42, .18);
+  transition: transform .3s var(--ease), background-color .3s, box-shadow .3s var(--ease),
+              opacity .3s var(--ease), visibility .3s;
+}
+.fab-whatsapp svg { width: 1.75rem; height: 1.75rem; display: block; }
+.fab-whatsapp:hover { background: #20bd5a; transform: scale(1.06); box-shadow: 0 20px 40px -12px rgba(37, 211, 102, .75); }
+.fab-whatsapp:active { transform: scale(.97); }
+
+/* Alone tenue: pseudo-elemento, così non entra in conflitto con lo scale
+   applicato al pulsante nell'hover. */
+.fab-whatsapp::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, .45);
+  animation: fabHalo 2.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes fabHalo {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, .42); }
+  70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+.fab-tip {
+  position: absolute; right: calc(100% + .75rem);
+  white-space: nowrap;
+  padding: .5rem .85rem;
+  border-radius: .7rem;
+  background: var(--brand-800); color: var(--cream-50);
+  font-size: .8rem; font-weight: 600;
+  box-shadow: var(--shadow-md);
+  opacity: 0; transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fab-whatsapp:hover .fab-tip,
+  .fab-whatsapp:focus-visible .fab-tip { opacity: 1; transform: translateX(0); }
+}
+@media (hover: none) { .fab-tip { display: none; } }
+
+/* Nascosto col drawer aperto e, su mobile, nella vista contatti: lì il form
+   occupa tutta la larghezza e il pulsante coprirebbe l'invio; la CTA
+   WhatsApp resta comunque nella scheda "Dove ricevo". */
+body.drawer-open .fab-whatsapp,
+body:not([data-view]) .fab-whatsapp {
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: scale(.85) translateY(8px);
+}
+@media (max-width: 767px) {
+  body[data-view="contatti"] .fab-whatsapp {
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: scale(.85) translateY(8px);
+  }
+  .fab-whatsapp { right: 1.15rem; bottom: calc(1.15rem + env(safe-area-inset-bottom)); }
+  /* Spazio in coda alle viste perché il footer non finisca sotto il FAB */
+  .view-inner { padding-bottom: calc(7.5rem + env(safe-area-inset-bottom)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab-whatsapp::before { animation: none; }
+}
 
 /* ============================ SCROLLBAR ============================ */
 .view::-webkit-scrollbar { width: 10px; }
