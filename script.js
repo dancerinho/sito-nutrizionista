@@ -1,8 +1,10 @@
 (() => {
   "use strict";
 
-  const ORDER = ["home", "chi-sono", "servizi", "recensioni", "contatti"];
+  const ORDER = ["home", "servizi", "recensioni", "contatti"];
   const DEFAULT_VIEW = "home";
+  // #chi-sono era una vista a sé: ora è una sezione della home, il vecchio link resta valido.
+  const ALIASES = { "chi-sono": "home" };
 
   const views = new Map();
   document.querySelectorAll("[data-view]").forEach((el) => views.set(el.dataset.view, el));
@@ -101,7 +103,8 @@
      Routing via hash — supporta back/forward e link diretti
   ------------------------------------------------------------------ */
   function viewFromHash() {
-    const name = location.hash.replace(/^#/, "");
+    const raw = location.hash.replace(/^#/, "");
+    const name = ALIASES[raw] || raw;
     return views.has(name) ? name : DEFAULT_VIEW;
   }
 

@@ -39,33 +39,6 @@
 <link rel="preconnect" href="https://images.unsplash.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            50: "#f2f8f5", 100: "#dceee5", 200: "#bcddcd", 300: "#8fc4ad",
-            400: "#5da489", 500: "#3d876c", 600: "#2c6c56", 700: "#245646",
-            800: "#1f453a", 900: "#16302a",
-          },
-          accent: {
-            50: "#fdf5ef", 100: "#fae7d8", 200: "#f4cbb0", 300: "#eda87f",
-            400: "#e58b5b", 500: "#d97642", 600: "#c05f31", 700: "#9e4a29",
-            800: "#7f3d25", 900: "#683421",
-          },
-          cream: { 50: "#fffdf9", 100: "#fdf8f0", 200: "#f7efe1" },
-        },
-        fontFamily: {
-          display: ["Fraunces", "Georgia", "serif"],
-          body: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
-        },
-      },
-    },
-  };
-</script>
-
 <link rel="stylesheet" href="style.css" />
 
 <script type="application/ld+json">
@@ -75,6 +48,7 @@
   "name": "Dott.ssa Alessia Fortina",
   "description": "Nutrizionista a Milano specializzata in nutrizione sportiva. Piani alimentari personalizzati e consulenze online.",
   "url": "https://dancerinho.github.io/sito-nutrizionista/",
+  "image": "https://dancerinho.github.io/sito-nutrizionista/assets/alessia-fortina.jpg",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Via Livigno 26",
@@ -87,9 +61,11 @@
     { "@type": "MedicalProcedure", "name": "Prima visita nutrizionale" },
     { "@type": "MedicalProcedure", "name": "Visita di controllo" },
     { "@type": "MedicalProcedure", "name": "Consulenza online" },
+    { "@type": "MedicalProcedure", "name": "Piano nutrizionale personalizzato" },
     { "@type": "MedicalProcedure", "name": "Dieta per sportivi" },
     { "@type": "MedicalProcedure", "name": "Dieta vegetariana" },
-    { "@type": "MedicalProcedure", "name": "Analisi della composizione corporea" }
+    { "@type": "MedicalProcedure", "name": "Analisi della composizione corporea" },
+    { "@type": "MedicalProcedure", "name": "Bioimpedenziometria" }
   ],
   "sameAs": [
     "https://www.instagram.com/nutrizionista_alessiafortina/",
@@ -99,7 +75,7 @@
 </script>
 </head>
 
-<body class="bg-cream-50 font-body text-brand-900 antialiased">
+<body>
 
 <!-- ======================= TOP BAR ======================= -->
 <header class="app-bar">
@@ -111,11 +87,9 @@
     </span>
   </a>
 
-  <!-- Tab switcher desktop -->
   <nav class="tabs" aria-label="Navigazione principale">
     <span class="tab-pill" aria-hidden="true"></span>
     <a href="#home"       data-nav="home"       class="tab">Home</a>
-    <a href="#chi-sono"   data-nav="chi-sono"   class="tab">Chi sono</a>
     <a href="#servizi"    data-nav="servizi"    class="tab">Servizi</a>
     <a href="#recensioni" data-nav="recensioni" class="tab">Recensioni</a>
     <a href="#contatti"   data-nav="contatti"   class="tab">Contatti</a>
@@ -138,10 +112,9 @@
 <div id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione" hidden>
   <nav class="drawer-nav">
     <a href="#home"       data-nav="home"       class="drawer-link"><span class="drawer-idx">01</span> Home</a>
-    <a href="#chi-sono"   data-nav="chi-sono"   class="drawer-link"><span class="drawer-idx">02</span> Chi sono</a>
-    <a href="#servizi"    data-nav="servizi"    class="drawer-link"><span class="drawer-idx">03</span> Servizi</a>
-    <a href="#recensioni" data-nav="recensioni" class="drawer-link"><span class="drawer-idx">04</span> Recensioni</a>
-    <a href="#contatti"   data-nav="contatti"   class="drawer-link"><span class="drawer-idx">05</span> Contatti</a>
+    <a href="#servizi"    data-nav="servizi"    class="drawer-link"><span class="drawer-idx">02</span> Servizi</a>
+    <a href="#recensioni" data-nav="recensioni" class="drawer-link"><span class="drawer-idx">03</span> Recensioni</a>
+    <a href="#contatti"   data-nav="contatti"   class="drawer-link"><span class="drawer-idx">04</span> Contatti</a>
   </nav>
   <div class="drawer-foot">
     <a href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener">@nutrizionista_alessiafortina</a>
@@ -154,9 +127,10 @@
 
 <!-- ---------------------- VISTA: HOME ---------------------- -->
 <section class="view" data-view="home" aria-label="Home">
-  <div class="view-inner view-hero">
-    <div class="hero-grid">
+  <div class="view-inner">
 
+    <!-- ===== HERO ===== -->
+    <div class="hero-grid">
       <div class="hero-copy">
         <span class="status-chip" data-anim="left">
           <span class="status-dot"></span> Riceve a Milano · e online in tutta Italia
@@ -185,116 +159,112 @@
       </div>
 
       <div class="hero-visual" data-anim="right" data-delay="150">
-        <figure class="hero-frame hero-frame--portrait">
+        <figure class="hero-frame">
           <img src="assets/alessia-fortina.jpg"
                alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" />
         </figure>
-        <figure class="hero-frame-sm">
-          <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80"
-               alt="Piatto colorato e bilanciato con verdure fresche" loading="lazy" />
-        </figure>
-        <span class="float-badge float-badge--a">
+        <span class="float-badge">
           <b>Ascolto prima di tutto</b>
           Il piano si adatta a te
         </span>
       </div>
-
     </div>
 
-    <!-- Scorciatoie verso le altre viste -->
-    <div class="hub-row">
-      <a href="#chi-sono" data-nav="chi-sono" class="hub-card" data-anim="up" data-delay="200">
-        <span class="hub-num">01</span>
-        <span class="hub-title">Chi sono</span>
-        <span class="hub-desc">Il metodo, la formazione, la filosofia anti-dieta punitiva</span>
-        <span class="hub-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="#servizi" data-nav="servizi" class="hub-card" data-anim="up" data-delay="300">
-        <span class="hub-num">02</span>
-        <span class="hub-title">Servizi</span>
-        <span class="hub-desc">Percorsi, sport &amp; performance, visite e valutazioni</span>
-        <span class="hub-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="#recensioni" data-nav="recensioni" class="hub-card" data-anim="up" data-delay="400">
-        <span class="hub-num">03</span>
-        <span class="hub-title">Recensioni</span>
-        <span class="hub-desc">Le parole dei pazienti, verificate su MioDottore</span>
-        <span class="hub-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </div>
-</section>
+    <!-- ===== CHI SONO / FILOSOFIA ===== -->
+    <section class="block" aria-labelledby="chi-sono-title">
+      <header class="block-head">
+        <span class="eyebrow" data-anim="left">Chi sono</span>
+        <h2 id="chi-sono-title" class="block-title" data-anim="left" data-delay="100">
+          Da anni nel mondo del fitness,<br />sempre dalla parte di chi <em>si mette in gioco</em>
+        </h2>
+      </header>
 
-<!-- ---------------------- VISTA: CHI SONO ---------------------- -->
-<section class="view" data-view="chi-sono" aria-label="Chi sono">
-  <div class="view-inner">
-    <header class="view-head">
-      <span class="eyebrow" data-anim="left">Chi sono</span>
-      <h2 class="view-title" data-anim="left" data-delay="100">
-        Da anni nel mondo del fitness,<br />sempre dalla parte di chi <em>si mette in gioco</em>
-      </h2>
-    </header>
+      <div class="bio-grid">
+        <div class="bio-main">
+          <p class="lede" data-anim="left" data-delay="150">
+            Sono una nutrizionista e lavoro nel campo del fitness da anni. Sono giovane nel settore, ma è proprio
+            questo che mi spinge a sperimentare, a mettermi in gioco e a costruire un legame vero con chi ho
+            davanti: il risultato si raggiunge <strong>insieme</strong>, mai da soli.
+          </p>
 
-    <div class="bio-grid">
-      <div class="bio-visual" data-anim="right" data-delay="200">
-        <figure class="frame-offset frame-offset--portrait">
-          <img src="assets/alessia-fortina.jpg"
-               alt="La Dott.ssa Alessia Fortina in camice, nutrizionista a Milano" width="949" height="949" loading="lazy" />
-        </figure>
-        <div class="edu-stack">
+          <blockquote class="pull-quote" data-anim="left" data-delay="250">
+            <p>Non uso piani alimentari <em>“grigi”</em> e troppo vincolanti: amo chi comunica, perché è così che
+            riesco ad adattare e personalizzare al meglio.</p>
+            <cite>— Dott.ssa Alessia Fortina</cite>
+          </blockquote>
+        </div>
+
+        <div class="edu-stack" data-anim="right" data-delay="250">
           <div class="edu-card">
+            <span class="edu-kicker">Formazione</span>
             <b>Università San Raffaele</b>
             <span>Laurea Magistrale in Nutrizione Umana, Roma</span>
           </div>
           <div class="edu-card edu-card--accent">
+            <span class="edu-kicker">Specializzazione</span>
             <b>Sanis</b>
             <span>Master in Nutrizione Sportiva</span>
           </div>
         </div>
       </div>
 
-      <div class="bio-copy">
-        <p class="lede" data-anim="left" data-delay="250">
-          Sono una nutrizionista e lavoro nel campo del fitness da anni. Sono giovane nel settore, ma è proprio
-          questo che mi spinge a sperimentare, a mettermi in gioco e a costruire un legame vero con chi ho
-          davanti: il risultato si raggiunge <strong>insieme</strong>, mai da soli.
-        </p>
-
-        <blockquote class="pull-quote" data-anim="left" data-delay="350">
-          <p>Non uso piani alimentari <em>“grigi”</em> e troppo vincolanti: amo chi comunica, perché è così che
-          riesco ad adattare e personalizzare al meglio.</p>
-          <cite>— Dott.ssa Alessia Fortina</cite>
-        </blockquote>
-
-        <div class="pillars" data-anim="left" data-delay="450">
-          <div class="pillar"><b>Personalizzazione</b><span>Il piano nasce dai tuoi gusti, orari e allenamenti.</span></div>
-          <div class="pillar"><b>Dialogo continuo</b><span>Ci confrontiamo e correggiamo. Nessuna regola calata dall'alto.</span></div>
-          <div class="pillar"><b>Sostenibilità</b><span>Risultati che restano, integrati nella tua quotidianità.</span></div>
+      <div class="pillars">
+        <div class="pillar" data-anim="up" data-delay="150">
+          <b>Personalizzazione</b>
+          <span>Il piano nasce dai tuoi gusti, dai tuoi orari e dai tuoi allenamenti.</span>
+        </div>
+        <div class="pillar" data-anim="up" data-delay="250">
+          <b>Dialogo continuo</b>
+          <span>Ci confrontiamo e correggiamo. Nessuna regola calata dall'alto.</span>
+        </div>
+        <div class="pillar" data-anim="up" data-delay="350">
+          <b>Sostenibilità</b>
+          <span>Risultati che restano, perché si integrano nella tua quotidianità.</span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="method">
-      <h3 class="method-title" data-anim="left" data-delay="200">Il metodo, in tre passi</h3>
-      <ol class="method-steps">
-        <li class="step" data-anim="up" data-delay="250">
+    <!-- ===== IL METODO ===== -->
+    <section class="block" aria-labelledby="metodo-title">
+      <header class="block-head">
+        <span class="eyebrow" data-anim="left">Come funziona</span>
+        <h2 id="metodo-title" class="block-title" data-anim="left" data-delay="100">Il metodo, in <em>tre passi</em></h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step" data-anim="up" data-delay="150">
           <span class="step-n">01</span>
           <b>Primo colloquio e misurazioni</b>
           <p>Storia, abitudini e obiettivi. Poi misuriamo: composizione corporea e dati antropometrici.</p>
         </li>
-        <li class="step" data-anim="up" data-delay="350">
+        <li class="step" data-anim="up" data-delay="250">
           <span class="step-n">02</span>
           <b>Il piano, costruito su misura</b>
-          <p>Vario e sostenibile, calibrato sui tuoi gusti e allenamenti. Con alternative reali per ogni pasto.</p>
+          <p>Vario e sostenibile, calibrato sui tuoi gusti e allenamenti, con alternative reali per ogni pasto.</p>
         </li>
-        <li class="step" data-anim="up" data-delay="450">
+        <li class="step" data-anim="up" data-delay="350">
           <span class="step-n">03</span>
           <b>Controlli e adattamenti</b>
           <p>Leggiamo i progressi e correggiamo ciò che non funziona. Il confronto costante fa la differenza.</p>
         </li>
       </ol>
-      <a href="#servizi" data-nav="servizi" class="btn btn-primary" data-anim="up" data-delay="550">Vedi i percorsi</a>
-    </div>
+    </section>
+
+    <!-- ===== BANNER PUNTI DI FORZA ===== -->
+    <aside class="banner" data-anim="up" data-delay="150">
+      <div class="banner-copy">
+        <h2>Pronta ad ascoltarti, <em>ovunque tu sia</em></h2>
+        <p>In studio a Milano o in videochiamata. Percorsi per sportivi, piani vegetariani e programmi
+           personalizzati anche in presenza di patologie accertate.</p>
+      </div>
+      <ul class="banner-points">
+        <li>Nessuna dieta punitiva</li>
+        <li>Piani adattati ai tuoi gusti</li>
+        <li>Consulenze online da 50&thinsp;€</li>
+      </ul>
+      <a href="#servizi" data-nav="servizi" class="btn btn-accent">Esplora i servizi</a>
+    </aside>
+
   </div>
 </section>
 
@@ -303,91 +273,168 @@
   <div class="view-inner">
     <header class="view-head">
       <span class="eyebrow" data-anim="left">Servizi e prestazioni</span>
-      <h2 class="view-title" data-anim="left" data-delay="100">
-        Percorsi che <em>partono da te</em>
-      </h2>
+      <h2 class="view-title" data-anim="left" data-delay="100">Percorsi che <em>partono da te</em></h2>
       <p class="view-sub" data-anim="left" data-delay="200">
         In studio a Milano o comodamente online. Ogni prestazione copre una fase diversa del percorso.
       </p>
     </header>
 
-    <!-- BENTO GRID -->
-    <div class="bento">
+    <!-- CATEGORIA 1 -->
+    <section class="cat" aria-labelledby="cat-1">
+      <div class="cat-head" data-anim="left" data-delay="100">
+        <span class="cat-num">01</span>
+        <h3 id="cat-1">Percorsi e visite</h3>
+      </div>
 
-      <article class="bento-cell bento-a has-img tilt" data-anim="right" data-delay="200">
-        <img class="bento-bg" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80" alt="Bowl di verdure e cereali integrali" loading="lazy" />
-        <div class="bento-body">
-          <span class="cat-badge">Percorsi nutrizionali</span>
-          <h3>Prima visita nutrizionale</h3>
-          <p>Anamnesi completa, abitudini, obiettivi e valutazione della composizione corporea. Si esce con una direzione chiara e condivisa.</p>
-          <div class="bento-foot"><span class="price">120&thinsp;€</span><span class="dur">60 min</span></div>
-        </div>
-      </article>
+      <div class="card-grid">
+        <article class="svc" data-anim="up" data-delay="150">
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Piatto sano e bilanciato" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge">Percorsi e visite</span>
+            <h4>Prima visita nutrizionale</h4>
+            <p>Anamnesi completa, abitudini, obiettivi e valutazione della composizione corporea. Si esce con una direzione chiara e condivisa.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">120&thinsp;€ <small>60 min</small></span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+          </div>
+        </article>
 
-      <article class="bento-cell bento-b tilt" data-anim="right" data-delay="300">
-        <span class="corner-badge">Il più richiesto</span>
-        <div class="bento-body">
-          <span class="cat-badge cat-badge--accent">Percorsi nutrizionali</span>
-          <h3>Visita di controllo</h3>
-          <p>Rivediamo i dati, ascoltiamo cosa ha funzionato e adattiamo il piano. È qui che il programma diventa davvero tuo.</p>
-          <div class="bento-foot"><span class="price">100&thinsp;€</span></div>
-        </div>
-      </article>
+        <article class="svc svc--featured" data-anim="up" data-delay="250">
+          <span class="ribbon">Il più richiesto</span>
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Alimentazione sana e bilanciata" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge badge--accent">Percorsi e visite</span>
+            <h4>Visita di controllo</h4>
+            <p>Rivediamo i dati, ascoltiamo cosa ha funzionato e adattiamo il piano. È qui che il programma diventa davvero tuo.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">100&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+          </div>
+        </article>
 
-      <article class="bento-cell bento-c tilt" data-anim="right" data-delay="400">
-        <div class="bento-body">
-          <span class="cat-badge">Ovunque tu sia</span>
-          <h3>Consulenza online</h3>
-          <p>Stesso metodo, in videochiamata. Ideale se viaggi spesso o non sei a Milano.</p>
-          <div class="bento-foot"><span class="price">50&thinsp;€</span></div>
-        </div>
-      </article>
+        <article class="svc" data-anim="up" data-delay="350">
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Alimentazione consapevole" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge">Ovunque tu sia</span>
+            <h4>Consulenza online</h4>
+            <p>Stesso metodo, in videochiamata. Ideale se viaggi spesso o non sei a Milano.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">50&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-      <article class="bento-cell bento-d has-img tilt" data-anim="right" data-delay="450">
-        <img class="bento-bg" src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=900&q=80" alt="Atleta durante l'allenamento" loading="lazy" />
-        <div class="bento-body">
-          <span class="cat-badge cat-badge--dark">Sport &amp; performance</span>
-          <h3>Dieta per sportivi</h3>
-          <p>Nutrizione calibrata su carichi, timing e obiettivi di performance o composizione corporea.</p>
-          <div class="bento-foot"><span class="price">120&thinsp;€</span></div>
-        </div>
-      </article>
+    <!-- CATEGORIA 2 -->
+    <section class="cat" aria-labelledby="cat-2">
+      <div class="cat-head" data-anim="left" data-delay="100">
+        <span class="cat-num">02</span>
+        <h3 id="cat-2">Piani nutrizionali</h3>
+      </div>
 
-      <article class="bento-cell bento-e has-img tilt" data-anim="right" data-delay="500">
-        <img class="bento-bg" src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=900&q=80" alt="Verdure fresche di stagione" loading="lazy" />
-        <div class="bento-body">
-          <span class="cat-badge">Percorsi nutrizionali</span>
-          <h3>Dieta vegetariana</h3>
-          <p>Equilibrio di proteine, ferro e B12 senza rinunciare alla tua scelta etica o alimentare.</p>
-          <div class="bento-foot"><span class="price">120&thinsp;€</span></div>
-        </div>
-      </article>
+      <div class="card-grid">
+        <article class="svc" data-anim="up" data-delay="150">
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Bowl di verdure e cereali" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge">Su misura</span>
+            <h4>Piano nutrizionale personalizzato</h4>
+            <p>Il programma costruito sulle tue esigenze, anche in presenza di patologie accertate documentate.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">100&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+          </div>
+        </article>
 
-      <article class="bento-cell bento-f tilt" data-anim="right" data-delay="550">
-        <div class="bento-body">
-          <span class="cat-badge">Su misura</span>
-          <h3>Piano nutrizionale personalizzato</h3>
-          <p>Il programma costruito sulle tue esigenze, anche in presenza di patologie accertate documentate.</p>
-          <div class="bento-foot"><span class="price">100&thinsp;€</span></div>
-        </div>
-      </article>
+        <article class="svc" data-anim="up" data-delay="250">
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=600&q=80" alt="Attrezzi per l'allenamento" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge badge--dark">Sport &amp; performance</span>
+            <h4>Dieta per sportivi</h4>
+            <p>Nutrizione calibrata su carichi, timing e obiettivi di performance o composizione corporea.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">120&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+          </div>
+        </article>
 
-      <article class="bento-cell bento-g bento-dark" data-anim="right" data-delay="600">
-        <div class="bento-body">
-          <span class="cat-badge cat-badge--light">Visite singole e valutazioni</span>
-          <h3>Misurare, non pesare</h3>
-          <p>Dati oggettivi per leggere i progressi, oltre il numero sulla bilancia.</p>
-          <ul class="mini-list">
-            <li><span>Analisi della composizione corporea</span><b>80&thinsp;€</b></li>
-            <li><span>Bioimpedenziometria</span><b>80&thinsp;€</b></li>
-          </ul>
-          <a href="#contatti" data-nav="contatti" class="btn btn-accent">Richiedi informazioni</a>
-        </div>
-      </article>
+        <article class="svc" data-anim="up" data-delay="350">
+          <div class="svc-media">
+            <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Verdure fresche di stagione" loading="lazy" />
+          </div>
+          <div class="svc-body">
+            <span class="badge">Scelta etica</span>
+            <h4>Dieta vegetariana</h4>
+            <p>Equilibrio di proteine, ferro e B12 senza rinunciare alla tua scelta etica o alimentare.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">120&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-    </div>
+    <!-- CATEGORIA 3 -->
+    <section class="cat" aria-labelledby="cat-3">
+      <div class="cat-head" data-anim="left" data-delay="100">
+        <span class="cat-num">03</span>
+        <h3 id="cat-3">Valutazioni strumentali</h3>
+      </div>
 
-    <p class="fine-print" data-anim="up" data-delay="650">
+      <p class="cat-intro" data-anim="left" data-delay="150">
+        Dati oggettivi per leggere i progressi, oltre il numero sulla bilancia.
+      </p>
+
+      <div class="card-grid card-grid--two">
+        <article class="svc svc--plain" data-anim="up" data-delay="200">
+          <div class="svc-body">
+            <span class="svc-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l-2 1m2 12l-2-1m2 1l2-1M3 10l2-1m0 0l2-1M5 9v6m14-6l2 1m-2-1l-2 1m2-1v6m0 0l2 1m-2-1l-2 1"/></svg>
+            </span>
+            <span class="badge">Valutazione</span>
+            <h4>Analisi della composizione corporea</h4>
+            <p>Massa magra, massa grassa e distribuzione: la fotografia reale del tuo corpo, non solo il peso.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">80&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+          </div>
+        </article>
+
+        <article class="svc svc--plain" data-anim="up" data-delay="300">
+          <div class="svc-body">
+            <span class="svc-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+            </span>
+            <span class="badge">Valutazione</span>
+            <h4>Bioimpedenziometria</h4>
+            <p>Analisi dell'idratazione e dei compartimenti corporei: rapida, indolore e non invasiva.</p>
+          </div>
+          <div class="svc-foot">
+            <span class="price">80&thinsp;€</span>
+            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <p class="fine-print" data-anim="up" data-delay="200">
       I prezzi indicati sono quelli pubblicati sul profilo MioDottore e possono variare in base al percorso concordato.
     </p>
   </div>
@@ -406,46 +453,46 @@
       <a href="https://www.miodottore.it/profilo/alessia-fortina#profile-reviews" target="_blank" rel="noopener"
          class="verify-badge" data-anim="right" data-delay="200">
         <span class="verify-star" aria-hidden="true">★</span>
-        <span>
+        <span class="verify-text">
           <b>14 recensioni verificate</b>
-          Leggile tutte su MioDottore →
+          <span>Leggile tutte su MioDottore →</span>
         </span>
       </a>
     </header>
 
     <div class="quotes">
-      <figure class="quote" data-anim="up" data-delay="200">
+      <figure class="quote" data-anim="up" data-delay="150">
         <blockquote>Competente, preparata e disponibile. La migliore nutrizionista che ho trovato. Ha sempre una parola gentile anche quando le cose non vanno come dovrebbero, incoraggia e sprona a proseguire il percorso intrapreso. Adatta il piano ai gusti, alle capacità (le mie molto scarse!) espresse ed è così più facile da seguire.</blockquote>
-        <figcaption><span class="avatar">EP</span><span><b>EP</b>Visita di controllo · 12 marzo 2025</span></figcaption>
+        <figcaption><span class="avatar">EP</span><span class="who"><b>EP</b><small>Visita di controllo · 12 marzo 2025</small></span></figcaption>
       </figure>
 
-      <figure class="quote" data-anim="up" data-delay="280">
+      <figure class="quote" data-anim="up" data-delay="230">
         <blockquote>Giovane nutrizionista molto preparata e piena di entusiasmo e empatia. Per scelta etica sono vegana e ho trovato molta preparazione sull'argomento. Esci dal controllo motivata e questo aiuta per il raggiungimento dell'obiettivo! Brava Alessia!</blockquote>
-        <figcaption><span class="avatar">TP</span><span><b>Tiziana d.P</b>Visita di controllo · 8 marzo 2025</span></figcaption>
+        <figcaption><span class="avatar">TP</span><span class="who"><b>Tiziana d.P</b><small>Visita di controllo · 8 marzo 2025</small></span></figcaption>
       </figure>
 
-      <figure class="quote" data-anim="up" data-delay="360">
+      <figure class="quote" data-anim="up" data-delay="310">
         <blockquote>Indiscutibile competenza. Capace nell'ascolto e nella lettura dei dati bio/antropometrici e successiva definizione degli obiettivi di salute ed estetici, mediante piani nutrizionali sani, gustosi, vari e soprattutto sostenibili. Massima disponibilità. Consigliatissima!!!</blockquote>
-        <figcaption><span class="avatar">ET</span><span><b>E.T.</b>Visita di controllo · 8 marzo 2025</span></figcaption>
+        <figcaption><span class="avatar">ET</span><span class="who"><b>E.T.</b><small>Visita di controllo · 8 marzo 2025</small></span></figcaption>
       </figure>
 
-      <figure class="quote" data-anim="up" data-delay="440">
+      <figure class="quote" data-anim="up" data-delay="390">
         <blockquote>La dottoressa riesce a capire bene il tuo punto di partenza per una dieta più equilibrata. Così, insieme alla palestra, ho perso gradualmente 15 kili da oltre sei mesi e sto molto meglio.</blockquote>
-        <figcaption><span class="avatar">FB</span><span><b>FB</b>Prima visita nutrizionale · 21 dicembre 2024</span></figcaption>
+        <figcaption><span class="avatar">FB</span><span class="who"><b>FB</b><small>Prima visita nutrizionale · 21 dicembre 2024</small></span></figcaption>
       </figure>
 
-      <figure class="quote" data-anim="up" data-delay="520">
+      <figure class="quote" data-anim="up" data-delay="470">
         <blockquote>Ho chiesto aiuto ad Alessia per una dieta sportiva mirata al raggiungimento di un obiettivo a breve termine. Abbiamo iniziato da poco, ma i risultati non hanno tardato ad arrivare. Consiglio assolutamente per professionalità, empatia ed efficacia.</blockquote>
-        <figcaption><span class="avatar">C</span><span><b>Christian</b>Dieta per sportivi · 21 dicembre 2024</span></figcaption>
+        <figcaption><span class="avatar">C</span><span class="who"><b>Christian</b><small>Dieta per sportivi · 21 dicembre 2024</small></span></figcaption>
       </figure>
 
-      <figure class="quote" data-anim="up" data-delay="600">
+      <figure class="quote" data-anim="up" data-delay="550">
         <blockquote>Prima visita e prima impressione più che positiva! Gentile, professionale e soprattutto disponibile all'ascolto, cosa rara al giorno d'oggi! Non vedo l'ora di scoprire come mi aiuterà ad ottenere i risultati desiderati!</blockquote>
-        <figcaption><span class="avatar">GP</span><span><b>Giulia Priscilla</b>Consulenza online · 11 febbraio 2025</span></figcaption>
+        <figcaption><span class="avatar">GP</span><span class="who"><b>Giulia Priscilla</b><small>Consulenza online · 11 febbraio 2025</small></span></figcaption>
       </figure>
     </div>
 
-    <div class="quotes-cta" data-anim="up" data-delay="650">
+    <div class="quotes-cta" data-anim="up" data-delay="200">
       <a href="#contatti" data-nav="contatti" class="btn btn-accent">Inizia il tuo percorso</a>
     </div>
   </div>
@@ -484,9 +531,10 @@
               <option>Prima visita nutrizionale</option>
               <option>Visita di controllo</option>
               <option>Consulenza online</option>
+              <option>Piano nutrizionale personalizzato</option>
               <option>Dieta per sportivi</option>
               <option>Dieta vegetariana</option>
-              <option>Analisi della composizione corporea</option>
+              <option>Valutazioni strumentali</option>
               <option>Altro / informazioni</option>
             </select>
           </div>
@@ -551,10 +599,13 @@
           </div>
         </div>
 
-        <a href="https://www.google.com/maps/search/?api=1&query=Via+Livigno+26+20158+Milano" target="_blank" rel="noopener" class="map-card">
-          <img src="https://images.unsplash.com/photo-1592924802543-809bfeee53fb?auto=format&fit=crop&w=800&q=80" alt="Veduta urbana di Milano" loading="lazy" />
-          <span>Via Livigno 26, Milano</span>
-        </a>
+        <div class="map-embed">
+          <iframe
+            src="https://maps.google.com/maps?q=Via+Livigno+26+Milano&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            title="Mappa dello studio Metodo Salute in Via Livigno 26, Milano"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
       </aside>
     </div>
 
