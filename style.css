@@ -1,0 +1,148 @@
+/* =========================================================
+   Stili aggiuntivi — Sito Nutrizionista
+   (Tailwind gestisce l'utility styling; qui solo ciò che
+   Tailwind da CDN non copre: font base, animazioni, scroll)
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: "Poppins", sans-serif;
+}
+
+/* ---------- Header ---------- */
+#header {
+  background-color: rgba(254, 253, 251, 0);
+}
+
+#header.scrolled {
+  background-color: rgba(254, 253, 251, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(54, 65, 47, 0.06);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: #62784f;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #4d5f40;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.mobile-link {
+  transition: color 0.2s ease;
+}
+
+.mobile-link:hover {
+  color: #4d5f40;
+}
+
+/* ---------- Social icons ---------- */
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f6f0e4;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.social-icon:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ---------- Service cards ---------- */
+.service-card {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2.25rem 2rem;
+  box-shadow: 0 4px 24px rgba(54, 65, 47, 0.06);
+  border: 1px solid rgba(152, 175, 130, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(54, 65, 47, 0.12);
+}
+
+/* ---------- Hero entrance animation ---------- */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Form ---------- */
+.error-msg {
+  min-height: 1.1rem;
+  font-size: 0.8rem;
+  color: #b45150;
+  margin-top: 0.35rem;
+}
+
+input.input-error,
+textarea.input-error {
+  border-color: #b45150 !important;
+  box-shadow: 0 0 0 1px rgba(180, 81, 80, 0.25);
+}
+
+/* ---------- Scrollbar (subtle, optional) ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fbf8f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b6c7a6;
+  border-radius: 9999px;
+  border: 2px solid #fbf8f2;
+}
