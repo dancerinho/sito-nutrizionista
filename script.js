@@ -22,11 +22,65 @@
 
   /* ------------------------------------------------------------------
      Animazioni sfalsate degli elementi interni alla vista
+
+     Gli elementi entrano quando entrano davvero in campo, non tutti
+     all'attivazione della vista: prima chi stava sotto la piega aveva
+     già finito l'animazione quando lo si raggiungeva scorrendo.
+
+     Il root dell'osservatore è la vista, non il viewport: lo scorrimento
+     avviene dentro .view (overflow-y: auto) e con root null ogni elemento
+     risulterebbe già intersecante al primo frame.
   ------------------------------------------------------------------ */
+  const observers = new WeakMap();
+
+  function getObserver(view) {
+    let obs = observers.get(view);
+    if (obs) return obs;
+
+    obs = new IntersectionObserver((entries, self) => {
+      const shown = entries
+        .filter((e) => e.isIntersecting)
+        .map((e) => e.target)
+        // L'osservatore consegna le voci in ordine arbitrario: la
+        // scalettatura deve seguire l'ordine di lettura, non quello.
+        .sort((a, b) =>
+          a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+        );
+
+      const intro = view.dataset.introDone !== "1";
+
+      shown.forEach((el, i) => {
+        // Alla prima schermata vale la coreografia scritta nel markup
+        // (data-delay); scorrendo serve una scalettatura corta, altrimenti
+        // l'ultimo elemento comparirebbe mezzo secondo dopo essere entrato.
+        const delay = intro && el.dataset.delay !== undefined
+          ? Number(el.dataset.delay)
+          : Math.min(i * 90, 360);
+        el.style.transitionDelay = `${delay}ms`;
+        el.classList.add("in");
+        self.unobserve(el);
+      });
+
+      if (shown.length) view.dataset.introDone = "1";
+    }, {
+      root: view,
+      // L'entrata parte poco prima che l'elemento sia del tutto dentro,
+      // così il movimento finisce sotto gli occhi invece che fuori campo.
+      rootMargin: "0px 0px -12% 0px",
+      threshold: 0.12,
+    });
+
+    observers.set(view, obs);
+    return obs;
+  }
+
   // La transizione va spenta durante il reset: altrimenti gli elementi
   // interpolano all'indietro per un paio di frame e la successiva entrata
   // riparte da una posizione intermedia, che è ciò che si legge come scatto.
   function resetAnimations(view) {
+    getObserver(view).disconnect();
+    delete view.dataset.introDone;
+
     const items = view.querySelectorAll("[data-anim]");
     items.forEach((el) => {
       el.style.transition = "none";
@@ -39,12 +93,17 @@
 
   function playAnimations(view) {
     const items = view.querySelectorAll("[data-anim]");
-    items.forEach((el, i) => {
-      const delay = el.dataset.delay !== undefined ? Number(el.dataset.delay) : i * 120;
-      el.style.transitionDelay = `${delay}ms`;
-    });
+
+    if (reduceMotion) {
+      items.forEach((el) => el.classList.add("in"));
+      return;
+    }
+
+    const obs = getObserver(view);
+    // Doppio rAF: l'osservatore deve misurare a vista già visibile e con
+    // lo scorrimento riportato in cima, non sulle posizioni precedenti.
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => items.forEach((el) => el.classList.add("in")));
+      requestAnimationFrame(() => items.forEach((el) => obs.observe(el)));
     });
   }
 
