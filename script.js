@@ -1,241 +1,247 @@
-document.addEventListener("DOMContentLoaded", () => {
+(() => {
+  "use strict";
 
-  /* ---------------- Header: sfondo allo scroll ---------------- */
-  const header = document.getElementById("header");
-  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 24);
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  const ORDER = ["home", "chi-sono", "servizi", "recensioni", "contatti"];
+  const DEFAULT_VIEW = "home";
 
-  /* ---------------- Menu mobile ---------------- */
-  const menuBtn = document.getElementById("menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const iconOpen = document.getElementById("icon-open");
-  const iconClose = document.getElementById("icon-close");
+  const views = new Map();
+  document.querySelectorAll("[data-view]").forEach((el) => views.set(el.dataset.view, el));
 
-  const setMenu = (open) => {
-    mobileMenu.classList.toggle("hidden", !open);
-    iconOpen.classList.toggle("hidden", open);
-    iconClose.classList.toggle("hidden", !open);
-    menuBtn.setAttribute("aria-expanded", String(open));
-    menuBtn.setAttribute("aria-label", open ? "Chiudi il menu" : "Apri il menu");
-  };
+  const tabs = [...document.querySelectorAll("[data-nav]")];
+  const tabPill = document.querySelector(".tab-pill");
+  const burger = document.getElementById("burger");
+  const drawer = document.getElementById("drawer");
 
-  menuBtn.addEventListener("click", () => {
-    setMenu(mobileMenu.classList.contains("hidden"));
-  });
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const OUT_MS = reduceMotion ? 0 : 320;
 
-  mobileMenu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => setMenu(false));
-  });
+  let current = null;
+  let animating = false;
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setMenu(false);
-  });
-
-  /* ---------------- Reveal allo scroll ---------------- */
-  const revealEls = document.querySelectorAll(".reveal");
-
-  if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
-    );
-    revealEls.forEach((el) => revealObserver.observe(el));
-  } else {
-    revealEls.forEach((el) => el.classList.add("is-visible"));
+  /* ------------------------------------------------------------------
+     Animazioni sfalsate degli elementi interni alla vista
+  ------------------------------------------------------------------ */
+  function resetAnimations(view) {
+    view.querySelectorAll("[data-anim]").forEach((el) => {
+      el.classList.remove("in");
+      el.style.transitionDelay = "";
+    });
   }
 
-  /* ---------------- Voce di menu attiva ---------------- */
-  const navLinks = [...document.querySelectorAll(".nav-link")];
-  const sections = navLinks
-    .map((link) => document.querySelector(link.getAttribute("href")))
-    .filter(Boolean);
-
-  if ("IntersectionObserver" in window && sections.length) {
-    const navObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          navLinks.forEach((link) =>
-            link.classList.toggle(
-              "is-active",
-              link.getAttribute("href") === `#${entry.target.id}`
-            )
-          );
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-    sections.forEach((section) => navObserver.observe(section));
+  function playAnimations(view) {
+    const items = view.querySelectorAll("[data-anim]");
+    items.forEach((el, i) => {
+      const delay = el.dataset.delay !== undefined ? Number(el.dataset.delay) : i * 100;
+      el.style.transitionDelay = `${delay}ms`;
+    });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => items.forEach((el) => el.classList.add("in")));
+    });
   }
 
-  /* ---------------- Contatore hero ---------------- */
-  const counter = document.querySelector("[data-count]");
-
-  if (counter && "IntersectionObserver" in window) {
-    const target = Number(counter.dataset.count);
-    const countObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          countObserver.unobserve(entry.target);
-
-          let current = 0;
-          const tick = () => {
-            current += Math.max(1, Math.ceil(target / 22));
-            if (current >= target) {
-              counter.textContent = target;
-              return;
-            }
-            counter.textContent = current;
-            requestAnimationFrame(tick);
-          };
-          tick();
-        });
-      },
-      { threshold: 0.6 }
-    );
-    countObserver.observe(counter);
+  /* ------------------------------------------------------------------
+     Indicatore scorrevole del tab switcher
+  ------------------------------------------------------------------ */
+  function moveTabPill(name) {
+    if (!tabPill) return;
+    const active = document.querySelector(`.tab[data-nav="${name}"]`);
+    if (!active) return;
+    tabPill.style.width = `${active.offsetWidth}px`;
+    tabPill.style.transform = `translateX(${active.offsetLeft}px)`;
+    tabPill.classList.add("ready");
   }
 
-  /* ---------------- Carosello recensioni ---------------- */
-  const track = document.getElementById("reviews-track");
-  const prevBtn = document.getElementById("reviews-prev");
-  const nextBtn = document.getElementById("reviews-next");
-  const dotsWrap = document.getElementById("reviews-dots");
+  function syncNavState(name) {
+    tabs.forEach((el) => el.classList.toggle("is-active", el.dataset.nav === name));
+    moveTabPill(name);
+  }
 
-  if (track && prevBtn && nextBtn && dotsWrap) {
-    const pageCount = () =>
-      Math.max(1, Math.round(track.scrollWidth / track.clientWidth));
-    const currentPage = () =>
-      Math.round(track.scrollLeft / track.clientWidth);
+  /* ------------------------------------------------------------------
+     Transizione tra viste — direzionale in base all'ordine del menu
+  ------------------------------------------------------------------ */
+  function show(name, { instant = false } = {}) {
+    const next = views.get(name);
+    if (!next || name === current || animating) return;
 
-    const buildDots = () => {
-      dotsWrap.innerHTML = "";
-      for (let i = 0; i < pageCount(); i++) {
-        const dot = document.createElement("button");
-        dot.className = "carousel-dot";
-        dot.type = "button";
-        dot.setAttribute("aria-label", `Vai al gruppo di recensioni ${i + 1}`);
-        dot.addEventListener("click", () => {
-          track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
-        });
-        dotsWrap.appendChild(dot);
-      }
+    const prev = current ? views.get(current) : null;
+    const goingBack = current ? ORDER.indexOf(name) < ORDER.indexOf(current) : false;
+
+    const enter = () => {
+      next.classList.add(goingBack ? "is-entering-back" : "is-entering");
+      resetAnimations(next);
+      // Forza il reflow così lo stato iniziale viene applicato prima della transizione.
+      void next.offsetWidth;
+      next.classList.remove("is-entering", "is-entering-back");
+      next.classList.add("is-active");
+      next.scrollTop = 0;
+
+      current = name;
+      syncNavState(name);
+      playAnimations(next);
+      animating = false;
     };
 
-    const syncControls = () => {
-      const page = currentPage();
-      [...dotsWrap.children].forEach((dot, i) =>
-        dot.classList.toggle("is-active", i === page)
-      );
-      prevBtn.disabled = track.scrollLeft <= 4;
-      nextBtn.disabled =
-        track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    };
-
-    const scrollByPage = (direction) => {
-      track.scrollBy({ left: direction * track.clientWidth, behavior: "smooth" });
-    };
-
-    prevBtn.addEventListener("click", () => scrollByPage(-1));
-    nextBtn.addEventListener("click", () => scrollByPage(1));
-
-    track.addEventListener("scroll", syncControls, { passive: true });
-    track.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") { e.preventDefault(); scrollByPage(1); }
-      if (e.key === "ArrowLeft")  { e.preventDefault(); scrollByPage(-1); }
-    });
-
-    window.addEventListener("resize", () => {
-      buildDots();
-      syncControls();
-    });
-
-    buildDots();
-    syncControls();
-  }
-
-  /* ---------------- Modulo di contatto ---------------- */
-  const form = document.getElementById("contact-form");
-  const feedback = document.getElementById("form-feedback");
-
-  const fields = {
-    name: {
-      el: document.getElementById("name"),
-      isValid: (el) => el.value.trim().length >= 2,
-      error: "Inserisci il tuo nome.",
-    },
-    email: {
-      el: document.getElementById("email"),
-      isValid: (el) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()),
-      error: "Inserisci un indirizzo email valido.",
-    },
-    message: {
-      el: document.getElementById("message"),
-      isValid: (el) => el.value.trim().length >= 10,
-      error: "Scrivi almeno 10 caratteri, così posso aiutarti meglio.",
-    },
-    privacy: {
-      el: document.getElementById("privacy"),
-      isValid: (el) => el.checked,
-      error: "È necessario accettare il trattamento dei dati.",
-    },
-  };
-
-  const validate = (key) => {
-    const { el, isValid, error } = fields[key];
-    const errorEl = form.querySelector(`[data-error-for="${key}"]`);
-    const valid = isValid(el);
-
-    el.classList.toggle("input-error", !valid);
-    el.setAttribute("aria-invalid", String(!valid));
-    if (errorEl) errorEl.textContent = valid ? "" : error;
-
-    return valid;
-  };
-
-  Object.keys(fields).forEach((key) => {
-    const { el } = fields[key];
-    const event = el.type === "checkbox" ? "change" : "blur";
-    el.addEventListener(event, () => validate(key));
-    el.addEventListener("input", () => {
-      if (el.classList.contains("input-error")) validate(key);
-    });
-  });
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const results = Object.keys(fields).map(validate);
-    const allValid = results.every(Boolean);
-
-    if (!allValid) {
-      feedback.textContent = "Controlla i campi evidenziati e riprova.";
-      feedback.className =
-        "mt-5 rounded-2xl bg-red-50 px-5 py-4 text-sm text-red-700";
-      form.querySelector(".input-error")?.focus();
+    if (!prev || instant) {
+      if (prev) prev.classList.remove("is-active");
+      enter();
       return;
     }
 
-    // Nessun backend collegato: qui va inserito l'invio reale (es. Formspree, EmailJS, API).
-    feedback.textContent =
-      "Grazie! La tua richiesta è stata registrata. Ti ricontatterò al più presto.";
-    feedback.className =
-      "mt-5 rounded-2xl bg-brand-50 px-5 py-4 text-sm text-brand-700";
-    form.reset();
+    animating = true;
+    prev.classList.add("is-leaving");
+    if (goingBack) prev.classList.add("is-leaving-back");
 
-    setTimeout(() => feedback.classList.add("hidden"), 8000);
+    setTimeout(() => {
+      prev.classList.remove("is-active", "is-leaving", "is-leaving-back");
+      enter();
+    }, OUT_MS);
+  }
+
+  /* ------------------------------------------------------------------
+     Routing via hash — supporta back/forward e link diretti
+  ------------------------------------------------------------------ */
+  function viewFromHash() {
+    const name = location.hash.replace(/^#/, "");
+    return views.has(name) ? name : DEFAULT_VIEW;
+  }
+
+  function route(instant = false) {
+    show(viewFromHash(), { instant });
+  }
+
+  window.addEventListener("hashchange", () => {
+    closeDrawer();
+    route();
   });
 
-  /* ---------------- Anno nel footer ---------------- */
+  // I link con data-nav aggiornano solo l'hash: hashchange fa il resto.
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-nav]");
+    if (!link) return;
+
+    e.preventDefault();
+    const name = link.dataset.nav;
+
+    if (name === current) {
+      closeDrawer();
+      views.get(name)?.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      return;
+    }
+    location.hash = name;
+  });
+
+  /* ------------------------------------------------------------------
+     Drawer mobile
+  ------------------------------------------------------------------ */
+  function openDrawer() {
+    drawer.hidden = false;
+    void drawer.offsetWidth;
+    drawer.classList.add("is-open");
+    burger.classList.add("is-open");
+    burger.setAttribute("aria-expanded", "true");
+    burger.setAttribute("aria-label", "Chiudi il menu");
+  }
+
+  function closeDrawer() {
+    if (drawer.hidden) return;
+    drawer.classList.remove("is-open");
+    burger.classList.remove("is-open");
+    burger.setAttribute("aria-expanded", "false");
+    burger.setAttribute("aria-label", "Apri il menu");
+    setTimeout(() => { drawer.hidden = true; }, reduceMotion ? 0 : 380);
+  }
+
+  burger.addEventListener("click", () => {
+    drawer.hidden ? openDrawer() : closeDrawer();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
+
+  window.addEventListener("resize", () => {
+    if (current) moveTabPill(current);
+    if (window.innerWidth >= 900) closeDrawer();
+  });
+
+  /* ------------------------------------------------------------------
+     Modulo di contatto
+  ------------------------------------------------------------------ */
+  const form = document.getElementById("contact-form");
+
+  if (form) {
+    const feedback = document.getElementById("form-feedback");
+
+    const fields = {
+      name: {
+        el: document.getElementById("name"),
+        ok: (el) => el.value.trim().length >= 2,
+        msg: "Inserisci il tuo nome.",
+      },
+      email: {
+        el: document.getElementById("email"),
+        ok: (el) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()),
+        msg: "Inserisci un indirizzo email valido.",
+      },
+      message: {
+        el: document.getElementById("message"),
+        ok: (el) => el.value.trim().length >= 10,
+        msg: "Scrivi almeno 10 caratteri, così posso aiutarti meglio.",
+      },
+      privacy: {
+        el: document.getElementById("privacy"),
+        ok: (el) => el.checked,
+        msg: "È necessario accettare il trattamento dei dati.",
+      },
+    };
+
+    const validate = (key) => {
+      const { el, ok, msg } = fields[key];
+      const errEl = form.querySelector(`[data-error-for="${key}"]`);
+      const valid = ok(el);
+
+      el.classList.toggle("input-error", !valid);
+      el.setAttribute("aria-invalid", String(!valid));
+      if (errEl) errEl.textContent = valid ? "" : msg;
+      return valid;
+    };
+
+    Object.keys(fields).forEach((key) => {
+      const { el } = fields[key];
+      el.addEventListener(el.type === "checkbox" ? "change" : "blur", () => validate(key));
+      el.addEventListener("input", () => {
+        if (el.classList.contains("input-error")) validate(key);
+      });
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const allValid = Object.keys(fields).map(validate).every(Boolean);
+
+      feedback.hidden = false;
+
+      if (!allValid) {
+        feedback.className = "form-feedback ko";
+        feedback.textContent = "Controlla i campi evidenziati e riprova.";
+        form.querySelector(".input-error")?.focus();
+        return;
+      }
+
+      // Nessun backend collegato: qui va inserito l'invio reale (Formspree, EmailJS, API).
+      feedback.className = "form-feedback ok";
+      feedback.textContent = "Grazie! La tua richiesta è stata registrata. Ti ricontatterò al più presto.";
+      form.reset();
+      setTimeout(() => { feedback.hidden = true; }, 8000);
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Avvio
+  ------------------------------------------------------------------ */
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
-});
+
+  if (!location.hash) location.replace("#home");
+  route(true);
+  window.addEventListener("load", () => moveTabPill(current));
+})();
