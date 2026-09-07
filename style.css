@@ -372,6 +372,15 @@ a { text-decoration: none; color: inherit; }
 .hero-frame img { width: 100%; aspect-ratio: 4/5; object-fit: cover; transition: transform 1.2s var(--ease); }
 .hero-frame:hover img { transform: scale(1.06); }
 
+/* La foto ritratto è quadrata: niente crop 4/5, altrimenti si tagliano le braccia. */
+.hero-frame--portrait img,
+.frame-offset--portrait img {
+  aspect-ratio: 1 / 1;
+  object-position: center top;
+}
+.hero-frame--portrait { box-shadow: 0 34px 60px -30px rgba(93, 164, 137, .75); }
+.frame-offset--portrait { box-shadow: 0 30px 55px -30px rgba(93, 164, 137, .7); }
+
 .hero-frame-sm {
   position: absolute; right: -.5rem; bottom: -1.5rem;
   width: 42%; margin: 0; overflow: hidden;
