@@ -45,6 +45,20 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 ::selection { background: var(--acc-200); color: var(--brand-900); }
 :focus-visible { outline: 2px solid var(--acc-500); outline-offset: 3px; border-radius: 6px; }
 
+/* iOS: il tocco prolungato su un link apre l'anteprima della destinazione.
+   Sui link interni (#home, #servizi…) l'anteprima è il sito stesso, che
+   compare come riquadro bianco sopra la pagina. Va disattivata su tutti gli
+   elementi di navigazione; il testo dei contenuti resta selezionabile. */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+.drawer-link, .tab, .btn, .brand, .icon-btn, .burger, .hub-card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* ============================ TOP BAR ============================ */
 .app-bar {
   position: fixed;
@@ -661,8 +675,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: var(--brand-50); color: var(--brand-600);
 }
 .info-ico svg { width: 1.25rem; height: 1.25rem; display: block; }
-.info-row b { display: block; font-size: .92rem; color: var(--brand-800); }
-.info-row span { display: block; font-size: .85rem; color: var(--brand-500); }
+
+/* Le regole di testo vanno scopate sul wrapper: .info-row span colpiva anche
+   lo <span> dell'icona e, con specificità maggiore, ne sovrascriveva il
+   display:grid — motivo per cui place-items:center non centrava nulla. */
+.info-text b { display: block; font-size: .92rem; color: var(--brand-800); }
+.info-text span { display: block; font-size: .85rem; color: var(--brand-500); }
 .link-accent { display: inline-block; margin-top: .3rem; font-size: .82rem; font-weight: 600; color: var(--acc-600); }
 .link-accent:hover { color: var(--acc-700); }
 
