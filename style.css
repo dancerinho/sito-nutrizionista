@@ -31,13 +31,13 @@ html, body {
 }
 
 body {
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-family: "Times New Roman", Times, serif;
   background: var(--cream-50);
   color: var(--brand-900);
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 { font-family: "Fraunces", Georgia, serif; font-weight: 600; }
+h1, h2, h3, h4 { font-family: "Times New Roman", Times, serif; font-weight: 600; }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
@@ -117,7 +117,7 @@ a, button { touch-action: manipulation; }
 
 /* Testo del marchio: nome sopra, qualifica sotto (nessun simbolo) */
 .brand { display: flex; align-items: center; margin-right: auto; }
-.brand-name { display: block; font-family: "Fraunces", serif; font-weight: 600; font-size: 1.05rem; color: var(--brand-800); }
+.brand-name { display: block; font-family: "Times New Roman", Times, serif; font-weight: 600; font-size: 1.05rem; color: var(--brand-800); }
 .brand-role { display: block; font-size: .72rem; letter-spacing: .04em; color: var(--brand-500); }
 @media (max-width: 420px) {
   .brand-name { font-size: .95rem; }
@@ -227,7 +227,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   display: flex; align-items: baseline; gap: 1rem;
   padding: .9rem 0;
   border-bottom: 1px solid rgba(255,255,255,.12);
-  font-family: "Fraunces", serif; font-size: 2rem; font-weight: 600;
+  font-family: "Times New Roman", Times, serif; font-size: 2rem; font-weight: 600;
   color: var(--cream-50);
   opacity: 0; transform: translateY(28px);
 }
@@ -240,7 +240,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
 
 .drawer-link.is-active { color: var(--acc-300); }
 .drawer-idx {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: .72rem; font-weight: 700; letter-spacing: .16em;
   color: var(--acc-300);
 }
@@ -432,7 +432,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   margin: 2.5rem 0 0; padding-top: 1.5rem;
   border-top: 1px solid var(--brand-100);
 }
-.cred-row dt { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 600; color: var(--brand-800); }
+.cred-row dt { font-family: "Times New Roman", Times, serif; font-size: 1.3rem; font-weight: 600; color: var(--brand-800); }
 .cred-row dd { margin: .25rem 0 0; font-size: .76rem; line-height: 1.4; color: var(--brand-500); }
 
 /* La foto è un quadrato ad alta risoluzione: a piena larghezza di colonna
@@ -498,7 +498,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
 .hero-caption { padding: .85rem .4rem .75rem; text-align: center; }
 .hero-caption-name {
   display: block;
-  font-family: "Fraunces", serif; font-size: 1rem; font-weight: 600;
+  font-family: "Times New Roman", Times, serif; font-size: 1rem; font-weight: 600;
   color: var(--brand-800);
 }
 .hero-caption-role {
@@ -536,7 +536,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   border-radius: 0 1.25rem 1.25rem 0;
   background: linear-gradient(135deg, #fff, var(--brand-50));
 }
-.pull-quote p { margin: 0; font-family: "Fraunces", serif; font-size: 1.25rem; line-height: 1.55; color: var(--brand-800); }
+.pull-quote p { margin: 0; font-family: "Times New Roman", Times, serif; font-size: 1.25rem; line-height: 1.55; color: var(--brand-800); }
 .pull-quote em { font-style: italic; color: var(--acc-600); }
 .pull-quote cite { display: block; margin-top: .9rem; font-size: .82rem; font-style: normal; color: var(--brand-500); }
 
@@ -548,7 +548,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
 }
 .edu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .edu-kicker { display: block; font-size: .66rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--acc-600); }
-.edu-card b { display: block; margin-top: .4rem; font-family: "Fraunces", serif; font-size: 1.05rem; color: var(--brand-800); }
+.edu-card b { display: block; margin-top: .4rem; font-family: "Times New Roman", Times, serif; font-size: 1.05rem; color: var(--brand-800); }
 .edu-card > span:last-child { display: block; margin-top: .3rem; font-size: .82rem; line-height: 1.5; color: var(--brand-500); }
 .edu-card--accent { background: var(--acc-50); border-color: var(--acc-100); }
 .edu-card--accent b { color: var(--acc-700); }
@@ -572,7 +572,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
 }
 .step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.step-n { font-family: "Fraunces", serif; font-size: 2.1rem; font-weight: 600; color: var(--brand-200); transition: color .35s; }
+.step-n { font-family: "Times New Roman", Times, serif; font-size: 2.1rem; font-weight: 600; color: var(--brand-200); transition: color .35s; }
 .step:hover .step-n { color: var(--acc-300); }
 .step b { display: block; margin-top: .4rem; font-size: 1.05rem; color: var(--brand-900); }
 .step p { margin: .55rem 0 0; font-size: .88rem; line-height: 1.65; color: rgba(36,86,70,.8); }
@@ -610,7 +610,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   display: grid; place-items: center;
   width: 2.25rem; height: 2.25rem; border-radius: .75rem;
   background: var(--brand-100); color: var(--brand-700);
-  font-family: "Fraunces", serif; font-size: .9rem; font-weight: 600;
+  font-family: "Times New Roman", Times, serif; font-size: .9rem; font-weight: 600;
 }
 .cat-head h3 { margin: 0; font-size: 1.4rem; color: var(--brand-900); }
 .cat-intro { margin: -.75rem 0 1.5rem; font-size: .95rem; color: rgba(36,86,70,.8); }
@@ -721,11 +721,11 @@ body.drawer-open .burger span { background: var(--cream-50); }
   white-space: nowrap;
 }
 .price {
-  font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 600;
+  font-family: "Times New Roman", Times, serif; font-size: 1.5rem; font-weight: 600;
   color: var(--brand-800); white-space: nowrap;
 }
 .price small {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: .72rem; font-weight: 500; color: var(--brand-400);
 }
 
@@ -760,7 +760,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   width: 2.5rem; height: 2.5rem; border-radius: 999px;
   background: var(--acc-400); color: #4a2415; font-size: 1.15rem;
 }
-.verify-text b { display: block; font-family: "Fraunces", serif; font-size: 1rem; color: var(--cream-50); }
+.verify-text b { display: block; font-family: "Times New Roman", Times, serif; font-size: 1rem; color: var(--cream-50); }
 .verify-text span { display: block; font-size: .8rem; color: rgba(220,238,229,.75); }
 
 .quotes { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
@@ -786,7 +786,7 @@ body.drawer-open .burger span { background: var(--cream-50); }
   color: rgba(253,248,240,.92);
 }
 .quote blockquote::before {
-  content: "“"; font-family: "Fraunces", serif; font-size: 1.6rem; line-height: 0;
+  content: "“"; font-family: "Times New Roman", Times, serif; font-size: 1.6rem; line-height: 0;
   color: var(--acc-300); margin-right: .15rem; vertical-align: -.3em;
 }
 .quote figcaption {
