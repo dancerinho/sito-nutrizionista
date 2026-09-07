@@ -122,7 +122,34 @@ modifiche.
 
 ---
 
-## 3. Sviluppo in locale
+## 3. Cache degli asset (importante quando si testa su iPhone/iPad)
+
+GitHub Pages serve CSS e JS con `Cache-Control: max-age=600` e Safari su iOS
+li trattiene spesso più a lungo. Risultato: dopo un push il sito sembra non
+essere cambiato, anche se il file online è già quello nuovo.
+
+Per questo `index.html` referenzia gli asset con un numero di versione:
+
+```html
+<link rel="stylesheet" href="style.css?v=202609072038" />
+<script src="script.js?v=202609072038"></script>
+```
+
+**Dopo ogni modifica a `style.css` o `script.js`, aggiorna il valore `?v=`**
+(basta la data e l'ora nel formato `AAAAMMGGhhmm`): l'URL cambia, il browser
+è costretto a riscaricare il file e la cache non può più mascherare il
+risultato. L'HTML non ha bisogno di versione perché GitHub Pages lo serve
+senza cache aggressiva.
+
+Per verificare cosa è realmente online, senza passare dalla cache:
+
+```bash
+curl -s "https://dancerinho.github.io/sito-nutrizionista/style.css?nocache=1" | grep info-row
+```
+
+---
+
+## 4. Sviluppo in locale
 
 ```bash
 python -m http.server 5500
