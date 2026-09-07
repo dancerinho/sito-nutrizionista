@@ -39,7 +39,7 @@
 <link rel="preconnect" href="https://images.unsplash.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="style.css?v=202609072044" />
+<link rel="stylesheet" href="style.css?v=202609072048" />
 
 <script type="application/ld+json">
 {
@@ -79,7 +79,7 @@
 
 <!-- ======================= TOP BAR ======================= -->
 <header class="app-bar">
-  <a class="brand" href="#home" data-nav="home">
+  <a draggable="false" class="brand" href="#home" data-nav="home">
     <span class="brand-mark">AF</span>
     <span class="brand-text">
       <span class="brand-name">Alessia Fortina</span>
@@ -89,18 +89,18 @@
 
   <nav class="tabs" aria-label="Navigazione principale">
     <span class="tab-pill" aria-hidden="true"></span>
-    <a href="#home"       data-nav="home"       class="tab">Home</a>
-    <a href="#servizi"    data-nav="servizi"    class="tab">Servizi</a>
-    <a href="#recensioni" data-nav="recensioni" class="tab">Recensioni</a>
-    <a href="#contatti"   data-nav="contatti"   class="tab">Contatti</a>
+    <a draggable="false" href="#home"       data-nav="home"       class="tab">Home</a>
+    <a draggable="false" href="#servizi"    data-nav="servizi"    class="tab">Servizi</a>
+    <a draggable="false" href="#recensioni" data-nav="recensioni" class="tab">Recensioni</a>
+    <a draggable="false" href="#contatti"   data-nav="contatti"   class="tab">Contatti</a>
   </nav>
 
   <div class="bar-actions">
-    <a href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener"
+    <a draggable="false" href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener"
        class="icon-btn" aria-label="Instagram di Alessia Fortina">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.15-3.23 1.66-4.77 4.92-4.92C8.42 2.17 8.8 2.16 12 2.16zm0 5.68a4.16 4.16 0 100 8.32 4.16 4.16 0 000-8.32zm0 6.86a2.7 2.7 0 110-5.4 2.7 2.7 0 010 5.4zm4.33-8a.97.97 0 100 1.94.97.97 0 000-1.94z"/></svg>
     </a>
-    <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm hide-mobile">Prenota</a>
+    <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm hide-mobile">Prenota</a>
 
     <button id="burger" class="burger" aria-label="Apri il menu" aria-expanded="false" aria-controls="drawer">
       <span></span><span></span><span></span>
@@ -111,13 +111,13 @@
 <!-- ======================= DRAWER MOBILE ======================= -->
 <div id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione" hidden>
   <nav class="drawer-nav">
-    <a href="#home"       data-nav="home"       class="drawer-link"><span class="drawer-idx">01</span> Home</a>
-    <a href="#servizi"    data-nav="servizi"    class="drawer-link"><span class="drawer-idx">02</span> Servizi</a>
-    <a href="#recensioni" data-nav="recensioni" class="drawer-link"><span class="drawer-idx">03</span> Recensioni</a>
-    <a href="#contatti"   data-nav="contatti"   class="drawer-link"><span class="drawer-idx">04</span> Contatti</a>
+    <a draggable="false" href="#home"       data-nav="home"       class="drawer-link"><span class="drawer-idx">01</span> Home</a>
+    <a draggable="false" href="#servizi"    data-nav="servizi"    class="drawer-link"><span class="drawer-idx">02</span> Servizi</a>
+    <a draggable="false" href="#recensioni" data-nav="recensioni" class="drawer-link"><span class="drawer-idx">03</span> Recensioni</a>
+    <a draggable="false" href="#contatti"   data-nav="contatti"   class="drawer-link"><span class="drawer-idx">04</span> Contatti</a>
   </nav>
   <div class="drawer-foot">
-    <a href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener">@nutrizionista_alessiafortina</a>
+    <a draggable="false" href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener">@nutrizionista_alessiafortina</a>
     <p>Metodo Salute · Via Livigno 26, Milano</p>
   </div>
 </div>
@@ -147,8 +147,8 @@
         </p>
 
         <div class="hero-cta" data-anim="left" data-delay="360">
-          <a href="#servizi" data-nav="servizi" class="btn btn-primary">Scopri i servizi</a>
-          <a href="#contatti" data-nav="contatti" class="btn btn-ghost">Prenota una visita</a>
+          <a draggable="false" href="#servizi" data-nav="servizi" class="btn btn-primary">Scopri i servizi</a>
+          <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-ghost">Prenota una visita</a>
         </div>
 
         <dl class="cred-row" data-anim="left" data-delay="480">
@@ -160,7 +160,7 @@
 
       <div class="hero-visual" data-anim="right" data-delay="120">
         <figure class="hero-frame">
-          <img src="assets/alessia-fortina.jpg"
+          <img draggable="false" src="assets/alessia-fortina.jpg"
                alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" />
         </figure>
         <span class="float-badge">
@@ -262,7 +262,7 @@
         <li>Piani adattati ai tuoi gusti</li>
         <li>Consulenze online da 50&thinsp;€</li>
       </ul>
-      <a href="#servizi" data-nav="servizi" class="btn btn-accent">Esplora i servizi</a>
+      <a draggable="false" href="#servizi" data-nav="servizi" class="btn btn-accent">Esplora i servizi</a>
     </aside>
 
   </div>
@@ -289,7 +289,7 @@
       <div class="card-grid">
         <article class="svc" data-anim="up" data-delay="120">
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Piatto sano e bilanciato" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Piatto sano e bilanciato" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge">Percorsi e visite</span>
@@ -298,14 +298,14 @@
           </div>
           <div class="svc-foot">
             <span class="price">120&thinsp;€ <small>60 min</small></span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
           </div>
         </article>
 
         <article class="svc svc--featured" data-anim="up" data-delay="240">
           <span class="ribbon">Il più richiesto</span>
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Alimentazione sana e bilanciata" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Alimentazione sana e bilanciata" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge badge--accent">Percorsi e visite</span>
@@ -314,13 +314,13 @@
           </div>
           <div class="svc-foot">
             <span class="price">100&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
           </div>
         </article>
 
         <article class="svc" data-anim="up" data-delay="360">
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Alimentazione consapevole" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Alimentazione consapevole" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge">Ovunque tu sia</span>
@@ -329,7 +329,7 @@
           </div>
           <div class="svc-foot">
             <span class="price">50&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
           </div>
         </article>
       </div>
@@ -345,7 +345,7 @@
       <div class="card-grid">
         <article class="svc" data-anim="up" data-delay="120">
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Bowl di verdure e cereali" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Bowl di verdure e cereali" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge">Su misura</span>
@@ -354,13 +354,13 @@
           </div>
           <div class="svc-foot">
             <span class="price">100&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
           </div>
         </article>
 
         <article class="svc" data-anim="up" data-delay="240">
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=600&q=80" alt="Attrezzi per l'allenamento" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=600&q=80" alt="Attrezzi per l'allenamento" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge badge--dark">Sport &amp; performance</span>
@@ -369,13 +369,13 @@
           </div>
           <div class="svc-foot">
             <span class="price">120&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
           </div>
         </article>
 
         <article class="svc" data-anim="up" data-delay="360">
           <div class="svc-media">
-            <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Verdure fresche di stagione" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Verdure fresche di stagione" loading="lazy" />
           </div>
           <div class="svc-body">
             <span class="badge">Scelta etica</span>
@@ -384,7 +384,7 @@
           </div>
           <div class="svc-foot">
             <span class="price">120&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
           </div>
         </article>
       </div>
@@ -415,7 +415,7 @@
           </div>
           <div class="svc-foot">
             <span class="price">80&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
           </div>
         </article>
 
@@ -432,7 +432,7 @@
           </div>
           <div class="svc-foot">
             <span class="price">80&thinsp;€</span>
-            <a href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
           </div>
         </article>
       </div>
@@ -454,7 +454,7 @@
           Le parole di chi <em>ha già iniziato</em>
         </h2>
       </div>
-      <a href="https://www.miodottore.it/profilo/alessia-fortina#profile-reviews" target="_blank" rel="noopener"
+      <a draggable="false" href="https://www.miodottore.it/profilo/alessia-fortina#profile-reviews" target="_blank" rel="noopener"
          class="verify-badge" data-anim="right" data-delay="240">
         <span class="verify-star" aria-hidden="true">★</span>
         <span class="verify-text">
@@ -497,7 +497,7 @@
     </div>
 
     <div class="quotes-cta" data-anim="up" data-delay="240">
-      <a href="#contatti" data-nav="contatti" class="btn btn-accent">Inizia il tuo percorso</a>
+      <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-accent">Inizia il tuo percorso</a>
     </div>
   </div>
 </section>
@@ -571,7 +571,7 @@
             <div class="info-text">
               <b>Metodo Salute</b>
               <span>Via Livigno 26 – 20158 Milano</span>
-              <a href="https://www.google.com/maps/search/?api=1&query=Via+Livigno+26+20158+Milano" target="_blank" rel="noopener" class="link-accent">Apri in Google Maps →</a>
+              <a draggable="false" href="https://www.google.com/maps/search/?api=1&query=Via+Livigno+26+20158+Milano" target="_blank" rel="noopener" class="link-accent">Apri in Google Maps →</a>
             </div>
           </div>
 
@@ -598,8 +598,8 @@
           </div>
 
           <div class="info-links">
-            <a href="https://www.miodottore.it/profilo/alessia-fortina" target="_blank" rel="noopener" class="btn btn-outline">MioDottore</a>
-            <a href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
+            <a draggable="false" href="https://www.miodottore.it/profilo/alessia-fortina" target="_blank" rel="noopener" class="btn btn-outline">MioDottore</a>
+            <a draggable="false" href="https://www.instagram.com/nutrizionista_alessiafortina/" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
           </div>
         </div>
 
@@ -622,6 +622,6 @@
 
 </main>
 
-<script src="script.js?v=202609072044"></script>
+<script src="script.js?v=202609072048"></script>
 </body>
 </html>

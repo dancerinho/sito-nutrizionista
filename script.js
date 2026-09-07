@@ -147,6 +147,7 @@
     drawer.hidden = false;
     void drawer.offsetWidth;
     drawer.classList.add("is-open");
+    document.body.classList.add("drawer-open");
     burger.classList.add("is-open");
     burger.setAttribute("aria-expanded", "true");
     burger.setAttribute("aria-label", "Chiudi il menu");
@@ -155,6 +156,7 @@
   function closeDrawer() {
     if (drawer.hidden) return;
     drawer.classList.remove("is-open");
+    document.body.classList.remove("drawer-open");
     burger.classList.remove("is-open");
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Apri il menu");

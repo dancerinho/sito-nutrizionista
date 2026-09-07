@@ -59,6 +59,16 @@ a, button {
   user-select: none;
 }
 
+/* Il tocco prolungato avvia anche una sessione di drag: iOS solleva uno
+   snapshot dell'elemento su una card bianca e, essendo il drawer
+   semitrasparente, nello snapshot traspare la vista sottostante.
+   touch-callout da solo non lo impedisce, serve bloccare il trascinamento. */
+a, img, .drawer-link, .tab, .btn, .brand, .icon-btn, .hub-card {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+a, button { touch-action: manipulation; }
+
 /* ============================ TOP BAR ============================ */
 .app-bar {
   position: fixed;
@@ -173,6 +183,20 @@ a, button {
 }
 .drawer[hidden] { display: none; }
 .drawer.is-open { opacity: 1; }
+
+/* Con il drawer aperto la barra non deve restare chiara sopra l'overlay
+   scuro: diventa trasparente e i suoi elementi passano al negativo. */
+body.drawer-open .app-bar {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+body.drawer-open .brand-mark { background: var(--acc-400); color: #4a2415; }
+body.drawer-open .brand-name { color: var(--cream-50); }
+body.drawer-open .brand-role { color: rgba(220, 238, 229, .7); }
+body.drawer-open .burger { border-color: rgba(255, 255, 255, .35); }
+body.drawer-open .burger span { background: var(--cream-50); }
 
 .drawer-nav { display: flex; flex-direction: column; gap: .25rem; }
 .drawer-link {
