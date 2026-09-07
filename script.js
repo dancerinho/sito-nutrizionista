@@ -23,17 +23,24 @@
   /* ------------------------------------------------------------------
      Animazioni sfalsate degli elementi interni alla vista
   ------------------------------------------------------------------ */
+  // La transizione va spenta durante il reset: altrimenti gli elementi
+  // interpolano all'indietro per un paio di frame e la successiva entrata
+  // riparte da una posizione intermedia, che è ciò che si legge come scatto.
   function resetAnimations(view) {
-    view.querySelectorAll("[data-anim]").forEach((el) => {
-      el.classList.remove("in");
+    const items = view.querySelectorAll("[data-anim]");
+    items.forEach((el) => {
+      el.style.transition = "none";
       el.style.transitionDelay = "";
+      el.classList.remove("in");
     });
+    void view.offsetWidth;
+    items.forEach((el) => { el.style.transition = ""; });
   }
 
   function playAnimations(view) {
     const items = view.querySelectorAll("[data-anim]");
     items.forEach((el, i) => {
-      const delay = el.dataset.delay !== undefined ? Number(el.dataset.delay) : i * 100;
+      const delay = el.dataset.delay !== undefined ? Number(el.dataset.delay) : i * 120;
       el.style.transitionDelay = `${delay}ms`;
     });
     requestAnimationFrame(() => {

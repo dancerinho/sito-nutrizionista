@@ -12,7 +12,9 @@
   --cream-50:#fffdf9; --cream-100:#fdf8f0; --cream-200:#f7efe1;
 
   --bar-h: 4.5rem;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);          /* transizione tra viste */
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);   /* entrata degli elementi */
+  --dur-enter: .8s;
   --shadow-sm: 0 2px 10px -4px rgba(22,48,42,.18);
   --shadow-md: 0 18px 36px -24px rgba(22,48,42,.45);
   --shadow-lg: 0 30px 55px -28px rgba(22,48,42,.55);
@@ -24,6 +26,7 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  overflow-x: hidden;
   overscroll-behavior: none;
 }
 
@@ -51,14 +54,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   padding-top: env(safe-area-inset-top);
   background: rgba(255, 253, 249, 0.86);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(22, 48, 42, 0.08);
 }
-@media (min-width: 900px) { .app-bar { padding-left: 2rem; padding-right: 2rem; } }
+@media (min-width: 768px) { .app-bar { padding-left: 2rem; padding-right: 2rem; } }
+@media (max-width: 380px) { .app-bar { padding-left: 1rem; padding-right: 1rem; } }
 
 .brand { display: flex; align-items: center; gap: .7rem; margin-right: auto; }
 .brand-mark {
@@ -79,16 +83,20 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-radius: 999px;
   background: rgba(22, 48, 42, 0.05);
 }
-@media (min-width: 860px) { .tabs { display: flex; } }
+/* Le tab compaiono solo da laptop: su iPad portrait resta il drawer,
+   così le voci non collidono con logo e CTA. */
+@media (min-width: 1000px) { .tabs { display: flex; } }
 
 .tab {
   position: relative; z-index: 1;
-  padding: .55rem 1.15rem;
+  padding: .55rem .95rem;
   border-radius: 999px;
-  font-size: .88rem; font-weight: 600;
+  font-size: .85rem; font-weight: 600;
+  white-space: nowrap;
   color: var(--brand-600);
   transition: color .3s var(--ease);
 }
+@media (min-width: 1180px) { .tab { padding: .55rem 1.25rem; font-size: .88rem; } }
 .tab:hover { color: var(--brand-900); }
 .tab.is-active { color: var(--cream-50); }
 
@@ -114,7 +122,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .icon-btn svg { width: 1.15rem; height: 1.15rem; }
 .icon-btn:hover { transform: translateY(-2px); border-color: var(--brand-400); color: var(--brand-800); }
-@media (max-width: 859px) { .icon-btn, .hide-mobile { display: none; } }
+@media (max-width: 767px) { .icon-btn, .hide-mobile { display: none; } }
 
 .burger {
   position: relative;
@@ -124,7 +132,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: transparent;
   cursor: pointer;
 }
-@media (min-width: 860px) { .burger { display: none; } }
+@media (min-width: 1000px) { .burger { display: none; } }
 
 .burger span {
   position: absolute; left: 50%; top: 50%;
@@ -184,6 +192,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   top: calc(var(--bar-h) + env(safe-area-inset-top));
   right: 0; bottom: 0; left: 0;
   overflow: hidden;
+  overflow-x: hidden;
 }
 
 .view {
@@ -215,17 +224,35 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    questo padding aggiunge l'aria che mancava sotto la barra. */
 .view-inner {
   max-width: 1240px; margin: 0 auto;
-  padding: 3rem 1.25rem 4rem;
-  padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  padding: 4rem 1.5rem 5rem;
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
-@media (min-width: 768px) { .view-inner { padding: 4rem 2rem 5rem; } }
+@media (min-width: 768px) { .view-inner { padding: 5rem 2rem 5rem; } }
+@media (max-width: 380px) { .view-inner { padding-left: 1rem; padding-right: 1rem; } }
 
-/* --- Animazioni sfalsate --- */
-[data-anim] { opacity: 0; transition: opacity .8s var(--ease), transform .8s var(--ease); }
-[data-anim="left"]  { transform: translate3d(-38px,0,0); }
-[data-anim="right"] { transform: translate3d(38px,0,0); }
-[data-anim="up"]    { transform: translate3d(0,32px,0); }
-[data-anim].in      { opacity: 1; transform: translate3d(0,0,0); }
+/* --- Animazioni sfalsate ---
+   Escursione ampia (±80px) con curva morbida: l'occhio legge una corsa
+   continua invece del microscatto. will-change e backface-visibility
+   tengono il layer sulla GPU ed evitano lo stuttering di Safari su iPad. */
+[data-anim] {
+  opacity: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: opacity var(--dur-enter) var(--ease-enter),
+              transform var(--dur-enter) var(--ease-enter);
+}
+[data-anim="left"]  { transform: translate3d(-80px, 0, 0); }
+[data-anim="right"] { transform: translate3d(80px, 0, 0); }
+[data-anim="up"]    { transform: translate3d(0, 56px, 0); }
+[data-anim].in      { opacity: 1; transform: translate3d(0, 0, 0); }
+
+/* Su schermi stretti l'escursione laterale piena è eccessiva */
+@media (max-width: 640px) {
+  [data-anim="left"]  { transform: translate3d(-44px, 0, 0); }
+  [data-anim="right"] { transform: translate3d(44px, 0, 0); }
+}
 
 /* ============================ BOTTONI ============================ */
 .btn {
@@ -438,10 +465,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .cat-head h3 { margin: 0; font-size: 1.4rem; color: var(--brand-900); }
 .cat-intro { margin: -.75rem 0 1.5rem; font-size: .95rem; color: rgba(36,86,70,.8); }
 
+/* 1 colonna → 2 su tablet (768px) → 3 solo da laptop (1024px).
+   Su iPad portrait restano 2 card ampie invece di 3 compresse. */
 .card-grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
-@media (min-width: 640px)  { .card-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 640px)  { .card-grid--two { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px)  { .card-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
+@media (min-width: 1024px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px)  { .card-grid--two { grid-template-columns: repeat(2, 1fr); } }
 
 /* Card uniforme: sfondo chiaro, foto solo in alto, altezze identiche */
 .svc {
@@ -527,8 +556,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .verify-text span { display: block; font-size: .8rem; color: rgba(220,238,229,.75); }
 
 .quotes { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
-@media (min-width: 700px)  { .quotes { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1080px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px)  { .quotes { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
+@media (min-width: 1024px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
 
 .quote {
   display: flex; flex-direction: column;
@@ -626,8 +655,24 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .link-accent { display: inline-block; margin-top: .3rem; font-size: .82rem; font-weight: 600; color: var(--acc-600); }
 .link-accent:hover { color: var(--acc-700); }
 
-.info-links { display: flex; gap: .6rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--brand-100); }
-.info-links .btn { flex: 1; }
+/* Pillole allineate su un unico asse e centrate nella card, con altezza
+   identica: prima ereditavano il padding del .btn e cadevano sfalsate. */
+.info-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--brand-100);
+}
+.info-links .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 2.75rem;
+  padding: 0 1rem;
+  line-height: 1;
+}
 
 /* Mappa Google interattiva */
 .map-embed {
