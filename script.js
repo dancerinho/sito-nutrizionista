@@ -177,6 +177,85 @@
   });
 
   /* ------------------------------------------------------------------
+     Mappa: percorso dalla posizione dell'utente allo studio.
+     L'embed gratuito di Google non espone il puntino "la mia posizione",
+     ma accetta saddr/daddr: leggiamo le coordinate dal browser e
+     ricarichiamo la mappa in modalità itinerario. La posizione viene
+     richiesta solo su click esplicito, mai al caricamento.
+  ------------------------------------------------------------------ */
+  const mapFrame = document.getElementById("map-frame");
+  const locateBtn = document.getElementById("locate-btn");
+
+  if (mapFrame && locateBtn) {
+    const locateLabel = document.getElementById("locate-label");
+    const mapStatus = document.getElementById("map-status");
+    const mapExternal = document.getElementById("map-external");
+
+    const STUDIO = "Via Livigno 26, 20158 Milano";
+    const defaultSrc = mapFrame.src;
+    const defaultHref = mapExternal.href;
+    let showingRoute = false;
+
+    const setStatus = (text, tone) => {
+      mapStatus.textContent = text;
+      mapStatus.className = tone ? `map-status is-${tone}` : "map-status";
+      mapStatus.hidden = !text;
+    };
+
+    const resetMap = () => {
+      mapFrame.src = defaultSrc;
+      mapExternal.href = defaultHref;
+      locateLabel.textContent = "Percorso da dove sei";
+      showingRoute = false;
+      setStatus("");
+    };
+
+    const errorMessage = (err) => {
+      if (err.code === err.PERMISSION_DENIED)
+        return "Permesso negato. Puoi consentire l'accesso alla posizione dalle impostazioni del browser.";
+      if (err.code === err.POSITION_UNAVAILABLE)
+        return "Posizione non disponibile in questo momento.";
+      if (err.code === err.TIMEOUT)
+        return "La richiesta è scaduta. Riprova.";
+      return "Non è stato possibile recuperare la posizione.";
+    };
+
+    locateBtn.addEventListener("click", () => {
+      if (showingRoute) { resetMap(); return; }
+
+      if (!navigator.geolocation) {
+        setStatus("Il tuo browser non supporta la geolocalizzazione.", "error");
+        return;
+      }
+
+      locateBtn.disabled = true;
+      setStatus("Recupero la tua posizione…");
+
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          const from = `${coords.latitude.toFixed(6)},${coords.longitude.toFixed(6)}`;
+          mapFrame.src =
+            `https://maps.google.com/maps?saddr=${encodeURIComponent(from)}` +
+            `&daddr=${encodeURIComponent(STUDIO)}&output=embed`;
+          mapExternal.href =
+            `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}` +
+            `&destination=${encodeURIComponent(STUDIO)}`;
+
+          locateLabel.textContent = "Torna alla mappa dello studio";
+          showingRoute = true;
+          locateBtn.disabled = false;
+          setStatus("Percorso calcolato dalla tua posizione attuale.", "ok");
+        },
+        (err) => {
+          locateBtn.disabled = false;
+          setStatus(errorMessage(err), "error");
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+      );
+    });
+  }
+
+  /* ------------------------------------------------------------------
      Modulo di contatto
   ------------------------------------------------------------------ */
   const form = document.getElementById("contact-form");
