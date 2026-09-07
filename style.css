@@ -70,16 +70,43 @@ a, img, .drawer-link, .tab, .btn, .brand, .icon-btn, .hub-card {
 a, button { touch-action: manipulation; }
 
 /* ============================ TOP BAR ============================ */
-.app-bar {
+.app-header {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 60;
+}
+
+/* Striscia informativa sopra il menu */
+.topline {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: nowrap; gap: 1.5rem;
+  padding: .5rem 1.5rem;
+  padding-top: calc(.5rem + env(safe-area-inset-top));
+  background: var(--brand-800);
+  color: rgba(220, 238, 229, .82);
+  font-size: .76rem; font-weight: 500;
+  transition: background-color .3s var(--ease);
+}
+@media (min-width: 768px) { .topline { padding-left: 2rem; padding-right: 2rem; } }
+
+.topline-item { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.topline-item svg { width: .95rem; height: .95rem; flex-shrink: 0; opacity: .8; }
+.topline-star { color: var(--acc-300); font-size: .9rem; line-height: 1; }
+.topline-link { transition: color .25s; }
+.topline-link:hover { color: var(--cream-50); }
+
+@media (max-width: 720px) { .topline-item--wide { display: none; } }
+@media (max-width: 480px) {
+  .topline { gap: .9rem; font-size: .7rem; padding-left: 1rem; padding-right: 1rem; }
+  .topline-item svg { width: .85rem; height: .85rem; }
+}
+
+.app-bar {
   min-height: var(--bar-h);
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0 1.5rem;
-  padding-top: env(safe-area-inset-top);
   background: rgba(255, 253, 249, 0.86);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -89,13 +116,18 @@ a, button { touch-action: manipulation; }
 @media (max-width: 380px) { .app-bar { padding-left: 1rem; padding-right: 1rem; } }
 
 .brand { display: flex; align-items: center; gap: .7rem; margin-right: auto; }
+/* Marchio a foglia al posto del monogramma "AF" */
 .brand-mark {
   display: grid; place-items: center;
-  width: 2.5rem; height: 2.5rem;
-  border-radius: .85rem;
-  background: var(--brand-700); color: var(--cream-50);
-  font-family: "Fraunces", serif; font-weight: 600;
+  width: 2.6rem; height: 2.6rem;
+  border-radius: 999px;
+  background: linear-gradient(140deg, var(--brand-500), var(--brand-800));
+  color: var(--cream-50);
+  box-shadow: 0 8px 18px -10px rgba(36, 86, 70, .9);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
 }
+.brand-mark svg { width: 1.5rem; height: 1.5rem; display: block; }
+.brand:hover .brand-mark { transform: rotate(-8deg) scale(1.05); box-shadow: 0 12px 22px -10px rgba(36, 86, 70, 1); }
 .brand-name { display: block; font-family: "Fraunces", serif; font-weight: 600; font-size: .98rem; color: var(--brand-800); }
 .brand-role { display: block; font-size: .7rem; letter-spacing: .04em; color: var(--brand-500); }
 @media (max-width: 420px) { .brand-text { display: none; } }
@@ -174,7 +206,7 @@ a, button { touch-action: manipulation; }
 .drawer {
   position: fixed; inset: 0; z-index: 55;
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--bar-h) + 2rem) 1.75rem 2rem;
+  padding: calc(var(--header-h, 6.5rem) + 1.5rem) 1.75rem 2rem;
   background: rgba(22, 48, 42, 0.75);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
@@ -192,7 +224,8 @@ body.drawer-open .app-bar {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-body.drawer-open .brand-mark { background: var(--acc-400); color: #4a2415; }
+body.drawer-open .topline { background: transparent; color: rgba(220, 238, 229, .6); }
+body.drawer-open .brand-mark { background: linear-gradient(140deg, var(--acc-300), var(--acc-500)); color: #4a2415; }
 body.drawer-open .brand-name { color: var(--cream-50); }
 body.drawer-open .brand-role { color: rgba(220, 238, 229, .7); }
 body.drawer-open .burger { border-color: rgba(255, 255, 255, .35); }
@@ -225,9 +258,11 @@ body.drawer-open .burger span { background: var(--cream-50); }
 .drawer-foot p { margin: .4rem 0 0; }
 
 /* ============================ VISTE ============================ */
+/* --header-h è misurata da script.js: la testata ha due livelli e la
+   striscia cambia altezza col wrapping, un calcolo fisso si sfaserebbe. */
 #app {
   position: fixed;
-  top: calc(var(--bar-h) + env(safe-area-inset-top));
+  top: var(--header-h, 6.5rem);
   right: 0; bottom: 0; left: 0;
   overflow: hidden;
   overflow-x: hidden;
@@ -409,14 +444,46 @@ body.drawer-open .burger span { background: var(--cream-50); }
 .cred-row dt { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 600; color: var(--brand-800); }
 .cred-row dd { margin: .25rem 0 0; font-size: .76rem; line-height: 1.4; color: var(--brand-500); }
 
-.hero-visual { position: relative; }
-.hero-frame {
-  margin: 0; overflow: hidden;
-  border-radius: 2rem 2rem 2rem 5rem;
-  box-shadow: 0 34px 60px -30px rgba(93,164,137,.75);
+/* La foto è un quadrato ad alta risoluzione: a piena larghezza di colonna
+   dominava la schermata, quindi è racchiusa in una card con larghezza
+   massima e didascalia. */
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 22rem;
+  margin-inline: auto;
 }
-.hero-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; object-position: center top; transition: transform 1.2s var(--ease); }
-.hero-frame:hover img { transform: scale(1.05); }
+@media (min-width: 960px) { .hero-visual { max-width: 25rem; margin-inline: 0 auto; } }
+
+.hero-card {
+  margin: 0;
+  padding: .7rem .7rem .2rem;
+  border: 1px solid var(--brand-100);
+  border-radius: 1.6rem;
+  background: #fff;
+  box-shadow: 0 28px 55px -28px rgba(22, 48, 42, .45);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.hero-card:hover { transform: translateY(-5px); box-shadow: 0 36px 65px -28px rgba(22, 48, 42, .5); }
+
+.hero-photo { overflow: hidden; border-radius: 1.15rem; background: var(--brand-50); }
+.hero-photo img {
+  width: 100%; aspect-ratio: 1 / 1;
+  object-fit: cover; object-position: center top;
+  transition: transform 1.2s var(--ease);
+}
+.hero-card:hover .hero-photo img { transform: scale(1.04); }
+
+.hero-caption { padding: .85rem .4rem .75rem; text-align: center; }
+.hero-caption-name {
+  display: block;
+  font-family: "Fraunces", serif; font-size: 1rem; font-weight: 600;
+  color: var(--brand-800);
+}
+.hero-caption-role {
+  display: block; margin-top: .15rem;
+  font-size: .75rem; color: var(--brand-500);
+}
 
 .float-badge {
   position: absolute; left: -1rem; top: 10%;

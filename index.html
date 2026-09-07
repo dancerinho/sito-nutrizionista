@@ -39,7 +39,7 @@
 <link rel="preconnect" href="https://images.unsplash.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="style.css?v=202609072112" />
+<link rel="stylesheet" href="style.css?v=202609072120" />
 
 <script type="application/ld+json">
 {
@@ -77,10 +77,39 @@
 
 <body>
 
-<!-- ======================= TOP BAR ======================= -->
-<header class="app-bar">
+<!-- ======================= TESTATA ======================= -->
+<header class="app-header" id="app-header">
+
+  <!-- Striscia informativa sopra il menu -->
+  <div class="topline">
+    <span class="topline-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
+      </svg>
+      Via Livigno 26, Milano
+    </span>
+    <span class="topline-item topline-item--wide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 10l4.5-2.2a1 1 0 011.5.9v6.6a1 1 0 01-1.5.9L15 14" />
+        <rect x="3" y="6" width="12" height="12" rx="2" />
+      </svg>
+      Consulenze online in tutta Italia
+    </span>
+    <a draggable="false" class="topline-item topline-link"
+       href="https://www.miodottore.it/profilo/alessia-fortina#profile-reviews" target="_blank" rel="noopener">
+      <span class="topline-star" aria-hidden="true">★</span>
+      14 recensioni verificate
+    </a>
+  </div>
+
+  <div class="app-bar">
   <a draggable="false" class="brand" href="#home" data-nav="home">
-    <span class="brand-mark">AF</span>
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6.5 17.5A10 10 0 0 1 16.5 7.5A10 10 0 0 1 6.5 17.5Z" fill="currentColor" />
+        <path d="M5.5 18.5L16 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".55" />
+      </svg>
+    </span>
     <span class="brand-text">
       <span class="brand-name">Alessia Fortina</span>
       <span class="brand-role">Nutrizionista · Milano</span>
@@ -105,6 +134,7 @@
     <button id="burger" class="burger" aria-label="Apri il menu" aria-expanded="false" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
+  </div>
   </div>
 </header>
 
@@ -159,9 +189,15 @@
       </div>
 
       <div class="hero-visual" data-anim="right" data-delay="120">
-        <figure class="hero-frame">
-          <img draggable="false" src="assets/alessia-fortina.jpg"
-               alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" />
+        <figure class="hero-card">
+          <div class="hero-photo">
+            <img draggable="false" src="assets/alessia-fortina.jpg"
+                 alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" />
+          </div>
+          <figcaption class="hero-caption">
+            <span class="hero-caption-name">Dott.ssa Alessia Fortina</span>
+            <span class="hero-caption-role">Nutrizionista · Nutrizione sportiva</span>
+          </figcaption>
         </figure>
         <span class="float-badge">
           <b>Ascolto prima di tutto</b>
@@ -728,6 +764,6 @@
   </svg>
 </a>
 
-<script src="script.js?v=202609072112"></script>
+<script src="script.js?v=202609072120"></script>
 </body>
 </html>

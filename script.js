@@ -69,6 +69,27 @@
   }
 
   /* ------------------------------------------------------------------
+     Altezza della testata
+     La testata ha due livelli e la striscia superiore cambia altezza col
+     wrapping e con la safe area: misurarla evita che i contenuti finiscano
+     sotto la barra fissa.
+  ------------------------------------------------------------------ */
+  const appHeader = document.getElementById("app-header");
+
+  function syncHeaderHeight() {
+    if (!appHeader) return;
+    document.documentElement.style.setProperty(
+      "--header-h", `${appHeader.offsetHeight}px`
+    );
+  }
+
+  syncHeaderHeight();
+  window.addEventListener("resize", syncHeaderHeight);
+  window.addEventListener("orientationchange", syncHeaderHeight);
+  // I webfont cambiano l'altezza del testo nella striscia una volta caricati.
+  if (document.fonts?.ready) document.fonts.ready.then(syncHeaderHeight);
+
+  /* ------------------------------------------------------------------
      Preselezione del servizio dalle card
      La CTA di ogni card porta ai contatti e imposta il menu a tendina.
      Il valore va applicato quando la vista è già attiva, altrimenti lo
