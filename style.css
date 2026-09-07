@@ -986,6 +986,123 @@ body:not([data-view]) .fab-whatsapp {
   .fab-whatsapp::before { animation: none; }
 }
 
+/* =========================================================
+   SMARTPHONE
+   Il layout è già mobile-first: qui si correggono solo le
+   proporzioni che a schermo stretto risultavano sbagliate —
+   titoli troppo grandi, foto schiacciate, padding che mangia
+   la larghezza utile, aree di tocco sotto i 44px.
+   ========================================================= */
+
+/* Parole lunghe (indirizzi, email) non devono sfondare la colonna */
+body { overflow-wrap: break-word; }
+
+/* Il break forzato nei titoli è tarato su riga larga: sotto i 640px
+   spezza la frase nel punto sbagliato e lascia una riga orfana. */
+@media (max-width: 640px) { .br-lg { display: none; } }
+
+@media (max-width: 767px) {
+
+  /* --- Striscia informativa --- */
+  /* Le due voci affiancate sforavano sotto i 360px: mandarle a capo
+     è preferibile al testo tagliato. */
+  .topline { flex-wrap: wrap; gap: .3rem .9rem; }
+
+  /* --- Respiro verticale --- */
+  .view-inner { padding-top: 2.5rem; }
+  .view-head { margin-bottom: 2.25rem; }
+  .block { margin-top: 3.5rem; padding-top: 2.25rem; }
+  .block-head { margin-bottom: 1.75rem; }
+
+  /* --- Tipografia --- */
+  /* Le clamp del desktop hanno un minimo troppo alto per 320-430px:
+     a 375px il titolo hero restava a 36.8px e andava a tre righe. */
+  .hero-title { font-size: clamp(1.85rem, 8.5vw, 2.6rem); }
+  .view-title, .block-title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+  .hero-sub, .view-sub, .lede { font-size: 1rem; }
+  .pull-quote p { font-size: 1.08rem; }
+
+  /* --- Hero --- */
+  .hero-grid { gap: 2rem; }
+  .hero-visual { max-width: 22rem; }
+  .hero-cta { gap: .6rem; }
+  .hero-cta .btn { flex: 1 1 12rem; }
+
+  /* Tre colonne su 320px comprimevano "San Raffaele" in colonne da 90px:
+     due colonne larghe, la terza voce a piena riga. */
+  .cred-row { grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
+  .cred-row dt { font-size: 1.15rem; }
+  .cred-row > div:last-child { grid-column: 1 / -1; }
+
+  /* --- Card servizi --- */
+  /* A card piena larghezza l'altezza fissa di 160px riduceva la foto a una
+     striscia 2:1. Con aspect-ratio la proporzione resta costante ovunque. */
+  .svc-media img { height: auto; aspect-ratio: 16 / 10; }
+  .svc-body { padding: 1.15rem 1.15rem .6rem; }
+  .svc-body h4 { font-size: 1.08rem; }
+  .svc-foot { padding: .85rem 1.15rem 1.15rem; }
+
+  /* --- Padding dei blocchi larghi --- */
+  .pull-quote { padding: 1.25rem; }
+  .banner { margin-top: 3rem; padding: 1.5rem; gap: 1.25rem; border-radius: 1.35rem; }
+  .banner .btn { width: 100%; }
+  .quote { padding: 1.25rem; }
+  .verify-badge { width: 100%; }
+  .tax-note { padding: .9rem 1rem; gap: .7rem; }
+  .contact-form-wrap { padding: 1.25rem; border-radius: 1.25rem; }
+  .info-card { padding: 1.25rem; border-radius: 1.25rem; }
+
+  /* --- Form --- */
+  /* Sotto i 16px iOS ingrandisce la pagina al focus del campo e non torna
+     più alla scala iniziale: 16px esatti disattivano lo zoom automatico. */
+  .field input, .field select, .field textarea { font-size: 16px; padding: .8rem .9rem; }
+  .check input { width: 1.15rem; height: 1.15rem; }
+
+  /* --- Aree di tocco: minimo 44px --- */
+  .btn { padding: .95rem 1.4rem; min-height: 2.75rem; }
+  .btn-sm { padding: .8rem 1.15rem; min-height: 2.75rem; }
+  .btn-outline { padding: .8rem 1.1rem; min-height: 2.75rem; }
+  .map-actions .btn { height: auto; min-height: 2.75rem; }
+  .burger { width: 2.9rem; height: 2.9rem; }
+  .link-accent { padding: .35rem 0; }
+
+  /* Le due pillole restano affiancate finché ci stanno, poi vanno a capo
+     invece di comprimere il testo (che è in nowrap). */
+  .info-links { flex-wrap: wrap; }
+  .info-links .btn { flex: 1 1 8rem; }
+
+  /* --- Drawer --- */
+  .drawer { overflow-y: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+  .drawer-link { font-size: 1.75rem; padding: .8rem 0; }
+}
+
+/* Schermo basso (telefono in orizzontale, o verticale molto piccolo):
+   il menu a tutto schermo non entrava e le voci venivano tagliate. */
+@media (max-height: 560px) {
+  .drawer { justify-content: flex-start; }
+  .drawer-link { font-size: 1.4rem; padding: .55rem 0; }
+  .drawer-foot { margin-top: 1.5rem; }
+}
+
+/* Telefono in orizzontale: testata su due livelli più padding lasciavano
+   poche centinaia di pixel al contenuto. */
+@media (max-height: 480px) and (orientation: landscape) {
+  :root { --bar-h: 3.5rem; }
+  .topline { display: none; }
+  .view-inner { padding-top: 2rem; padding-bottom: calc(3rem + env(safe-area-inset-bottom)); }
+  .hero-photo img { aspect-ratio: 16 / 10; }
+  .hero-visual { max-width: 18rem; }
+  .map-embed { height: 12rem; }
+}
+
+/* Sotto i 400px anche la striscia ridotta era al limite */
+@media (max-width: 400px) {
+  .topline { font-size: .68rem; }
+  .topline-item svg { width: .8rem; height: .8rem; }
+  .cat-head h3 { font-size: 1.2rem; }
+  .price { font-size: 1.35rem; }
+}
+
 /* ============================ SCROLLBAR ============================ */
 .view::-webkit-scrollbar { width: 10px; }
 .view::-webkit-scrollbar-track { background: transparent; }
