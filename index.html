@@ -39,7 +39,7 @@
 <link rel="preconnect" href="https://images.unsplash.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="style.css?v=202609072054" />
+<link rel="stylesheet" href="style.css?v=202609072103" />
 
 <script type="application/ld+json">
 {
@@ -277,6 +277,20 @@
       <p class="view-sub" data-anim="left" data-delay="240">
         In studio a Milano o comodamente online. Ogni prestazione copre una fase diversa del percorso.
       </p>
+
+      <aside class="tax-note" data-anim="up" data-delay="360">
+        <span class="tax-note-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4" />
+            <path d="M12 3l7.5 3v5.5c0 4.4-3 8.3-7.5 9.5-4.5-1.2-7.5-5.1-7.5-9.5V6L12 3z" />
+          </svg>
+        </span>
+        <p>
+          <strong>Spesa sanitaria detraibile.</strong> Tutte le prestazioni e le visite nutrizionali sono
+          esenti IVA (art. 10 DPR 633/72) e detraibili al 19% tramite Modello 730 / Redditi PF, senza
+          obbligo di prescrizione medica e con pagamento tracciato.
+        </p>
+      </aside>
     </header>
 
     <!-- CATEGORIA 1 -->
@@ -297,8 +311,13 @@
             <p>Anamnesi completa, abitudini, obiettivi e valutazione della composizione corporea. Si esce con una direzione chiara e condivisa.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">120&thinsp;€ <small>60 min</small></span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <div class="svc-price">
+              <span class="price">120&thinsp;€ <small>60 min</small></span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="prima-visita"
+               class="btn btn-primary btn-sm svc-cta">Prenota questo percorso</a>
           </div>
         </article>
 
@@ -313,8 +332,13 @@
             <p>Rivediamo i dati, ascoltiamo cosa ha funzionato e adattiamo il piano. È qui che il programma diventa davvero tuo.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">100&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <div class="svc-price">
+              <span class="price">100&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="controllo"
+               class="btn btn-primary btn-sm svc-cta">Prenota questo percorso</a>
           </div>
         </article>
 
@@ -328,8 +352,13 @@
             <p>Stesso metodo, in videochiamata. Ideale se viaggi spesso o non sei a Milano.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">50&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <div class="svc-price">
+              <span class="price">50&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="online"
+               class="btn btn-primary btn-sm svc-cta">Prenota questo percorso</a>
           </div>
         </article>
       </div>
@@ -353,8 +382,13 @@
             <p>Il programma costruito sulle tue esigenze, anche in presenza di patologie accertate documentate.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">100&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <div class="svc-price">
+              <span class="price">100&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="piano-personalizzato"
+               class="btn btn-primary btn-sm svc-cta">Richiedi questo percorso</a>
           </div>
         </article>
 
@@ -368,8 +402,13 @@
             <p>Nutrizione calibrata su carichi, timing e obiettivi di performance o composizione corporea.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">120&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <div class="svc-price">
+              <span class="price">120&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="sportivi"
+               class="btn btn-primary btn-sm svc-cta">Richiedi questo percorso</a>
           </div>
         </article>
 
@@ -383,8 +422,13 @@
             <p>Equilibrio di proteine, ferro e B12 senza rinunciare alla tua scelta etica o alimentare.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">120&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Richiedi</a>
+            <div class="svc-price">
+              <span class="price">120&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="vegetariana"
+               class="btn btn-primary btn-sm svc-cta">Richiedi questo percorso</a>
           </div>
         </article>
       </div>
@@ -414,8 +458,13 @@
             <p>Massa magra, massa grassa e distribuzione: la fotografia reale del tuo corpo, non solo il peso.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">80&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <div class="svc-price">
+              <span class="price">80&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="composizione-corporea"
+               class="btn btn-primary btn-sm svc-cta">Prenota questo percorso</a>
           </div>
         </article>
 
@@ -431,8 +480,13 @@
             <p>Analisi dell'idratazione e dei compartimenti corporei: rapida, indolore e non invasiva.</p>
           </div>
           <div class="svc-foot">
-            <span class="price">80&thinsp;€</span>
-            <a draggable="false" href="#contatti" data-nav="contatti" class="btn btn-primary btn-sm">Prenota</a>
+            <div class="svc-price">
+              <span class="price">80&thinsp;€</span>
+              <span class="tax-badge">Detraibile 19%</span>
+            </div>
+            <a draggable="false" href="#contatti" data-nav="contatti"
+               data-service-target="bioimpedenziometria"
+               class="btn btn-primary btn-sm svc-cta">Prenota questo percorso</a>
           </div>
         </article>
       </div>
@@ -530,16 +584,17 @@
           </div>
 
           <div class="field">
-            <label for="service">Di cosa hai bisogno?</label>
-            <select id="service" name="service">
-              <option>Prima visita nutrizionale</option>
-              <option>Visita di controllo</option>
-              <option>Consulenza online</option>
-              <option>Piano nutrizionale personalizzato</option>
-              <option>Dieta per sportivi</option>
-              <option>Dieta vegetariana</option>
-              <option>Valutazioni strumentali</option>
-              <option>Altro / informazioni</option>
+            <label for="servizio">Di cosa hai bisogno?</label>
+            <select id="servizio" name="servizio">
+              <option value="prima-visita">Prima visita nutrizionale</option>
+              <option value="controllo">Visita di controllo</option>
+              <option value="online">Consulenza online</option>
+              <option value="piano-personalizzato">Piano nutrizionale personalizzato</option>
+              <option value="sportivi">Dieta per sportivi</option>
+              <option value="vegetariana">Dieta vegetariana</option>
+              <option value="composizione-corporea">Analisi della composizione corporea</option>
+              <option value="bioimpedenziometria">Bioimpedenziometria</option>
+              <option value="altro">Altro / informazioni</option>
             </select>
           </div>
 
@@ -557,6 +612,12 @@
 
           <button type="submit" class="btn btn-primary btn-block">Invia richiesta</button>
           <p id="form-feedback" class="form-feedback" role="status" hidden></p>
+
+          <p class="fiscal-note">
+            Le prestazioni sono esenti IVA (art. 10 DPR 633/72) e detraibili al 19% in dichiarazione dei
+            redditi. Per usufruire della detrazione il pagamento deve essere tracciato (bancomat, carta o
+            bonifico): riceverai regolare fattura sanitaria.
+          </p>
         </form>
       </div>
 
@@ -632,6 +693,7 @@
 
     <footer class="app-foot" data-anim="up" data-delay="480">
       <p>© <span id="year">2026</span> Dott.ssa Alessia Fortina · P.IVA [da inserire]</p>
+      <p>Prestazioni sanitarie esenti IVA e detraibili al 19% con pagamento tracciato.</p>
       <p>Le recensioni riportate provengono dal profilo pubblico MioDottore.</p>
     </footer>
   </div>
@@ -639,6 +701,6 @@
 
 </main>
 
-<script src="script.js?v=202609072054"></script>
+<script src="script.js?v=202609072103"></script>
 </body>
 </html>

@@ -66,6 +66,40 @@
   }
 
   /* ------------------------------------------------------------------
+     Preselezione del servizio dalle card
+     La CTA di ogni card porta ai contatti e imposta il menu a tendina.
+     Il valore va applicato quando la vista è già attiva, altrimenti lo
+     scroll e l'evidenziazione agirebbero su un elemento ancora nascosto.
+  ------------------------------------------------------------------ */
+  let pendingService = null;
+
+  function applyPendingService() {
+    const slug = pendingService;
+    pendingService = null;
+    if (!slug || current !== "contatti") return;
+
+    const select = document.getElementById("servizio");
+    if (!select) return;
+
+    const match = [...select.options].some((o) => o.value === slug);
+    if (!match) return;
+
+    select.value = slug;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+
+    select.classList.add("is-preselected");
+    setTimeout(() => select.classList.remove("is-preselected"), 1500);
+
+    if (!reduceMotion) {
+      // Attende che l'entrata della card contatti sia quasi conclusa,
+      // così lo scroll non insegue un elemento ancora in movimento.
+      setTimeout(() => {
+        select.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 700);
+    }
+  }
+
+  /* ------------------------------------------------------------------
      Transizione tra viste — direzionale in base all'ordine del menu
   ------------------------------------------------------------------ */
   function show(name, { instant = false } = {}) {
@@ -88,6 +122,7 @@
       syncNavState(name);
       playAnimations(next);
       animating = false;
+      applyPendingService();
     };
 
     if (!prev || instant) {
@@ -131,10 +166,15 @@
 
     e.preventDefault();
     const name = link.dataset.nav;
+    pendingService = link.dataset.serviceTarget || null;
 
     if (name === current) {
       closeDrawer();
-      views.get(name)?.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      if (pendingService) {
+        applyPendingService();
+      } else {
+        views.get(name)?.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      }
       return;
     }
     location.hash = name;
