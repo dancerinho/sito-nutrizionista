@@ -486,6 +486,22 @@ body.drawer-open .burger span { background: var(--cream-50); }
 
   .hero-copy { align-self: center; }
 }
+/* Finché la card non affianca il testo il ritratto deve restare quadrato.
+   La proporzione va imposta al contenitore e non all'immagine: come figlia
+   di una colonna flessibile l'altezza dell'img veniva ricalcolata dal
+   genitore e l'aspect-ratio non reggeva, da cui la foto allungata.
+   align-self e flex:none neutralizzano ogni stiramento ereditato. */
+@media (max-width: 959px) {
+  .hero-visual { display: block; align-self: start; }
+  .hero-card { display: block; }
+  .hero-photo { aspect-ratio: 1 / 1; flex: none; min-height: 0; height: auto; }
+  .hero-photo img {
+    width: 100%; height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover; object-position: center top;
+  }
+}
+
 .hero-card:hover .hero-photo img { transform: scale(1.04); }
 
 .hero-caption { padding: .85rem .4rem .75rem; text-align: center; }
@@ -632,6 +648,52 @@ body.drawer-open .burger span { background: var(--cream-50); }
   box-shadow: var(--shadow-lg);
 }
 .svc--featured { border-color: var(--acc-200); }
+
+/* --- Entrata delle card ---
+   Prima ogni card saliva di 56px, tutte con la stessa corsa: si leggeva
+   come un blocco che scatta. Ora ognuna arriva dal proprio lato della
+   griglia (la direzione la assegna script.js, che sa quante colonne ci
+   sono al momento) con un filo di rotazione e di scala.
+
+   L'entrata è una animation e non una transition perché .svc ha già un
+   transition per l'hover: le due regole si sovrapponevano e il transform
+   entrava in .35s mentre l'opacità ci metteva .8s — il vero motivo dello
+   scatto. Con fill-mode backwards, a corsa finita l'elemento torna allo
+   stile normale (transform: none) e l'hover riprende subito. */
+.svc[data-anim] {
+  opacity: 0;
+  transform: none;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s;
+}
+.svc[data-anim].in {
+  opacity: 1;
+  animation: svcIn 1.05s cubic-bezier(.16, .78, .28, 1) backwards;
+}
+/* transform:none qui sopra è più specifico di .svc:hover e ne annullava
+   il sollevamento: l'hover va riscritto alla stessa profondità. */
+.svc[data-anim]:hover { transform: translateY(-5px); }
+
+@keyframes svcIn {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--svc-x, 0), 30px, 0) rotate(var(--svc-rot, 0deg)) scale(.93);
+  }
+  60% { opacity: 1; }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+.svc[data-anim="left"]  { --svc-x: -84px; --svc-rot: -3.2deg; }
+.svc[data-anim="right"] { --svc-x:  84px; --svc-rot:  3.2deg; }
+.svc[data-anim="up"]    { --svc-x: 0;     --svc-rot: 0deg; }
+
+/* Su schermo stretto la corsa laterale piena esce dalla colonna */
+@media (max-width: 640px) {
+  .svc[data-anim="left"]  { --svc-x: -52px; }
+  .svc[data-anim="right"] { --svc-x:  52px; }
+}
 
 .svc-media { overflow: hidden; background: var(--brand-50); }
 .svc-media img {

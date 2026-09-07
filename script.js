@@ -56,7 +56,10 @@
         const delay = intro && el.dataset.delay !== undefined
           ? Number(el.dataset.delay)
           : Math.min(i * 90, 360);
+        // Le card servizio entrano con una animation, il resto con una
+        // transition: il ritardo va scritto su entrambe le proprietà.
         el.style.transitionDelay = `${delay}ms`;
+        el.style.animationDelay = `${delay}ms`;
         el.classList.add("in");
         self.unobserve(el);
       });
@@ -85,10 +88,39 @@
     items.forEach((el) => {
       el.style.transition = "none";
       el.style.transitionDelay = "";
+      el.style.animationDelay = "";
       el.classList.remove("in");
     });
     void view.offsetWidth;
     items.forEach((el) => { el.style.transition = ""; });
+  }
+
+  /* ------------------------------------------------------------------
+     Direzione d'ingresso delle card servizio
+     La griglia passa da 1 a 2 a 3 colonne secondo la larghezza: la
+     direzione va letta dalla posizione reale nella griglia, non fissata
+     nel markup, altrimenti a ogni breakpoint metà delle card entrerebbe
+     dal lato sbagliato. Le colonne si contano dallo stile calcolato,
+     unica fonte che resta in accordo col CSS.
+  ------------------------------------------------------------------ */
+  function assignCardDirections() {
+    document.querySelectorAll(".card-grid").forEach((grid) => {
+      const cols = getComputedStyle(grid).gridTemplateColumns
+        .split(" ").filter(Boolean).length;
+
+      [...grid.children].forEach((card, i) => {
+        if (!card.hasAttribute("data-anim")) return;
+        const col = i % cols;
+        let dir;
+        // Colonna unica: si alternano, così lo scorrimento non diventa
+        // una fila di card che arrivano tutte dalla stessa parte.
+        if (cols < 3) dir = col % 2 || (cols === 1 && i % 2) ? "right" : "left";
+        else if (col === 0) dir = "left";
+        else if (col === cols - 1) dir = "right";
+        else dir = "up";
+        card.dataset.anim = dir;
+      });
+    });
   }
 
   function playAnimations(view) {
@@ -98,6 +130,8 @@
       items.forEach((el) => el.classList.add("in"));
       return;
     }
+
+    assignCardDirections();
 
     const obs = getObserver(view);
     // Doppio rAF: l'osservatore deve misurare a vista già visibile e con
@@ -296,6 +330,7 @@
 
   window.addEventListener("resize", () => {
     if (current) moveTabPill(current);
+    assignCardDirections();
     if (window.innerWidth >= 900) closeDrawer();
   });
 
