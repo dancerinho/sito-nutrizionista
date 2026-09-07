@@ -450,10 +450,9 @@ body.drawer-open .burger span { background: var(--cream-50); }
 .hero-visual {
   position: relative;
   width: 100%;
-  max-width: 22rem;
+  max-width: 26rem;
   margin-inline: auto;
 }
-@media (min-width: 960px) { .hero-visual { max-width: 25rem; margin-inline: 0 auto; } }
 
 .hero-card {
   margin: 0;
@@ -471,6 +470,21 @@ body.drawer-open .burger span { background: var(--cream-50); }
   width: 100%; aspect-ratio: 1 / 1;
   object-fit: cover; object-position: center top;
   transition: transform 1.2s var(--ease);
+}
+
+/* Da desktop la card riempie tutta la colonna e si allunga fino a pareggiare
+   l'altezza del testo accanto: niente vuoto a destra e niente foto che
+   sfora oltre il blocco di testo. */
+@media (min-width: 960px) {
+  .hero-grid { align-items: stretch; }
+
+  .hero-visual { max-width: none; margin-inline: 0; display: flex; }
+  .hero-card { display: flex; flex-direction: column; width: 100%; }
+
+  .hero-photo { flex: 1 1 auto; min-height: 20rem; }
+  .hero-photo img { height: 100%; aspect-ratio: auto; }
+
+  .hero-copy { align-self: center; }
 }
 .hero-card:hover .hero-photo img { transform: scale(1.04); }
 
