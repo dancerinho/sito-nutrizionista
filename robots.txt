@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dancerinho.github.io/sito-nutrizionista/sitemap.xml

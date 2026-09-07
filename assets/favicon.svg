@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Alessia Fortina Nutrizionista">
+  <rect width="64" height="64" rx="14" fill="#16302a"/>
+  <path d="M17 47A27 27 0 0 1 44 20A27 27 0 0 1 17 47Z" fill="#8fc4ad"/>
+  <path d="M15 49L45 22" stroke="#fdf8f0" stroke-width="3.4" stroke-linecap="round" fill="none" opacity=".85"/>
+</svg>

@@ -115,22 +115,14 @@ a, button { touch-action: manipulation; }
 @media (min-width: 768px) { .app-bar { padding-left: 2rem; padding-right: 2rem; } }
 @media (max-width: 380px) { .app-bar { padding-left: 1rem; padding-right: 1rem; } }
 
-.brand { display: flex; align-items: center; gap: .7rem; margin-right: auto; }
-/* Marchio a foglia al posto del monogramma "AF" */
-.brand-mark {
-  display: grid; place-items: center;
-  width: 2.6rem; height: 2.6rem;
-  border-radius: 999px;
-  background: linear-gradient(140deg, var(--brand-500), var(--brand-800));
-  color: var(--cream-50);
-  box-shadow: 0 8px 18px -10px rgba(36, 86, 70, .9);
-  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+/* Testo del marchio: nome sopra, qualifica sotto (nessun simbolo) */
+.brand { display: flex; align-items: center; margin-right: auto; }
+.brand-name { display: block; font-family: "Fraunces", serif; font-weight: 600; font-size: 1.05rem; color: var(--brand-800); }
+.brand-role { display: block; font-size: .72rem; letter-spacing: .04em; color: var(--brand-500); }
+@media (max-width: 420px) {
+  .brand-name { font-size: .95rem; }
+  .brand-role { font-size: .66rem; }
 }
-.brand-mark svg { width: 1.5rem; height: 1.5rem; display: block; }
-.brand:hover .brand-mark { transform: rotate(-8deg) scale(1.05); box-shadow: 0 12px 22px -10px rgba(36, 86, 70, 1); }
-.brand-name { display: block; font-family: "Fraunces", serif; font-weight: 600; font-size: .98rem; color: var(--brand-800); }
-.brand-role { display: block; font-size: .7rem; letter-spacing: .04em; color: var(--brand-500); }
-@media (max-width: 420px) { .brand-text { display: none; } }
 
 .tabs {
   position: relative;
@@ -225,7 +217,6 @@ body.drawer-open .app-bar {
   -webkit-backdrop-filter: none;
 }
 body.drawer-open .topline { background: transparent; color: rgba(220, 238, 229, .6); }
-body.drawer-open .brand-mark { background: linear-gradient(140deg, var(--acc-300), var(--acc-500)); color: #4a2415; }
 body.drawer-open .brand-name { color: var(--cream-50); }
 body.drawer-open .brand-role { color: rgba(220, 238, 229, .7); }
 body.drawer-open .burger { border-color: rgba(255, 255, 255, .35); }

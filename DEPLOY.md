@@ -98,8 +98,22 @@ In `index.html`, dentro il blocco commentato in `<head>`, sostituire
 `https://dancerinho.github.io/sito-nutrizionista/` con il nuovo dominio in:
 
 - `<link rel="canonical">`
-- `<meta property="og:url">`
-- il campo `"url"` dello schema JSON-LD
+- `<meta property="og:url">` e `<meta property="og:image">`
+- `<meta name="twitter:image">`
+- tutti gli URL del blocco JSON-LD (`@id`, `url`, `image`, `logo`, `hasMap` escluso:
+  quello punta a Google Maps)
+
+Oltre a `index.html` vanno aggiornati anche:
+
+- `sitemap.xml` — il tag `<loc>` (e conviene aggiornare `<lastmod>`)
+- `robots.txt` — la riga `Sitemap:`
+
+Un modo rapido di farlo tutto insieme, dalla cartella del progetto:
+
+```bash
+grep -rl "dancerinho.github.io/sito-nutrizionista" . --exclude-dir=.git \
+  | xargs sed -i "" "s#https://dancerinho.github.io/sito-nutrizionista/#https://www.alessiafortinanutrizionista.it/#g"
+```
 
 Sono gli **unici** URL assoluti che puntano al sito stesso: tutta la
 navigazione interna usa ancore relative (`#servizi`, `#contatti`…) e i file
@@ -123,6 +137,32 @@ modifiche.
 - [ ] Collegare il modulo di contatto a un servizio reale (Formspree, EmailJS, Netlify Forms):
       attualmente `script.js` valida i campi ma **non invia nulla**
 - [ ] Aggiungere l'informativa privacy/cookie (obbligatoria se si raccolgono dati dal form)
+
+## 3. SEO — cosa è già a posto e cosa resta da fare
+
+Già presente nel sito: `title` e `description` ottimizzati, canonical, Open Graph e
+Twitter Card, favicon SVG, `robots.txt`, `sitemap.xml`, dati strutturati JSON-LD
+(`Nutritionist` + `Person` + `WebSite` + `WebPage` + listino prezzi in `OfferCatalog`),
+`alt` descrittivi su tutte le immagini, `width`/`height` per evitare lo spostamento del
+layout, `preload` del ritratto e fallback `<noscript>` che rende leggibili tutte le viste
+anche senza JavaScript.
+
+Da fare dopo la pubblicazione:
+
+- [ ] Verificare la proprietà del sito su **Google Search Console** e inviare `sitemap.xml`
+- [ ] Creare/rivendicare la scheda **Google Business Profile** con lo stesso indirizzo
+      (Via Livigno 26, 20158 Milano): per una professionista locale pesa più del sito stesso
+- [ ] Controllare i dati strutturati con il **Rich Results Test** di Google
+- [ ] Aggiungere `telephone` ed `email` nel JSON-LD quando i recapiti reali saranno noti
+- [ ] Verificare le coordinate `geo` del JSON-LD sulla posizione esatta dello studio
+      (ora sono quelle approssimative di Via Livigno)
+- [ ] Valutare una sezione **FAQ** (domande frequenti sulle visite, i costi, la
+      detraibilità): è il modo più semplice per guadagnare risultati aggiuntivi in Google
+- [ ] Il titolo principale (`<h1>`) è creativo ma non contiene le parole chiave: se si
+      vuole spingere su «nutrizionista a Milano» va concordata con la dottoressa una
+      variante che le includa
+- [ ] Le recensioni MioDottore **non** sono state inserite come `aggregateRating`: Google
+      non accetta recensioni auto-pubblicate sul proprio sito per questo tipo di attività
 - [ ] Ottenere conferma dalla dottoressa sull'uso dei testi e delle recensioni riportate
 
 ---

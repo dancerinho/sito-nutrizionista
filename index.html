@@ -34,42 +34,147 @@
 <meta name="twitter:description" content="Piani alimentari su misura, mai «grigi». Nutrizione sportiva, percorsi vegetariani e consulenze online." />
 <meta name="twitter:image" content="https://dancerinho.github.io/sito-nutrizionista/assets/alessia-fortina.jpg" />
 
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/favicon.svg" />
+<link rel="mask-icon" href="assets/favicon.svg" color="#16302a" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://images.unsplash.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="style.css?v=202609081520" />
+<link rel="preload" as="image" href="assets/alessia-fortina.jpg" fetchpriority="high" />
 
+<!-- Senza JavaScript le viste restano nascoste dal CSS: questo blocco le rende
+     tutte visibili e impilate, così il contenuto resta leggibile e indicizzabile. -->
+<noscript>
+  <style>
+    html, body { height: auto; overflow: auto; }
+    .app-header { position: static; }
+    #app { position: static; height: auto; }
+    .view { position: static; visibility: visible; opacity: 1; pointer-events: auto; overflow: visible; }
+    [data-anim] { opacity: 1 !important; transform: none !important; }
+    .tab-pill, .fab-whatsapp { display: none; }
+  </style>
+</noscript>
+
+<!-- Dati strutturati: un solo @graph con studio, professionista, sito e pagina.
+     Al cambio dominio aggiornare gli URL come per canonical/og:url (vedi DEPLOY.md). -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Nutritionist",
-  "name": "Dott.ssa Alessia Fortina",
-  "description": "Nutrizionista a Milano specializzata in nutrizione sportiva. Piani alimentari personalizzati e consulenze online.",
-  "url": "https://dancerinho.github.io/sito-nutrizionista/",
-  "image": "https://dancerinho.github.io/sito-nutrizionista/assets/alessia-fortina.jpg",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Via Livigno 26",
-    "addressLocality": "Milano",
-    "postalCode": "20158",
-    "addressCountry": "IT"
-  },
-  "areaServed": "Milano",
-  "availableService": [
-    { "@type": "MedicalProcedure", "name": "Prima visita nutrizionale" },
-    { "@type": "MedicalProcedure", "name": "Visita di controllo" },
-    { "@type": "MedicalProcedure", "name": "Consulenza online" },
-    { "@type": "MedicalProcedure", "name": "Piano nutrizionale personalizzato" },
-    { "@type": "MedicalProcedure", "name": "Dieta per sportivi" },
-    { "@type": "MedicalProcedure", "name": "Dieta vegetariana" },
-    { "@type": "MedicalProcedure", "name": "Analisi della composizione corporea" },
-    { "@type": "MedicalProcedure", "name": "Bioimpedenziometria" }
-  ],
-  "sameAs": [
-    "https://www.instagram.com/nutrizionista_alessiafortina/",
-    "https://www.miodottore.it/profilo/alessia-fortina"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://dancerinho.github.io/sito-nutrizionista/#website",
+      "url": "https://dancerinho.github.io/sito-nutrizionista/",
+      "name": "Dott.ssa Alessia Fortina — Nutrizionista",
+      "inLanguage": "it-IT",
+      "publisher": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#nutrizionista" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dancerinho.github.io/sito-nutrizionista/#webpage",
+      "url": "https://dancerinho.github.io/sito-nutrizionista/",
+      "name": "Dott.ssa Alessia Fortina | Nutrizionista a Milano e online",
+      "description": "Nutrizionista a Milano specializzata in nutrizione sportiva. Piani alimentari personalizzati, mai restrittivi, costruiti insieme a te. Visite in studio in Via Livigno 26 e consulenze online.",
+      "inLanguage": "it-IT",
+      "isPartOf": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#website" },
+      "about": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#nutrizionista" },
+      "primaryImageOfPage": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#ritratto" }
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "https://dancerinho.github.io/sito-nutrizionista/#ritratto",
+      "url": "https://dancerinho.github.io/sito-nutrizionista/assets/alessia-fortina.jpg",
+      "contentUrl": "https://dancerinho.github.io/sito-nutrizionista/assets/alessia-fortina.jpg",
+      "width": 949,
+      "height": 949,
+      "caption": "Dott.ssa Alessia Fortina, nutrizionista a Milano"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://dancerinho.github.io/sito-nutrizionista/#persona",
+      "name": "Alessia Fortina",
+      "honorificPrefix": "Dott.ssa",
+      "jobTitle": "Nutrizionista",
+      "image": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#ritratto" },
+      "url": "https://dancerinho.github.io/sito-nutrizionista/",
+      "worksFor": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#nutrizionista" },
+      "knowsLanguage": "it",
+      "knowsAbout": [
+        "Nutrizione sportiva",
+        "Piani alimentari personalizzati",
+        "Alimentazione vegetariana e vegana",
+        "Composizione corporea",
+        "Bioimpedenziometria"
+      ],
+      "alumniOf": [
+        { "@type": "CollegeOrUniversity", "name": "Università Vita-Salute San Raffaele" },
+        { "@type": "EducationalOrganization", "name": "Sanis — Master in nutrizione sportiva" }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/nutrizionista_alessiafortina/",
+        "https://www.miodottore.it/profilo/alessia-fortina"
+      ]
+    },
+    {
+      "@type": ["Nutritionist", "MedicalBusiness"],
+      "@id": "https://dancerinho.github.io/sito-nutrizionista/#nutrizionista",
+      "name": "Dott.ssa Alessia Fortina — Nutrizionista",
+      "alternateName": "Alessia Fortina Nutrizionista Milano",
+      "description": "Nutrizionista a Milano specializzata in nutrizione sportiva. Piani alimentari personalizzati e consulenze online in tutta Italia.",
+      "url": "https://dancerinho.github.io/sito-nutrizionista/",
+      "image": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#ritratto" },
+      "logo": "https://dancerinho.github.io/sito-nutrizionista/assets/favicon.svg",
+      "priceRange": "50€ – 120€",
+      "currenciesAccepted": "EUR",
+      "employee": { "@id": "https://dancerinho.github.io/sito-nutrizionista/#persona" },
+      "address": {
+        "@type": "PostalAddress",
+        "name": "Metodo Salute",
+        "streetAddress": "Via Livigno 26",
+        "addressLocality": "Milano",
+        "addressRegion": "MI",
+        "postalCode": "20158",
+        "addressCountry": "IT"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 45.4990, "longitude": 9.1770 },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=Via+Livigno+26+20158+Milano",
+      "areaServed": [
+        { "@type": "City", "name": "Milano" },
+        { "@type": "Country", "name": "Italia" }
+      ],
+      "availableService": [
+        { "@type": "MedicalProcedure", "name": "Prima visita nutrizionale" },
+        { "@type": "MedicalProcedure", "name": "Visita di controllo" },
+        { "@type": "MedicalProcedure", "name": "Consulenza online" },
+        { "@type": "MedicalProcedure", "name": "Piano nutrizionale personalizzato" },
+        { "@type": "MedicalProcedure", "name": "Dieta per sportivi" },
+        { "@type": "MedicalProcedure", "name": "Dieta vegetariana" },
+        { "@type": "MedicalProcedure", "name": "Analisi della composizione corporea" },
+        { "@type": "MedicalProcedure", "name": "Bioimpedenziometria" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Percorsi e prestazioni nutrizionali",
+        "itemListElement": [
+          { "@type": "Offer", "price": "120", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Prima visita nutrizionale", "description": "Visita di 60 minuti con anamnesi, obiettivi e valutazione iniziale." } },
+          { "@type": "Offer", "price": "100", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Visita di controllo", "description": "Controllo dei progressi e aggiornamento del piano alimentare." } },
+          { "@type": "Offer", "price": "50", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Consulenza online", "description": "Consulenza nutrizionale in videochiamata da tutta Italia." } },
+          { "@type": "Offer", "price": "100", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Piano nutrizionale personalizzato", "description": "Piano alimentare su misura costruito su gusti, orari e obiettivi." } },
+          { "@type": "Offer", "price": "120", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Dieta per sportivi", "description": "Nutrizione sportiva calibrata su carichi di allenamento e gare." } },
+          { "@type": "Offer", "price": "120", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Dieta vegetariana", "description": "Percorsi vegetariani e vegani bilanciati e sostenibili." } },
+          { "@type": "Offer", "price": "80", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Analisi della composizione corporea", "description": "Massa magra, massa grassa e distribuzione oltre il peso sulla bilancia." } },
+          { "@type": "Offer", "price": "80", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Service", "name": "Bioimpedenziometria", "description": "Analisi rapida e non invasiva di idratazione e compartimenti corporei." } }
+        ]
+      },
+      "sameAs": [
+        "https://www.instagram.com/nutrizionista_alessiafortina/",
+        "https://www.miodottore.it/profilo/alessia-fortina"
+      ]
+    }
   ]
 }
 </script>
@@ -104,12 +209,6 @@
 
   <div class="app-bar">
   <a draggable="false" class="brand" href="#home" data-nav="home">
-    <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6.5 17.5A10 10 0 0 1 16.5 7.5A10 10 0 0 1 6.5 17.5Z" fill="currentColor" />
-        <path d="M5.5 18.5L16 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".55" />
-      </svg>
-    </span>
     <span class="brand-text">
       <span class="brand-name">Alessia Fortina</span>
       <span class="brand-role">Nutrizionista · Milano</span>
@@ -192,7 +291,7 @@
         <figure class="hero-card">
           <div class="hero-photo">
             <img draggable="false" src="assets/alessia-fortina.jpg"
-                 alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" />
+                 alt="Ritratto della Dott.ssa Alessia Fortina, nutrizionista" width="949" height="949" loading="eager" fetchpriority="high" decoding="async" />
           </div>
           <figcaption class="hero-caption">
             <span class="hero-caption-name">Dott.ssa Alessia Fortina</span>
@@ -339,7 +438,7 @@
       <div class="card-grid">
         <article class="svc" data-anim="up" data-delay="120">
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Piatto sano e bilanciato" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Piatto equilibrato preparato dopo una prima visita nutrizionale a Milano" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge">Percorsi e visite</span>
@@ -360,7 +459,7 @@
         <article class="svc svc--featured" data-anim="up" data-delay="240">
           <span class="ribbon">Il più richiesto</span>
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Alimentazione sana e bilanciata" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Pasto sano usato come esempio durante una visita di controllo nutrizionale" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge badge--accent">Percorsi e visite</span>
@@ -380,7 +479,7 @@
 
         <article class="svc" data-anim="up" data-delay="360">
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Alimentazione consapevole" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Colazione bilanciata per un percorso seguito in consulenza online" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge">Ovunque tu sia</span>
@@ -410,7 +509,7 @@
       <div class="card-grid">
         <article class="svc" data-anim="up" data-delay="120">
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Bowl di verdure e cereali" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Bowl di verdure e cereali di un piano nutrizionale personalizzato" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge">Su misura</span>
@@ -430,7 +529,7 @@
 
         <article class="svc" data-anim="up" data-delay="240">
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=600&q=80" alt="Attrezzi per l'allenamento" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1558017487-06bf9f82613a?auto=format&fit=crop&w=600&q=80" alt="Attrezzi da allenamento a supporto di una dieta per sportivi" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge badge--dark">Sport &amp; performance</span>
@@ -450,7 +549,7 @@
 
         <article class="svc" data-anim="up" data-delay="360">
           <div class="svc-media">
-            <img draggable="false" src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Verdure fresche di stagione" loading="lazy" />
+            <img draggable="false" src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Verdure fresche di stagione alla base di una dieta vegetariana" width="600" height="400" loading="lazy" decoding="async" />
           </div>
           <div class="svc-body">
             <span class="badge">Scelta etica</span>
