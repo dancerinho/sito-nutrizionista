@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Kit di Educazione Nutrizionale Visiva — NUTRIMENTE</title>
+<meta name="description" content="Prontuario visivo interattivo per la consulenza nutrizionale — Dott.ssa Alessia Fortina, Biologa Nutrizionista, Milano." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50: '#eef4f0', 100: '#dceee5', 200: '#bcddcd', 300: '#8fc4ad',
+            400: '#5da489', 500: '#3d876c', 600: '#2D5A43', 700: '#26493a',
+            800: '#1F4030', 900: '#152c21'
+          },
+          apricot: {
+            50: '#FDEEE7', 100: '#fbdccb', 200: '#f6c2a3', 300: '#eea87c',
+            400: '#E89267', 500: '#dd7a49', 600: '#c26234'
+          },
+          cream: { DEFAULT: '#FAF8F5', 100: '#FAF8F5', 200: '#f2ede4' },
+          gold: { DEFAULT: '#F6C343', 600: '#d9a323' },
+          coral: { DEFAULT: '#E05A47', 600: '#c04533' }
+        },
+        fontFamily: {
+          serif: ['Fraunces', 'Georgia', 'serif'],
+          sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif']
+        }
+      }
+    }
+  };
+</script>
+
+<style>
+  :root{
+    --brand-900:#152c21; --brand-800:#1F4030; --brand-700:#26493a; --brand-600:#2D5A43;
+    --brand-500:#3d876c; --brand-400:#5da489; --brand-300:#8fc4ad; --brand-200:#bcddcd; --brand-100:#dceee5;
+    --apricot-600:#c2623d; --apricot-500:#E89267; --apricot-300:#eea87c; --apricot-100:#FDEEE7;
+    --cream:#FAF8F5; --gold:#F6C343; --coral:#E05A47;
+    --ink:#233530;
+    --chrome-h: 4.25rem;
+    --sidebar-w: 19rem;
+    --ease: cubic-bezier(.22,1,.36,1);
+    --shadow-card: 0 10px 30px -14px rgba(21,44,33,.28);
+    --shadow-lift: 0 24px 48px -20px rgba(21,44,33,.38);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  h1,h2,h3,h4{ font-family:'Fraunces', Georgia, serif; margin:0; }
+  p{ margin:0; }
+  ul{ list-style:none; margin:0; padding:0; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:var(--brand-200); border-radius:99px; }
+
+  /* ============ APP SHELL ============ */
+  #app{
+    height:100vh; width:100vw;
+    display:grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    background:
+      radial-gradient(1200px 600px at 100% 0%, var(--apricot-100) 0%, transparent 60%),
+      radial-gradient(900px 500px at 0% 100%, var(--brand-100) 0%, transparent 55%),
+      var(--cream);
+    transition: grid-template-columns .45s var(--ease);
+  }
+  #app.sidebar-collapsed{ grid-template-columns: 0 1fr; }
+
+  /* ---- Sidebar ---- */
+  .sidebar{
+    height:100%; overflow:hidden;
+    background: linear-gradient(180deg, var(--brand-800), var(--brand-900));
+    color:var(--cream);
+    display:flex; flex-direction:column;
+    border-right:1px solid rgba(0,0,0,.15);
+  }
+  .sidebar-head{ position:relative; padding:1.6rem 2.9rem 1.1rem 1.5rem; border-bottom:1px solid rgba(255,255,255,.1); flex-shrink:0; }
+  .sidebar-logo{ display:flex; align-items:center; gap:.65rem; min-width:0; }
+  .sidebar-logo .mark{
+    width:2.5rem; height:2.5rem; border-radius:.85rem; flex-shrink:0;
+    background: linear-gradient(135deg, var(--apricot-500), var(--gold));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 16px -6px rgba(0,0,0,.4);
+  }
+  .sidebar-logo .name{ font-family:'Fraunces', serif; font-weight:600; font-size:1.28rem; letter-spacing:.01em; line-height:1.05; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar-logo .sub{ font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; color:var(--brand-200); margin-top:.15rem; line-height:1.4; }
+  .sidebar-kit-label{ margin-top:1rem; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--apricot-300); font-weight:700; }
+  .sidebar-kit-title{ font-family:'Fraunces', serif; font-size:1.02rem; color:#fff; margin-top:.2rem; line-height:1.3; }
+
+  .sidebar-nav{ flex:1; overflow-y:auto; padding:.9rem .8rem 1rem; display:flex; flex-direction:column; gap:.3rem; }
+  .nav-item{
+    display:flex; align-items:center; gap:.75rem;
+    padding:.65rem .75rem; border-radius:.85rem; border:1px solid transparent;
+    background:transparent; color:var(--brand-100); text-align:left;
+    transition: background .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+  }
+  .nav-item:hover{ background:rgba(255,255,255,.06); }
+  .nav-item .n{
+    flex-shrink:0; width:2.1rem; height:2.1rem; border-radius:.6rem;
+    background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:.92rem; color:var(--apricot-300);
+  }
+  .nav-item svg{ width:1.15rem; height:1.15rem; flex-shrink:0; stroke:currentColor; }
+  .nav-item .t{ display:flex; flex-direction:column; gap:.05rem; min-width:0; }
+  .nav-item .t b{ font-size:.83rem; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .nav-item .t span{ font-size:.68rem; color:var(--brand-300); }
+  .nav-item.active{
+    background: linear-gradient(90deg, rgba(232,146,103,.22), rgba(232,146,103,.05));
+    border-color: rgba(232,146,103,.35);
+    transform: translateX(2px);
+  }
+  .nav-item.active .n{ background:var(--apricot-500); color:#fff; }
+
+  .sidebar-foot{
+    flex-shrink:0; padding:1rem 1.5rem 1.3rem; border-top:1px solid rgba(255,255,255,.1);
+    font-size:.72rem; color:var(--brand-300); line-height:1.5;
+  }
+  .sidebar-foot b{ color:var(--cream); display:block; font-family:'Fraunces', serif; font-size:.85rem; margin-bottom:.15rem; }
+
+  /* ---- Sidebar toggle (hamburger) ---- */
+  .sidebar-toggle{
+    position:fixed; top:1rem; left:1rem; z-index:50;
+    width:2.75rem; height:2.75rem; border-radius:.9rem;
+    background:var(--brand-800); color:#fff; border:none;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow-card);
+    transition: left .45s var(--ease), background .2s;
+  }
+  .sidebar-toggle svg{ width:1.3rem; height:1.3rem; stroke:currentColor; }
+  #app:not(.sidebar-collapsed) .sidebar-toggle{ opacity:0; pointer-events:none; }
+  .sidebar-toggle:hover{ background:var(--brand-700); }
+
+  .sidebar-close-btn{
+    position:absolute; top:1.1rem; right:1.1rem; z-index:2;
+    width:1.9rem; height:1.9rem; border-radius:.55rem; flex-shrink:0;
+    background:rgba(255,255,255,.08); border:none; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    transition: background .2s;
+  }
+  .sidebar-close-btn svg{ width:1rem; height:1rem; stroke:currentColor; }
+  .sidebar-close-btn:hover{ background:rgba(255,255,255,.18); }
+
+  /* ============ STAGE ============ */
+  .stage{ position:relative; height:100vh; display:flex; flex-direction:column; min-width:0; grid-column:2; }
+  .stage-inner{
+    flex:1; min-height:0; display:flex; align-items:center; justify-content:center;
+    padding: clamp(.75rem,2vh,2rem) clamp(1rem,3vw,3rem);
+  }
+  .slide-viewport{
+    position:relative;
+    width: min(100%, calc((100vh - var(--chrome-h) - 3rem) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height:100%;
+    border-radius:1.4rem;
+    box-shadow: var(--shadow-lift);
+    background:#fff;
+    overflow:hidden;
+    border:1px solid rgba(31,64,48,.08);
+  }
+
+  /* ---- Slides (schede) ---- */
+  .scheda{
+    position:absolute; inset:0; display:none;
+    background:var(--cream);
+    opacity:0; transform:scale(.985);
+  }
+  .scheda.active{ display:block; animation: slideIn .5s var(--ease) forwards; }
+  @keyframes slideIn{ from{ opacity:0; transform:scale(.98);} to{ opacity:1; transform:scale(1);} }
+
+  .scheda-inner{
+    height:100%; width:100%;
+    display:grid; grid-template-rows:auto 1fr auto;
+    padding: clamp(.7rem,2.6vh,2.1rem) clamp(1.3rem,3vw,3rem);
+    gap: clamp(.35rem,1.4vh,1rem);
+  }
+
+  .scheda-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .scheda-kicker{ display:flex; align-items:center; gap:.5rem; font-size:.68rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--apricot-600); }
+  .scheda-kicker .dot{ width:.4rem; height:.4rem; border-radius:99px; background:var(--gold); }
+  .scheda-title{ font-size:clamp(1.2rem,2.2vw,1.7rem); font-weight:600; color:var(--brand-800); line-height:1.08; margin-top:.2rem; }
+  .scheda-title em{ font-style:normal; color:var(--apricot-500); }
+  .scheda-badge{
+    display:flex; align-items:center; gap:.5rem;
+    background:var(--brand-800); color:#fff; border-radius:99px; padding:.4rem .9rem .4rem .5rem;
+    font-size:.72rem; font-weight:700;
+  }
+  .scheda-badge .mark{ width:1.5rem; height:1.5rem; border-radius:99px; background:linear-gradient(135deg,var(--apricot-500),var(--gold)); flex-shrink:0; }
+
+  .scheda-body{ min-height:0; overflow-y:auto; overflow-x:hidden; transition: background .5s var(--ease); border-radius:.8rem; }
+  .scheda-body::-webkit-scrollbar{ width:5px; }
+  .scheda-foot{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    font-size:.64rem; color:var(--brand-500); border-top:1px solid var(--brand-100); padding-top:.35rem;
+  }
+  .scheda-foot b{ color:var(--brand-700); }
+
+  /* ============ TOOLBAR ============ */
+  .toolbar{
+    flex-shrink:0; height:var(--chrome-h);
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    padding: 0 clamp(1rem,3vw,3rem);
+    background: rgba(250,248,245,.85); backdrop-filter: blur(10px);
+    border-top:1px solid var(--brand-100);
+  }
+  .tb-group{ display:flex; align-items:center; gap:.6rem; }
+  .tb-btn{
+    display:flex; align-items:center; gap:.5rem;
+    padding:.6rem 1.05rem; border-radius:.8rem; border:1px solid var(--brand-200);
+    background:#fff; color:var(--brand-800); font-weight:700; font-size:.83rem;
+    transition: all .2s var(--ease); box-shadow:0 2px 8px -4px rgba(21,44,33,.15);
+  }
+  .tb-btn svg{ width:1.05rem; height:1.05rem; stroke:currentColor; flex-shrink:0; }
+  .tb-btn:hover{ background:var(--brand-50); border-color:var(--brand-300); transform:translateY(-1px); }
+  .tb-btn:disabled{ opacity:.35; pointer-events:none; }
+  .tb-btn.primary{ background:var(--brand-800); border-color:var(--brand-800); color:#fff; }
+  .tb-btn.primary:hover{ background:var(--brand-700); }
+
+  .tb-center{ display:flex; flex-direction:column; align-items:center; gap:.1rem; min-width:0; }
+  .tb-counter{ font-family:'Fraunces', serif; font-weight:600; color:var(--brand-800); font-size:1rem; }
+  .tb-track{ display:flex; gap:.28rem; margin-top:.15rem; }
+  .tb-track i{ width:1.3rem; height:.3rem; border-radius:99px; background:var(--brand-200); transition: all .25s var(--ease); }
+  .tb-track i.on{ background:var(--apricot-500); width:1.9rem; }
+
+  /* ============ SHARED COMPONENTS ============ */
+  .g-card{
+    background:rgba(255,255,255,.9);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border:1px solid rgba(214,211,199,.8); border-radius:1rem; box-shadow:var(--shadow-card);
+    overflow:hidden;
+    transition: box-shadow .3s var(--ease), transform .3s var(--ease);
+  }
+
+  /* ---- Photo cards ---- */
+  .card-photo{ position:relative; width:100%; aspect-ratio:16/10; overflow:hidden; background:var(--brand-100); flex-shrink:0; }
+  .card-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s var(--ease); }
+  .card-photo.sq{ aspect-ratio:1; border-radius:.7rem; flex-shrink:0; }
+
+  /* ---- Tap-to-focus interaction (consultation aid) ---- */
+  .focusable{ cursor:pointer; transition: transform .28s var(--ease), box-shadow .28s var(--ease); }
+  .focusable:hover{ box-shadow:var(--shadow-lift); transform:scale(1.015); }
+  .focusable:hover .card-photo img{ transform:scale(1.05); }
+  .focusable.is-focused{
+    transform:scale(1.03);
+    box-shadow:0 0 0 3px var(--apricot-500), var(--shadow-lift);
+    position:relative; z-index:6;
+  }
+  .focusable.is-focused .card-photo img{ transform:scale(1.05); }
+  .focusable:active{ transform:scale(.98); }
+
+  .pill{ display:inline-flex; align-items:center; gap:.35rem; border-radius:99px; padding:.28rem .7rem; font-size:.68rem; font-weight:700; letter-spacing:.02em; }
+  .pill-green{ background:var(--brand-100); color:var(--brand-700); }
+  .pill-apricot{ background:var(--apricot-100); color:var(--apricot-600); }
+  .pill-gold{ background:#fdf0cf; color:#8a6410; }
+  .pill-coral{ background:#fbe2de; color:var(--coral-600,#a5382a); }
+
+  .icon-badge{ width:2.5rem; height:2.5rem; border-radius:.75rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .icon-badge svg{ width:1.3rem; height:1.3rem; }
+
+  .list-check li, .list-cross li{ display:flex; align-items:flex-start; gap:.5rem; font-size:.79rem; line-height:1.35; }
+  .list-check li + li, .list-cross li + li{ margin-top:.36rem; }
+  .list-check svg, .list-cross svg{ width:1.1rem; height:1.1rem; flex-shrink:0; margin-top:.06rem; }
+
+  .col-title{ display:flex; align-items:center; gap:.55rem; font-family:'Fraunces', serif; font-weight:600; font-size:1rem; }
+
+  .leader-chip{
+    display:flex; align-items:center; gap:.7rem; background:#fff; border-radius:.9rem;
+    padding:.4rem .8rem; box-shadow:var(--shadow-card); border-left:.3rem solid transparent;
+  }
+  .leader-chip .pct{ font-family:'Fraunces', serif; font-weight:700; font-size:1.15rem; line-height:1; flex-shrink:0; width:2.6rem; }
+  .leader-chip b{ display:block; font-size:.82rem; }
+  .leader-chip span{ display:block; font-size:.7rem; color:var(--brand-500); margin-top:.05rem; }
+
+  .btn-toggle{
+    display:inline-flex; border-radius:99px; background:var(--brand-100); padding:.22rem; gap:.2rem;
+  }
+  .btn-toggle button{
+    padding:.4rem .9rem; border-radius:99px; font-size:.74rem; font-weight:700; color:var(--brand-700); background:transparent; border:none;
+    transition: all .25s var(--ease);
+  }
+  .btn-toggle button.on{ background:var(--brand-700); color:#fff; box-shadow:0 4px 10px -4px rgba(21,44,33,.4); }
+
+  /* ============ SCHEDA 1 — PLATE BUILDER ============ */
+  .plate-page{ width:100%; max-width:78rem; margin:0 auto; overflow:visible; }
+  .plate-grid{ display:grid; grid-template-columns:1fr; gap:1.1rem; width:100%; }
+  .plate-left{ display:flex; flex-direction:column; align-items:center; gap:.42rem; min-width:0; }
+  .plate-right{ display:flex; flex-direction:column; gap:.5rem; min-width:0; }
+  @media (min-width:900px){
+    .plate-page{ height:100%; display:flex; flex-direction:column; justify-content:flex-start; min-height:0; }
+    .plate-grid{ grid-template-columns:1fr 1fr; gap:clamp(1.5rem,3.5vw,3rem); align-items:center; height:100%; }
+    .plate-left{ height:100%; justify-content:center; }
+  }
+
+  .plate-mode-toggle{ max-width:100%; flex-wrap:wrap; justify-content:center; }
+  .plate-mode-toggle button{ line-height:1.2; white-space:nowrap; padding:.4rem .65rem; font-size:.7rem; }
+  .plate-mode-toggle button b{ font-weight:700; }
+  .plate-mode-toggle button span{ font-size:.64rem; font-weight:600; opacity:.75; margin-left:.1rem; }
+
+  .plate-wrap{
+    position:relative; width:min(100%,326px); min-width:220px; aspect-ratio:1; margin:0 auto; flex-shrink:0;
+    border-radius:50%; background:#fafaf9; padding:.5rem;
+    box-shadow: 0 26px 54px -18px rgba(21,44,33,.4), 0 0 0 4px rgba(214,211,199,.55);
+  }
+  .plate-wrap svg{ width:100%; height:100%; overflow:visible; }
+  .plate-ring{ fill:#fff; }
+  .sector{ transition: fill .5s var(--ease); }
+  .sector-verdure{ fill:#e9e4d8; }
+  .sector-verdure.filled{ fill:var(--brand-600); }
+  .sector-carbo{ fill:#e9e4d8; }
+  .sector-carbo.filled{ fill:var(--gold); }
+  .sector-proteine{ fill:#e9e4d8; }
+  .sector-proteine.filled{ fill:var(--coral); }
+  .sector.pop{ animation: sectorPop .5s var(--ease); }
+  @keyframes sectorPop{ 0%{ transform:scale(1);} 35%{ transform:scale(1.06);} 100%{ transform:scale(1);} }
+  .plate-center-hole{ fill:var(--cream); transition: fill .4s var(--ease); }
+  .plate-center-hole.filled{ fill:#fdf0cf; }
+  .plate-center-ico{ transition: opacity .3s var(--ease); opacity:0; }
+  .plate-center-ico.show{ opacity:1; }
+
+  .plate-labels{ position:absolute; inset:.5rem; pointer-events:none; }
+  .plate-food-badge{
+    position:absolute; width:2rem; height:2rem; margin:-1rem 0 0 -1rem;
+    border-radius:50%; background:#fff; border:2px solid #fff;
+    box-shadow:0 8px 16px -4px rgba(21,44,33,.45);
+    display:flex; align-items:center; justify-content:center; font-size:1.05rem;
+    transform:scale(0); animation: badgeIn .5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes badgeIn{ to{ transform:scale(1); } }
+
+  .balance-track{ display:flex; gap:.3rem; width:100%; max-width:340px; }
+  .balance-seg{ flex:1; height:.5rem; border-radius:99px; background:var(--brand-100); overflow:hidden; }
+  .balance-seg i{ display:block; height:100%; width:100%; border-radius:99px; transform:scaleX(0); transform-origin:left; transition: transform .5s var(--ease); background:var(--brand-600); }
+  .balance-seg[data-cat="carbo"] i{ background:var(--gold); }
+  .balance-seg[data-cat="proteine"] i{ background:var(--coral); }
+  .balance-seg.on i{ transform:scaleX(1); }
+
+  .balance-badge{
+    display:flex; align-items:center; gap:.4rem; justify-content:center; text-align:center;
+    padding:.4rem .8rem; border-radius:99px; font-size:.68rem; font-weight:800;
+    background:var(--brand-100); color:var(--brand-700); transition: all .35s var(--ease);
+    border:1px solid transparent; max-width:100%; flex-shrink:0;
+  }
+  .balance-badge.b-complete{ background:var(--brand-700); color:#fff; box-shadow:0 8px 18px -8px rgba(21,44,33,.5); animation: badgePulse .6s var(--ease); }
+  @keyframes badgePulse{ 0%{ transform:scale(.9);} 50%{ transform:scale(1.06);} 100%{ transform:scale(1);} }
+
+  .ing-tabs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(6.4rem,1fr)); gap:.35rem; width:100%; }
+  .ing-tab{
+    padding:.45rem .5rem; border-radius:.7rem; font-size:.72rem; font-weight:700; color:var(--brand-600);
+    background:var(--brand-50); border:1px solid var(--brand-100); transition:all .2s var(--ease); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .ing-tab.on{ background:var(--brand-700); color:#fff; border-color:var(--brand-700); }
+
+  .ing-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:.5rem; width:100%; max-height:12.6rem; overflow-y:auto; overflow-x:hidden; padding:.15rem; }
+  .ing-chip{
+    display:flex; flex-direction:column; align-items:center; gap:.2rem; text-align:center;
+    padding:.5rem .3rem; border-radius:.75rem; background:#fff; border:1.5px solid var(--brand-100);
+    font-size:.66rem; font-weight:700; color:var(--brand-700); position:relative; min-width:0; width:100%;
+    transition: all .22s var(--ease); min-height:48px; justify-content:center; overflow:visible;
+  }
+  .ing-chip span:last-child{ overflow-wrap:break-word; word-break:break-word; hyphens:auto; max-width:100%; }
+  .ing-chip .em{ font-size:1.15rem; line-height:1; }
+  .ing-chip:hover{ border-color:var(--brand-300); transform:translateY(-2px); }
+  .ing-chip.selected{ background:var(--brand-700); color:#fff; border-color:var(--brand-700); transform:scale(1.04); box-shadow:0 8px 16px -8px rgba(21,44,33,.45); }
+  .ing-chip .check{ position:absolute; top:.28rem; right:.28rem; width:1rem; height:1rem; border-radius:99px; background:var(--gold); color:var(--brand-900); display:none; align-items:center; justify-content:center; font-size:.56rem; box-shadow:0 2px 6px rgba(0,0,0,.35); }
+  .ing-chip.selected .check{ display:flex; }
+
+  .nutrimente-tip{ background:linear-gradient(135deg,var(--cream-200,#f2ede4),var(--brand-50)); border:1px solid var(--brand-100); border-radius:.85rem; padding:.55rem .8rem; }
+  .nutrimente-tip b{ display:flex; align-items:center; gap:.35rem; font-family:'Fraunces',serif; font-size:.76rem; color:var(--brand-700); margin-bottom:.15rem; }
+  .nutrimente-tip p{ font-size:.68rem; color:var(--brand-600); line-height:1.4; }
+
+  .demo-plate-btn{
+    display:flex; align-items:center; justify-content:center; gap:.4rem; width:100%;
+    padding:.55rem .9rem; border-radius:.8rem; background:#fff; border:1.5px dashed var(--apricot-400);
+    color:var(--apricot-600); font-weight:700; font-size:.74rem; transition: all .2s var(--ease);
+  }
+  .demo-plate-btn:hover{ background:var(--apricot-50); border-style:solid; transform:translateY(-1px); }
+
+  /* ============ SCHEDA 3 — FLIP SWAP ============ */
+  .flip-card{ perspective:1000px; height:4.6rem; }
+  .flip-inner{ position:relative; width:100%; height:100%; transition:transform .55s var(--ease); transform-style:preserve-3d; }
+  .flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:.7rem;
+    display:flex; align-items:center; gap:.5rem; padding:.5rem .65rem; cursor:pointer;
+  }
+  .flip-front{ background:#fff; border:1.5px solid #f3d3ce; }
+  .flip-back{ background:var(--brand-700); color:#fff; transform:rotateY(180deg); }
+  .flip-face b{ font-size:.72rem; line-height:1.2; display:block; }
+  .flip-face span{ font-size:.63rem; opacity:.85; }
+  .flip-ico{ flex-shrink:0; width:1.6rem; height:1.6rem; border-radius:99px; display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+  .flip-front .flip-ico{ background:#fbe2de; }
+  .flip-back .flip-ico{ background:rgba(255,255,255,.18); }
+
+  .fat-col{ display:flex; flex-direction:column; height:100%; border-radius:1.1rem; overflow:hidden; box-shadow:var(--shadow-card); }
+  .fat-col-head{ padding:.75rem .9rem .6rem; }
+  .fat-col-body{ flex:1; padding:0 .9rem .9rem; display:flex; flex-direction:column; gap:.4rem; overflow-y:auto; }
+
+  /* ============ SCHEDA 4 — RAINBOW ============ */
+  .target-badge{ display:flex; align-items:center; gap:.4rem; padding:.35rem .6rem; border-radius:.6rem; font-size:.66rem; font-weight:700; }
+  .rainbow-card{ transition: all .4s var(--ease); }
+  #scheda-4{ transition: box-shadow .6s var(--ease); }
+  #scheda-4 .scheda-inner{ transition: background .6s var(--ease); }
+  #scheda-4.wash-arancione{ box-shadow: inset 0 0 0 5px #F6C343; }
+  #scheda-4.wash-arancione .scheda-inner{ background: radial-gradient(1100px 480px at 50% -8%, #fbe0a0 0%, var(--cream) 55%); }
+  #scheda-4.wash-rosso{ box-shadow: inset 0 0 0 5px var(--coral); }
+  #scheda-4.wash-rosso .scheda-inner{ background: radial-gradient(1100px 480px at 50% -8%, #f6b6ab 0%, var(--cream) 55%); }
+  #scheda-4.wash-verde{ box-shadow: inset 0 0 0 5px var(--brand-600); }
+  #scheda-4.wash-verde .scheda-inner{ background: radial-gradient(1100px 480px at 50% -8%, #a9d3bf 0%, var(--cream) 55%); }
+  #scheda-4.wash-viola{ box-shadow: inset 0 0 0 5px #7a5aa8; }
+  #scheda-4.wash-viola .scheda-inner{ background: radial-gradient(1100px 480px at 50% -8%, #cbb9e5 0%, var(--cream) 55%); }
+  #scheda-4.wash-bianco{ box-shadow: inset 0 0 0 5px #b7b0a0; }
+  #scheda-4.wash-bianco .scheda-inner{ background: radial-gradient(1100px 480px at 50% -8%, #e2dccb 0%, var(--cream) 55%); }
+  .rainbow-why{
+    margin-top:.5rem; padding:.55rem .8rem; border-radius:.7rem; font-size:.72rem; font-weight:600;
+    background:var(--apricot-100); color:var(--apricot-600); display:none; align-items:center; gap:.5rem;
+  }
+  .rainbow-why.show{ display:flex; animation: badgePulse .5s var(--ease); }
+
+  /* ============ SCHEDA 5 — NICHEL ============ */
+  .nichel-filters{ display:flex; flex-wrap:wrap; gap:.35rem; }
+  .nichel-filter{
+    padding:.38rem .75rem; border-radius:.65rem; font-size:.7rem; font-weight:700; color:var(--brand-600);
+    background:#fff; border:1.5px solid var(--brand-100); transition:all .2s var(--ease);
+  }
+  .nichel-filter.on{ background:var(--brand-700); color:#fff; border-color:var(--brand-700); }
+  .nichel-search{
+    flex:1; min-width:9rem; padding:.4rem .8rem; border-radius:.65rem; border:1.5px solid var(--brand-100);
+    font-size:.76rem; font-family:inherit; color:var(--brand-800); background:#fff;
+  }
+  .nichel-search:focus{ outline:none; border-color:var(--apricot-500); }
+  .nichel-pill{ transition: all .2s var(--ease); }
+  .nichel-pill.hide{ display:none !important; }
+  .nichel-pill.match-glow{ box-shadow:0 0 0 2px var(--gold); }
+
+  /* ============ SCHEDA 6 — IDRATAZIONE ============ */
+  .glass-btn{ width:1.9rem; height:2.5rem; border-radius:.3rem .3rem .6rem .6rem; border:2px solid var(--brand-300); background:#eef4f0; position:relative; overflow:hidden; transition:transform .2s var(--ease); flex-shrink:0; }
+  .glass-btn:hover{ transform:translateY(-2px); }
+  .glass-btn .fill{ position:absolute; left:0; right:0; bottom:0; height:0%; background:linear-gradient(180deg,var(--apricot-300),var(--brand-500)); transition:height .5s var(--ease); }
+  .glass-btn.filled .fill{ height:100%; }
+
+  .urine-slider-wrap{ position:relative; }
+  .urine-track{ height:2.6rem; border-radius:.6rem; background:linear-gradient(90deg,#fdfcf8,#fdf6df 14%,#fbecb8 28%,#f7dd8a 42%,#f0c65c 57%,#e3a83c 71%,#c98526 85%,#a5651c); box-shadow:var(--shadow-card); position:relative; }
+  input.urine-range{
+    -webkit-appearance:none; appearance:none; width:100%; height:2.6rem; background:transparent; position:absolute; inset:0; margin:0; cursor:pointer;
+  }
+  input.urine-range::-webkit-slider-thumb{
+    -webkit-appearance:none; width:1.6rem; height:1.6rem; border-radius:50%; background:#fff; border:3px solid var(--brand-700);
+    box-shadow:0 4px 10px rgba(0,0,0,.35); margin-top:0; cursor:grab; transform:translateY(3px);
+  }
+  input.urine-range::-moz-range-thumb{
+    width:1.6rem; height:1.6rem; border-radius:50%; background:#fff; border:3px solid var(--brand-700); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:grab;
+  }
+  input.urine-range::-webkit-slider-runnable-track{ background:transparent; height:2.6rem; }
+
+  /* ============ SCHEDA 7 — SNACK CARDS ============ */
+  .macro-bar-row{ display:flex; align-items:center; gap:.35rem; font-size:.56rem; flex-shrink:0; }
+  .macro-bar-track{ flex:1; height:.28rem; border-radius:99px; background:var(--brand-100); overflow:hidden; }
+  .macro-bar-fill{ height:100%; border-radius:99px; }
+  .snack-body{ padding:.4rem .6rem; display:flex; flex-direction:column; gap:.16rem; flex:1; min-height:0; overflow-y:auto; }
+  .snack-title{ font-family:'Fraunces',serif; font-size:.76rem; line-height:1.15; margin-bottom:.05rem; }
+  .snack-badges{ display:flex; gap:.25rem; margin-top:auto; padding-top:.2rem; flex-wrap:wrap; }
+
+  /* ============ SCHEDA 8 — LABEL HOTSPOT ============ */
+  .label-row{ cursor:pointer; transition: background .25s var(--ease); }
+  .label-row.hot{ background:var(--gold) !important; box-shadow:inset 0 0 0 2px #d9a323; }
+  .trick-card{ opacity:.4; transform:translateX(4px); transition: all .3s var(--ease); border-left:3px solid transparent; }
+  .trick-card.active{ opacity:1; transform:translateX(0); border-left-color:var(--gold); background:var(--apricot-100) !important; }
+
+  /* ---- Print ---- */
+  @media print{
+    @page{ size: A4 landscape; margin:0; }
+    html,body{ overflow:visible !important; background:#fff !important; height:auto !important; }
+    body *{ visibility:hidden; }
+    #app{ display:block !important; height:auto !important; }
+    .sidebar, .sidebar-toggle, .toolbar{ display:none !important; }
+    .stage, .stage-inner{ display:block !important; padding:0 !important; height:auto !important; }
+    .slide-viewport{ box-shadow:none !important; border:none !important; border-radius:0 !important; overflow:visible; }
+    .scheda.active, .scheda.active *{ visibility:visible; }
+    .scheda.active{
+      position:fixed !important; inset:0 !important; display:block !important;
+      width:297mm !important; height:210mm !important; opacity:1 !important; transform:none !important; animation:none !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .scheda-inner{ padding:9mm 12mm !important; }
+    .flip-inner{ transform:none !important; }
+    .flip-back{ display:none !important; }
+    .flip-front{ position:relative !important; }
+    * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  }
+
+  /* ---- Responsive tablet ---- */
+  @media (max-width: 980px){
+    :root{ --sidebar-w: 17rem; }
+    #app{ grid-template-columns: 0 1fr; }
+    .sidebar{ position:fixed; inset:0 auto 0 0; width:var(--sidebar-w); z-index:60; box-shadow:0 0 0 100vmax rgba(0,0,0,0); transform:translateX(-100%); transition:transform .4s var(--ease); }
+    #app.sidebar-collapsed .sidebar{ transform:translateX(-100%); }
+    #app:not(.sidebar-collapsed) .sidebar{ transform:translateX(0); box-shadow:20px 0 60px -20px rgba(0,0,0,.4); }
+  }
+
+  /* ============ MOBILE TAB BAR (< 768px only) ============ */
+  .mobile-tabbar{
+    display:none;
+    position:sticky; top:0; z-index:40;
+    gap:.5rem; padding:.7rem .8rem;
+    background:rgba(250,248,245,.94); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--brand-100);
+    overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .mobile-tabbar::-webkit-scrollbar{ display:none; }
+  .mtab{
+    flex-shrink:0; display:flex; align-items:center; gap:.4rem;
+    padding:.6rem 1rem; min-height:44px; border-radius:99px;
+    background:#fff; border:1px solid var(--brand-200); color:var(--brand-700);
+    font-size:.82rem; font-weight:700; white-space:nowrap;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .mtab .n{ font-family:'Fraunces', serif; color:var(--apricot-600); font-weight:700; }
+  .mtab.active{ background:var(--brand-800); border-color:var(--brand-800); color:#fff; }
+  .mtab.active .n{ color:var(--apricot-300); }
+
+  /* ============ SMARTPHONE PORTRAIT (< 768px): fluid flow layout ============ */
+  @media (max-width: 767px){
+    html, body{ height:auto; overflow-y:auto; overflow-x:hidden; }
+    #app{ display:block; height:auto; min-height:100vh; background:var(--cream); }
+    .sidebar, .sidebar-toggle, .scrim{ display:none !important; }
+    .mobile-tabbar{ display:flex; }
+
+    .stage{ height:auto; display:block; }
+    .stage-inner{ display:block; padding:0; }
+    .slide-viewport{
+      width:100% !important; aspect-ratio:auto !important; max-height:none !important;
+      border-radius:0 !important; box-shadow:none !important; border:none !important;
+      position:static; background:transparent;
+    }
+
+    .scheda{ position:static !important; display:none; opacity:1 !important; transform:none !important; animation:none !important; }
+    .scheda.active{ display:block !important; }
+
+    .scheda-inner{ height:auto !important; display:block !important; padding:1.1rem 1rem 1.4rem !important; }
+    .scheda-head{ margin-bottom:1rem; }
+    .scheda-title{ font-size:1.5rem !important; }
+    .scheda-body{ height:auto !important; overflow:visible !important; margin-bottom:1.1rem; }
+    .scheda-foot{ padding-bottom:.5rem; }
+
+    /* Collapse every multi-column layout to a single fluid column */
+    .mg{ display:flex !important; flex-direction:column !important; height:auto !important; gap:1rem !important; }
+    .mg-row{ display:grid !important; grid-template-columns:1fr 1fr !important; height:auto !important; }
+
+    .card-photo{ aspect-ratio:16/9; }
+    .plate-page{ height:auto; }
+    .plate-wrap{ width:min(70vw,260px); min-width:180px; }
+    .plate-mode-toggle{ flex-wrap:wrap; justify-content:center; }
+    .ing-grid{ grid-template-columns:repeat(2,1fr); max-height:none; overflow-y:visible; }
+    .fat-col{ min-height:20rem; }
+    .fat-col-body{ overflow-y:visible; }
+
+    /* Larger touch targets + readable minimums */
+    .tb-btn{ min-height:48px; padding:.75rem 1.1rem !important; font-size:.9rem !important; }
+    .nav-item{ min-height:48px; }
+    .pill{ font-size:.85rem !important; padding:.4rem .8rem !important; }
+    .list-check li, .list-cross li{ font-size:.95rem !important; line-height:1.5 !important; gap:.6rem !important; }
+    .list-check svg, .list-cross svg{ width:1.2rem !important; height:1.2rem !important; }
+    .leader-chip{ padding:.7rem .9rem !important; }
+    .leader-chip b{ font-size:1rem !important; }
+    .leader-chip span{ font-size:.85rem !important; }
+    .leader-chip .pct{ font-size:1.3rem !important; }
+    .col-title{ font-size:1.08rem !important; }
+    .icon-badge{ width:2.8rem !important; height:2.8rem !important; }
+    .scheda-foot{ font-size:.78rem !important; }
+    .scheda-kicker{ font-size:.72rem !important; }
+    .ing-chip{ min-height:56px; font-size:.72rem; }
+    .flip-card{ height:5.2rem; }
+    .glass-btn{ width:2.3rem; height:3rem; }
+    [style*="font-size:.58rem"], [style*="font-size:.6rem"], [style*="font-size:.62rem"],
+    [style*="font-size:.63rem"], [style*="font-size:.64rem"], [style*="font-size:.65rem"],
+    [style*="font-size:.66rem"], [style*="font-size:.68rem"], [style*="font-size:.69rem"],
+    [style*="font-size:.7rem"], [style*="font-size:.72rem"], [style*="font-size:.74rem"],
+    [style*="font-size:.75rem"], [style*="font-size:.76rem"], [style*="font-size:.78rem"],
+    [style*="font-size:.79rem"], [style*="font-size:.8rem"], [style*="font-size:.82rem"],
+    [style*="font-size:.83rem"]
+    { font-size:.92rem !important; }
+
+    /* Toolbar becomes a compact sticky action bar */
+    .toolbar{
+      position:sticky; bottom:0; height:auto !important; flex-wrap:wrap;
+      gap:.5rem; padding:.6rem .75rem !important;
+      box-shadow:0 -8px 24px -16px rgba(21,44,33,.35);
+    }
+    .tb-group{ flex-wrap:wrap; }
+    .tb-center{ order:3; width:100%; }
+    .tb-counter{ font-size:.88rem; }
+  }
+
+  .scrim{ position:fixed; inset:0; background:rgba(21,44,33,.45); backdrop-filter:blur(2px); z-index:55; opacity:0; pointer-events:none; transition:opacity .35s var(--ease); }
+  .scrim.show{ opacity:1; pointer-events:auto; }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Chiudi il menu delle schede">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="sidebar-logo">
+        <div class="mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F4030" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-1.5 3-4 4.5-4 8a4 4 0 0 0 8 0c0-3.5-2.5-5-4-8Z"/><path d="M12 14v8"/><path d="M8.5 19c1-1 2-1 3.5-1s2.5 0 3.5 1"/></svg>
+        </div>
+        <div style="min-width:0;">
+          <div class="name">NUTRIMENTE</div>
+          <div class="sub">Studio di Nutrizione · Milano</div>
+        </div>
+      </div>
+      <div class="sidebar-kit-label">Prontuario visivo interattivo</div>
+      <div class="sidebar-kit-title">Kit di Educazione Nutrizionale</div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav" aria-label="Navigazione schede">
+      <button class="nav-item" data-goto="1">
+        <span class="n">01</span>
+        <span class="t"><b>Componi il Piatto</b><span>Builder interattivo</span></span>
+      </button>
+      <button class="nav-item" data-goto="2">
+        <span class="n">02</span>
+        <span class="t"><b>Fonti Proteiche</b><span>Animali, vegetali, latticini</span></span>
+      </button>
+      <button class="nav-item" data-goto="3">
+        <span class="n">03</span>
+        <span class="t"><b>I Grassi Buoni</b><span>Scegli e sostituisci</span></span>
+      </button>
+      <button class="nav-item" data-goto="4">
+        <span class="n">04</span>
+        <span class="t"><b>Arcobaleno Verdure</b><span>Colori e benefici</span></span>
+      </button>
+      <button class="nav-item" data-goto="5">
+        <span class="n">05</span>
+        <span class="t"><b>Intolleranza al Nichel</b><span>Cerca e filtra</span></span>
+      </button>
+      <button class="nav-item" data-goto="6">
+        <span class="n">06</span>
+        <span class="t"><b>Idratazione</b><span>Bicchieri e scala urine</span></span>
+      </button>
+      <button class="nav-item" data-goto="7">
+        <span class="n">07</span>
+        <span class="t"><b>Spuntini Smart</b><span>6 combinazioni fotografiche</span></span>
+      </button>
+      <button class="nav-item" data-goto="8">
+        <span class="n">08</span>
+        <span class="t"><b>Leggere l'Etichetta</b><span>Etichetta a scanner</span></span>
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <b>Dott.ssa Alessia Fortina</b>
+      Biologa Nutrizionista — uso riservato allo studio, ad esclusivo supporto della consulenza in presenza.
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ===================== SIDEBAR TOGGLE ===================== -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Apri/chiudi il menu delle schede">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>
+  </button>
+
+  <!-- ===================== STAGE ===================== -->
+  <main class="stage">
+    <nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navigazione schede (mobile)">
+      <button class="mtab" data-goto="1"><span class="n">01</span> Piatto</button>
+      <button class="mtab" data-goto="2"><span class="n">02</span> Proteiche</button>
+      <button class="mtab" data-goto="3"><span class="n">03</span> Grassi</button>
+      <button class="mtab" data-goto="4"><span class="n">04</span> Arcobaleno</button>
+      <button class="mtab" data-goto="5"><span class="n">05</span> Nichel</button>
+      <button class="mtab" data-goto="6"><span class="n">06</span> Idratazione</button>
+      <button class="mtab" data-goto="7"><span class="n">07</span> Spuntini</button>
+      <button class="mtab" data-goto="8"><span class="n">08</span> Etichetta</button>
+    </nav>
+    <div class="stage-inner">
+      <div class="slide-viewport" id="slideViewport">
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 1 — BUILDER INTERATTIVO DEL PIATTO -->
+        <!-- ============================================================ -->
+        <section class="scheda active" data-slide="1" id="scheda-1">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 01 · Componi il tuo pasto</div>
+                <h2 class="scheda-title">Il Piatto Sano, <em>passo dopo passo</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body" style="height:100%; min-height:0;">
+              <div class="plate-page">
+                <div class="plate-grid">
+
+                  <!-- LEFT: big interactive plate -->
+                  <div class="plate-left">
+                    <div class="btn-toggle plate-mode-toggle" id="plateModeToggle">
+                      <button data-mode="sedentario" class="on"><b>Sedentario</b><span>50-25-25</span></button>
+                      <button data-mode="sportivo"><b>Giorno Sport</b><span>35-40-25</span></button>
+                    </div>
+
+                    <div class="plate-wrap">
+                      <svg viewBox="0 0 200 200">
+                        <circle class="plate-ring" cx="100" cy="100" r="98"/>
+                        <g id="plateSectors"></g>
+                        <circle class="plate-center-hole" id="plateCenterHole" cx="100" cy="100" r="34"/>
+                        <text id="plateCenterIco" class="plate-center-ico" x="100" y="93" text-anchor="middle" font-size="20">🟢</text>
+                        <text id="plateCenterPct" x="100" y="112" text-anchor="middle" font-family="Fraunces, serif" font-weight="700" font-size="13" fill="#26493a"></text>
+                      </svg>
+                      <div class="plate-labels" id="plateLabels"></div>
+                    </div>
+
+                    <div class="balance-track" id="balanceTrack">
+                      <div class="balance-seg" data-cat="verdure"><i></i></div>
+                      <div class="balance-seg" data-cat="carbo"><i></i></div>
+                      <div class="balance-seg" data-cat="proteine"><i></i></div>
+                    </div>
+
+                    <div class="balance-badge" id="balanceBadge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 2c3 4 5 6 5 10a5 5 0 0 1-10 0c0-4 2-6 5-10Z"/></svg>
+                      <span id="balanceText">Seleziona almeno una fonte proteica e delle verdure…</span>
+                    </div>
+                  </div>
+
+                  <!-- RIGHT: ingredient pantry -->
+                  <div class="plate-right">
+                    <div class="ing-tabs" id="ingTabs">
+                      <button class="ing-tab on" data-cat="verdure">🥦 Verdure</button>
+                      <button class="ing-tab" data-cat="carbo">🍚 Carboidrati</button>
+                      <button class="ing-tab" data-cat="proteine">🐟 Proteine</button>
+                      <button class="ing-tab" data-cat="grassi">🟢 Grassi sani</button>
+                    </div>
+                    <div class="ing-grid" id="ingGrid"></div>
+                    <div class="nutrimente-tip">
+                      <b><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-1.5 3-4 4.5-4 8a4 4 0 0 0 8 0c0-3.5-2.5-5-4-8Z"/><path d="M12 14v8"/></svg>La Regola di NUTRIMENTE</b>
+                      <p>Consiglio pratico: comincia sempre il pasto dalle verdure. Le fibre rallentano i picchi glicemici e favoriscono il senso di pienezza prima dei carboidrati.</p>
+                    </div>
+                    <button class="demo-plate-btn" id="demoPlateBtn">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3m0 12v3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M3 12h3m12 0h3M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>
+                      Esempio Piatto Ideale
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 1 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 2 — FONTI PROTEICHE -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="2" id="scheda-2">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 02 · Macronutrienti</div>
+                <h2 class="scheda-title">Guida alle <em>Fonti Proteiche</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.7rem,1.6vw,1.3rem); height:100%;">
+
+              <div class="g-card focusable" style="display:flex; flex-direction:column; border-top:.35rem solid var(--brand-600);">
+                <div class="card-photo"><img src="https://images.unsplash.com/photo-1508170754725-6e9a5cfbcabf?auto=format&fit=crop&w=700&q=80" alt="Salmone grigliato con insalata" loading="eager" decoding="async"/></div>
+                <div style="padding:.7rem .95rem; display:flex; flex-direction:column; flex:1;">
+                <div class="col-title" style="color:var(--brand-700);">
+                  <span class="icon-badge" style="background:var(--brand-100);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16s2-8 8-8 8 4 8 8-3 5-8 5-8-2-8-5Z"/><path d="M13 8c1-2 2.5-3 4.5-3"/></svg></span>
+                  Animali magre
+                </div>
+                <ul style="margin-top:.5rem; display:flex; flex-direction:column; gap:.38rem;">
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Pesce azzurro</span><span class="pill pill-green">2-3×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Pesce bianco</span><span class="pill pill-green">2×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Carni bianche</span><span class="pill pill-green">2-3×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Uova</span><span class="pill pill-green">2-4/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Carne rossa magra</span><span class="pill pill-gold">max 1×/sett.</span></li>
+                </ul>
+                <div style="margin-top:auto; padding-top:.45rem; font-size:.68rem; color:var(--brand-500);">Alici, sgombro, sardine, merluzzo, orata, pollo, tacchino, coniglio.</div>
+                </div>
+              </div>
+
+              <div class="g-card focusable" style="display:flex; flex-direction:column; border-top:.35rem solid var(--gold);">
+                <div class="card-photo"><img src="https://images.unsplash.com/photo-1708436477916-f97964f3ccf1?auto=format&fit=crop&w=700&q=80" alt="Ciotole di legumi misti, lenticchie e ceci" loading="eager" decoding="async"/></div>
+                <div style="padding:.7rem .95rem; display:flex; flex-direction:column; flex:1;">
+                <div class="col-title" style="color:#8a6410;">
+                  <span class="icon-badge" style="background:#fdf0cf;"><svg viewBox="0 0 24 24" fill="none" stroke="#8a6410" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-1.5 3-4 4.5-4 8a4 4 0 0 0 8 0c0-3.5-2.5-5-4-8Z"/><path d="M12 14v8"/></svg></span>
+                  Vegetali
+                </div>
+                <ul style="margin-top:.5rem; display:flex; flex-direction:column; gap:.38rem;">
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Legumi</span><span class="pill pill-green">3-4×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Tofu e tempeh</span><span class="pill pill-green">2-3×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Quinoa</span><span class="pill pill-green">1-2×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Edamame</span><span class="pill pill-gold">occasionale</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Seitan</span><span class="pill pill-gold">occasionale</span></li>
+                </ul>
+                <div style="margin-top:auto; padding-top:.45rem; font-size:.68rem; color:var(--brand-500);">Ceci, lenticchie, fagioli — ottime anche in abbinamento ai cereali.</div>
+                </div>
+              </div>
+
+              <div class="g-card focusable" style="display:flex; flex-direction:column; border-top:.35rem solid var(--apricot-500);">
+                <div class="card-photo"><img src="https://images.unsplash.com/photo-1725883691833-97103ecd582a?auto=format&fit=crop&w=700&q=80" alt="Yogurt greco con granola e mirtilli" loading="eager" decoding="async"/></div>
+                <div style="padding:.7rem .95rem; display:flex; flex-direction:column; flex:1;">
+                <div class="col-title" style="color:var(--apricot-600);">
+                  <span class="icon-badge" style="background:var(--apricot-100);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--apricot-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4.5l3 4A5 5 0 0 1 13.5 18h-3A5 5 0 0 1 6 10.5l3-4Z"/><path d="M8.5 13h7"/></svg></span>
+                  Latticini magri
+                </div>
+                <ul style="margin-top:.5rem; display:flex; flex-direction:column; gap:.38rem;">
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Yogurt greco/bianco</span><span class="pill pill-green">quotidiano</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Ricotta / fiocchi</span><span class="pill pill-green">2-3×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Formaggi freschi light</span><span class="pill pill-green">2×/sett.</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Latte p. scremato</span><span class="pill pill-gold">se tollerato</span></li>
+                  <li style="display:flex; align-items:center; justify-content:space-between; gap:.5rem;"><span style="font-size:.79rem; font-weight:600;">Skyr</span><span class="pill pill-green">alternativa</span></li>
+                </ul>
+                <div style="margin-top:auto; padding-top:.45rem; font-size:.68rem; color:var(--brand-500);">Da preferire freschi e magri, senza zuccheri aggiunti.</div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 2 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 3 — GRASSI: 3 COLONNE + SCAMBIO INTELLIGENTE -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="3" id="scheda-3">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 03 · Macronutrienti</div>
+                <h2 class="scheda-title">Grassi: Quali Scegliere, <em>Quali Sostituire</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.6rem,1.4vw,1rem); height:100%;">
+
+              <!-- VERDE -->
+              <div class="fat-col" style="background:linear-gradient(180deg,var(--brand-50),#fff 40%); border:1px solid var(--brand-100);">
+                <div class="card-photo" style="aspect-ratio:16/8;"><img src="https://images.unsplash.com/photo-1601039641847-7857b994d704?auto=format&fit=crop&w=600&q=80" alt="Avocado tagliato a metà" loading="eager" decoding="async"/></div>
+                <div class="fat-col-head">
+                  <div style="display:flex; align-items:center; gap:.4rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    <b style="font-family:'Fraunces',serif; color:var(--brand-700); font-size:.95rem;">Da preferire</b>
+                  </div>
+                  <span style="font-size:.66rem; color:var(--brand-500);">consumo libero, ogni giorno</span>
+                </div>
+                <div class="fat-col-body">
+                  <span class="pill" style="background:#fff; color:var(--brand-700); border:1px solid var(--brand-200);">Olio EVO a crudo</span>
+                  <span class="pill" style="background:#fff; color:var(--brand-700); border:1px solid var(--brand-200);">Frutta secca (noci, mandorle)</span>
+                  <span class="pill" style="background:#fff; color:var(--brand-700); border:1px solid var(--brand-200);">Semi oleosi (lino, chia)</span>
+                  <span class="pill" style="background:#fff; color:var(--brand-700); border:1px solid var(--brand-200);">Avocado</span>
+                  <span class="pill" style="background:#fff; color:var(--brand-700); border:1px solid var(--brand-200);">Pesce azzurro (omega-3)</span>
+                </div>
+              </div>
+
+              <!-- GIALLO -->
+              <div class="fat-col" style="background:linear-gradient(180deg,#fdf6e3,#fff 40%); border:1px solid #f3dfa0;">
+                <div class="card-photo" style="aspect-ratio:16/8;"><img src="https://images.unsplash.com/photo-1589985269102-ff38adf6f00d?auto=format&fit=crop&w=600&q=80" alt="Cubetti di burro in una coppa di vetro" loading="eager" decoding="async"/></div>
+                <div class="fat-col-head">
+                  <div style="display:flex; align-items:center; gap:.4rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6410" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+                    <b style="font-family:'Fraunces',serif; color:#8a6410; font-size:.95rem;">Con moderazione</b>
+                  </div>
+                  <span style="font-size:.66rem; color:var(--brand-500);">porzioni piccole, poche volte a settimana</span>
+                </div>
+                <div class="fat-col-body">
+                  <span class="pill" style="background:#fff; color:#8a6410; border:1px solid #f3dfa0;">Burro di qualità (in cottura)</span>
+                  <span class="pill" style="background:#fff; color:#8a6410; border:1px solid #f3dfa0;">Formaggi stagionati</span>
+                  <span class="pill" style="background:#fff; color:#8a6410; border:1px solid #f3dfa0;">Olio di cocco (occasionale)</span>
+                  <span class="pill" style="background:#fff; color:#8a6410; border:1px solid #f3dfa0;">Cioccolato fondente &gt;70%</span>
+                </div>
+              </div>
+
+              <!-- ROSSO + SCAMBIO INTELLIGENTE -->
+              <div class="fat-col" style="background:linear-gradient(180deg,#fcebe8,#fff 40%); border:1px solid #f3d3ce;">
+                <div class="card-photo" style="aspect-ratio:16/8;"><img src="https://images.unsplash.com/photo-1460306855393-0410f61241c7?auto=format&fit=crop&w=600&q=80" alt="Hamburger e patatine fritte" loading="eager" decoding="async"/></div>
+                <div class="fat-col-head">
+                  <div style="display:flex; align-items:center; gap:.4rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <b style="font-family:'Fraunces',serif; color:var(--coral); font-size:.95rem;">🔄 Tocca per lo scambio smart</b>
+                  </div>
+                  <span style="font-size:.66rem; color:var(--brand-500);">l'alternativa consigliata dalla Dott.ssa</span>
+                </div>
+                <div class="fat-col-body" id="swapList">
+                  <div class="flip-card" data-swap="1">
+                    <div class="flip-inner">
+                      <div class="flip-face flip-front"><span class="flip-ico">🥪</span><div><b>Maionese industriale</b><span>tocca per l'alternativa</span></div></div>
+                      <div class="flip-face flip-back"><span class="flip-ico">🥑</span><div><b>→ Guacamole espresso</b><span>avocado, lime, sale</span></div></div>
+                    </div>
+                  </div>
+                  <div class="flip-card" data-swap="2">
+                    <div class="flip-inner">
+                      <div class="flip-face flip-front"><span class="flip-ico">🧈</span><div><b>Burro sul pane a colazione</b><span>tocca per l'alternativa</span></div></div>
+                      <div class="flip-face flip-back"><span class="flip-ico">🌰</span><div><b>→ Burro di mandorle 100%</b><span>senza zuccheri aggiunti</span></div></div>
+                    </div>
+                  </div>
+                  <div class="flip-card" data-swap="3">
+                    <div class="flip-inner">
+                      <div class="flip-face flip-front"><span class="flip-ico">🧴</span><div><b>Margarina da cucina</b><span>tocca per l'alternativa</span></div></div>
+                      <div class="flip-face flip-back"><span class="flip-ico">🟢</span><div><b>→ Olio EVO a crudo</b><span>aggiunto a fine cottura</span></div></div>
+                    </div>
+                  </div>
+                  <div class="flip-card" data-swap="4">
+                    <div class="flip-inner">
+                      <div class="flip-face flip-front"><span class="flip-ico">🥛</span><div><b>Panna da cucina</b><span>tocca per l'alternativa</span></div></div>
+                      <div class="flip-face flip-back"><span class="flip-ico">🍦</span><div><b>→ Yogurt greco intero</b><span>stessa cremosità, più proteine</span></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 3 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 4 — ARCOBALENO VERDURE -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="4" id="scheda-4">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 04 · Micronutrienti</div>
+                <h2 class="scheda-title">L'Arcobaleno delle <em>Verdure</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(.5rem,1.2vw,.7rem); height:100%;">
+
+              <div class="g-card rainbow-card focusable" data-color="arancione" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1601980605894-d2cd776749a5?auto=format&fit=crop&w=500&q=80" alt="Carote arancioni" loading="eager" decoding="async"/></div>
+                <div style="height:.4rem; background:linear-gradient(90deg,#F6C343,#eda32e);"></div>
+                <div style="padding:.7rem .7rem; display:flex; flex-direction:column; gap:.4rem; flex:1;">
+                  <b style="font-family:'Fraunces',serif; font-size:.9rem; color:#8a6410;">Arancione / Giallo</b>
+                  <span style="font-size:.68rem; color:var(--brand-500); line-height:1.35;">🥕 Carote · 🎃 Zucca · 🌶️ Peperoni gialli · 🍑 Albicocche</span>
+                  <span class="pill pill-gold" style="align-self:flex-start; font-size:.6rem;">Vit. A · Beta-carotene</span>
+                  <div class="target-badge" style="background:#fdf0cf; color:#8a6410; margin-top:auto;">👁️ Occhi &amp; Pelle</div>
+                </div>
+              </div>
+
+              <div class="g-card rainbow-card focusable" data-color="rosso" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1701796894012-acedde75b9ed?auto=format&fit=crop&w=500&q=80" alt="Ciotole di pomodorini e peperoni" loading="eager" decoding="async"/></div>
+                <div style="height:.4rem; background:linear-gradient(90deg,var(--coral),#c8432f);"></div>
+                <div style="padding:.7rem .7rem; display:flex; flex-direction:column; gap:.4rem; flex:1;">
+                  <b style="font-family:'Fraunces',serif; font-size:.9rem; color:var(--coral);">Rosso</b>
+                  <span style="font-size:.68rem; color:var(--brand-500); line-height:1.35;">🍅 Pomodori · 🌶️ Peperoni rossi · 🍉 Anguria · 🍓 Fragole</span>
+                  <span class="pill pill-coral" style="align-self:flex-start; font-size:.6rem;">Licopene · Vit. C</span>
+                  <div class="target-badge" style="background:#fbe2de; color:var(--coral); margin-top:auto;">❤️ Cuore &amp; Antiossidante</div>
+                </div>
+              </div>
+
+              <div class="g-card rainbow-card focusable" data-color="verde" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1648422709905-8c3d148974e1?auto=format&fit=crop&w=500&q=80" alt="Verdure a foglia verde saltate in padella" loading="eager" decoding="async"/></div>
+                <div style="height:.4rem; background:linear-gradient(90deg,var(--brand-700),var(--brand-900));"></div>
+                <div style="padding:.7rem .7rem; display:flex; flex-direction:column; gap:.4rem; flex:1;">
+                  <b style="font-family:'Fraunces',serif; font-size:.9rem; color:var(--brand-800);">Verde scuro</b>
+                  <span style="font-size:.68rem; color:var(--brand-500); line-height:1.35;">🥬 Spinaci · 🥦 Broccoli · 🌿 Rucola · 🟢 Piselli</span>
+                  <span class="pill pill-green" style="align-self:flex-start; font-size:.6rem;">Folati · Vit. K · Ferro</span>
+                  <div class="target-badge" style="background:var(--brand-100); color:var(--brand-700); margin-top:auto;">🌱 Intestino &amp; Ossa</div>
+                </div>
+              </div>
+
+              <div class="g-card rainbow-card focusable" data-color="viola" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1565585947268-dc5194ae29de?auto=format&fit=crop&w=500&q=80" alt="Mano che raccoglie mirtilli da una ciotola" loading="eager" decoding="async"/></div>
+                <div style="height:.4rem; background:linear-gradient(90deg,#7a5aa8,#4b3170);"></div>
+                <div style="padding:.7rem .7rem; display:flex; flex-direction:column; gap:.4rem; flex:1;">
+                  <b style="font-family:'Fraunces',serif; font-size:.9rem; color:#5c3a8a;">Viola / Blu</b>
+                  <span style="font-size:.68rem; color:var(--brand-500); line-height:1.35;">🍆 Melanzane · 🔵 Mirtilli · 🥬 Cavolo viola · 🍇 Uva nera</span>
+                  <span class="pill" style="align-self:flex-start; font-size:.6rem; background:#ece4f5; color:#5c3a8a;">Antocianine</span>
+                  <div class="target-badge" style="background:#ece4f5; color:#5c3a8a; margin-top:auto;">🧠 Microcircolo &amp; Cervello</div>
+                </div>
+              </div>
+
+              <div class="g-card rainbow-card focusable" data-color="bianco" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1578922426864-d99c48111d19?auto=format&fit=crop&w=500&q=80" alt="Cipolle bianche appena raccolte" loading="eager" decoding="async"/></div>
+                <div style="height:.4rem; background:linear-gradient(90deg,#d8d2c4,#b7b0a0);"></div>
+                <div style="padding:.7rem .7rem; display:flex; flex-direction:column; gap:.4rem; flex:1;">
+                  <b style="font-family:'Fraunces',serif; font-size:.9rem; color:#7a7364;">Bianco</b>
+                  <span style="font-size:.68rem; color:var(--brand-500); line-height:1.35;">🧅 Cipolle · 🧄 Aglio · 🥔 Finocchi · 🥦 Cavolfiore</span>
+                  <span class="pill" style="align-self:flex-start; font-size:.6rem; background:#f2ede4; color:#7a7364;">Allisina · Potassio</span>
+                  <div class="target-badge" style="background:#f2ede4; color:#7a7364; margin-top:auto;">🛡️ Difese Immunitarie</div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot" style="align-items:center;">
+              <span id="rainbowFoot"><b>NUTRIMENTE</b> · un colore diverso ogni giorno della settimana</span>
+              <span>Scheda 4 / 8</span>
+            </footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 5 — NICHEL: CATEGORIE + RICERCA -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="5" id="scheda-5">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 05 · Guida clinica</div>
+                <h2 class="scheda-title">Intolleranza al <em>Nichel</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:flex; flex-direction:column; gap:.55rem; height:100%;">
+              <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">
+                <div class="nichel-filters" id="nichelFilters">
+                  <button class="nichel-filter on" data-cat="tutti">Tutti</button>
+                  <button class="nichel-filter" data-cat="colazione">☕ Colazione &amp; Dolci</button>
+                  <button class="nichel-filter" data-cat="primi">🍝 Primi Piatti</button>
+                  <button class="nichel-filter" data-cat="secondi">🍗 Secondi</button>
+                  <button class="nichel-filter" data-cat="frutta">🍎 Frutta &amp; Verdura</button>
+                  <button class="nichel-filter" data-cat="cottura">🍳 Cottura &amp; Pentole</button>
+                </div>
+                <input type="text" class="nichel-search" id="nichelSearch" placeholder="🔍 Cerca un alimento: es. pomodori, pasta…" />
+              </div>
+
+              <div class="mg-row" style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(.6rem,1.4vw,1rem); flex:1; min-height:0;">
+                <div class="g-card" style="display:flex; flex-direction:column; overflow:hidden; border-color:var(--brand-200);">
+                  <div style="background:var(--brand-600); color:#fff; padding:.6rem 1rem; display:flex; align-items:center; gap:.55rem; flex-shrink:0;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    <b style="font-family:'Fraunces',serif; font-size:.9rem;">Via libera — basso contenuto di nichel</b>
+                  </div>
+                  <div style="padding:.7rem .9rem; display:flex; flex-wrap:wrap; gap:.35rem; align-content:flex-start; flex:1; overflow-y:auto;" id="nichelGreen">
+                    <span class="pill nichel-pill" data-cat="colazione" data-name="pane bianco lievito madre" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Pane bianco / lievito madre</span>
+                    <span class="pill nichel-pill" data-cat="colazione" data-name="miele" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Miele</span>
+                    <span class="pill nichel-pill" data-cat="primi" data-name="riso" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Riso</span>
+                    <span class="pill nichel-pill" data-cat="primi" data-name="pasta bianca" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Pasta bianca</span>
+                    <span class="pill nichel-pill" data-cat="secondi" data-name="carne magra" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Carne magra</span>
+                    <span class="pill nichel-pill" data-cat="secondi" data-name="pesce bianco fresco" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Pesce bianco fresco</span>
+                    <span class="pill nichel-pill" data-cat="secondi" data-name="formaggi freschi" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Formaggi freschi</span>
+                    <span class="pill nichel-pill" data-cat="secondi" data-name="yogurt" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Yogurt</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="mele sbucciate" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Mele sbucciate</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="banane" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Banane</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="zucchine" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Zucchine</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="cetrioli" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Cetrioli</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="patate sbucciate" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Patate sbucciate</span>
+                    <span class="pill nichel-pill" data-cat="cottura" data-name="pentole vetro ceramica acciaio inox" style="background:var(--brand-50); color:var(--brand-700); border:1px solid var(--brand-200);">Pentole in vetro / ceramica / inox</span>
+                  </div>
+                </div>
+
+                <div class="g-card" style="display:flex; flex-direction:column; overflow:hidden; border-color:#f3d3ce;">
+                  <div style="background:var(--coral); color:#fff; padding:.6rem 1rem; display:flex; align-items:center; gap:.55rem; flex-shrink:0;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <b style="font-family:'Fraunces',serif; font-size:.9rem;">Da evitare — alto tenore di nichel</b>
+                  </div>
+                  <div style="padding:.7rem .9rem; display:flex; flex-wrap:wrap; gap:.35rem; align-content:flex-start; flex:1; overflow-y:auto;" id="nichelRed">
+                    <span class="pill nichel-pill" data-cat="colazione" data-name="cacao e cioccolato" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Cacao e cioccolato</span>
+                    <span class="pill nichel-pill" data-cat="colazione" data-name="lievito in polvere" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Lievito in polvere</span>
+                    <span class="pill nichel-pill" data-cat="colazione" data-name="te nero" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Tè nero</span>
+                    <span class="pill nichel-pill" data-cat="primi" data-name="cereali integrali avena" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Cereali integrali / avena</span>
+                    <span class="pill nichel-pill" data-cat="primi" data-name="legumi secchi" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Legumi secchi</span>
+                    <span class="pill nichel-pill" data-cat="primi" data-name="legumi in scatola" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Legumi in scatola</span>
+                    <span class="pill nichel-pill" data-cat="secondi" data-name="crostacei e molluschi" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Crostacei e molluschi</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="pomodori" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Pomodori</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="spinaci" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Spinaci</span>
+                    <span class="pill nichel-pill" data-cat="frutta" data-name="frutta secca" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Frutta secca</span>
+                    <span class="pill nichel-pill" data-cat="cottura" data-name="pentole alluminio nichel" style="background:#fcebe8; color:var(--coral); border:1px solid #f3d3ce;">Pentole in alluminio/nichel</span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="nichelEmpty" style="display:none; align-items:center; gap:.6rem; background:var(--apricot-100); border:1px solid var(--apricot-300); border-radius:.8rem; padding:.55rem .9rem;">
+                <span style="font-size:.75rem; color:var(--apricot-600); font-weight:600;">Nessun alimento trovato — prova con un altro nome o categoria.</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:.6rem; background:var(--apricot-100); border:1px solid var(--apricot-300); border-radius:.8rem; padding:.5rem .85rem;" id="nichelDisclaimer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apricot-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+                <span style="font-size:.7rem; color:var(--apricot-600); font-weight:600; line-height:1.35;">Percorso sempre sotto supervisione della Dott.ssa Fortina: eliminazione seguita da reintroduzione controllata e graduale.</span>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 5 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 6 — IDRATAZIONE INTERATTIVA -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="6" id="scheda-6">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 06 · Idratazione</div>
+                <h2 class="scheda-title">Fabbisogno Idrico &amp; <em>Scala delle Urine</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(1rem,2.2vw,2rem); height:100%;">
+
+              <!-- Water calculator -->
+              <div style="display:flex; flex-direction:column; gap:.55rem; justify-content:center;">
+                <div class="card-photo" style="aspect-ratio:16/7; border-radius:1rem; box-shadow:var(--shadow-card);"><img src="https://images.unsplash.com/photo-1695652552066-46fc552ccfec?auto=format&fit=crop&w=700&q=80" alt="Caraffa che versa acqua in un bicchiere" loading="eager" decoding="async"/></div>
+                <div style="display:flex; gap:.35rem;" id="waterTabs">
+                  <button class="wtab" data-level="0" style="flex:1; padding:.45rem; border-radius:.7rem; border:1px solid var(--brand-200); background:#fff; font-size:.7rem; font-weight:700; color:var(--brand-700);">Sedentario</button>
+                  <button class="wtab" data-level="1" style="flex:1; padding:.45rem; border-radius:.7rem; border:1px solid var(--brand-200); background:#fff; font-size:.7rem; font-weight:700; color:var(--brand-700);">Moderatamente attivo</button>
+                  <button class="wtab" data-level="2" style="flex:1; padding:.45rem; border-radius:.7rem; border:1px solid var(--brand-200); background:#fff; font-size:.7rem; font-weight:700; color:var(--brand-700);">Molto attivo</button>
+                </div>
+
+                <div class="g-card" style="padding:.8rem .95rem; display:flex; flex-direction:column; gap:.5rem;">
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:.5rem;">
+                    <span id="waterCount" style="font-family:'Fraunces',serif; font-size:1.6rem; font-weight:700; color:var(--brand-700);">0 / 7</span>
+                    <span id="waterMsg" style="font-size:.74rem; color:var(--brand-500); font-weight:600;">Tocca i bicchieri per registrare quanto hai bevuto</span>
+                  </div>
+                  <div id="glassRow" style="display:flex; gap:.3rem; flex-wrap:wrap;"></div>
+                </div>
+              </div>
+
+              <!-- Urine scale slider -->
+              <div style="display:flex; flex-direction:column; gap:.55rem; justify-content:center;">
+                <div class="col-title" style="color:var(--brand-700);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 5 6 5 10a5 5 0 0 1-10 0c0-4 2-6 5-10Z"/></svg>
+                  Trascina lo slider: che colore hanno le tue urine?
+                </div>
+                <div class="urine-slider-wrap">
+                  <div class="urine-track"></div>
+                  <input type="range" min="0" max="100" value="12" class="urine-range" id="urineRange" aria-label="Scala colore urine"/>
+                </div>
+                <div class="g-card" style="padding:.8rem .95rem; display:flex; flex-direction:column; gap:.4rem; align-items:center; text-align:center;">
+                  <span class="pill" id="urineZonePill" style="font-size:.72rem;">1-3 · Ottimale</span>
+                  <b id="urineMsg" style="font-family:'Fraunces',serif; font-size:1.05rem; color:var(--brand-700);">Idratazione Perfetta</b>
+                  <span id="urineDetail" style="font-size:.72rem; color:var(--brand-500); line-height:1.35;">Trasparente / giallo paglierino chiaro: continua così.</span>
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 6 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 7 — SPUNTINI FOTOGRAFICI -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="7" id="scheda-7">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 07 · Fuori pasto</div>
+                <h2 class="scheda-title">Guida agli <em>Spuntini Intelligenti</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(2,1fr); gap:clamp(.55rem,1.3vw,.9rem); height:100%;">
+
+              <!-- 1 Yogurt -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1627308594190-a057cd4bfac8?auto=format&fit=crop&w=500&q=80" alt="Coppe di yogurt con frutti di bosco e granola" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Yogurt greco + frutti di bosco</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:85%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:55%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:25%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ 2 minuti</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Spezza-fame ufficio</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2 Mela -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=500&q=80" alt="Mele verdi intere e affettate" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Mela + burro di mandorle</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:30%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:80%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:65%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ Zero cottura</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Pre-workout</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3 Hummus -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1637949385162-e416fb15b2ce?auto=format&fit=crop&w=500&q=80" alt="Hummus con olio EVO in una ciotola" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Hummus + carote e sedano</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:55%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:75%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:40%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ Zero cottura</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Spezza-fame ufficio</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4 Uovo -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1557965983-5b9fc9ab9014?auto=format&fit=crop&w=500&q=80" alt="Uova sode tagliate a metà su un piatto" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Uovo sodo + pomodorini</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:90%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:20%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:45%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ 1 minuto</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Post-allenamento</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5 Gallette -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1442604699113-7d805614c476?auto=format&fit=crop&w=500&q=80" alt="Gallette croccanti con crema di formaggio fresco" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Gallette integrali + fiocchi di latte</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:65%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:40%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:15%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ Zero cottura</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Post-allenamento</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 6 Frutta secca -->
+              <div class="g-card focusable" style="display:flex; flex-direction:column; overflow:hidden;">
+                <div class="card-photo" style="aspect-ratio:16/5;"><img src="https://images.unsplash.com/photo-1543158181-1274e5362710?auto=format&fit=crop&w=500&q=80" alt="Mix di frutta secca e frutti rossi essiccati" loading="eager" decoding="async"/></div>
+                <div class="snack-body">
+                  <b class="snack-title">Frutta secca + frutto fresco</b>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Proteine</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:40%; background:var(--brand-600);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Fibre</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:60%; background:var(--gold);"></div></div></div>
+                  <div class="macro-bar-row"><span style="width:3.1rem;">Grassi</span><div class="macro-bar-track"><div class="macro-bar-fill" style="width:85%; background:var(--apricot-500);"></div></div></div>
+                  <div class="snack-badges">
+                    <span class="pill pill-green" style="font-size:.56rem;">⏱ Zero cottura</span>
+                    <span class="pill pill-apricot" style="font-size:.56rem;">Pre-workout</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 7 / 8</span></footer>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SCHEDA 8 — ETICHETTA A SCANNER/HOTSPOT -->
+        <!-- ============================================================ -->
+        <section class="scheda" data-slide="8" id="scheda-8">
+          <div class="scheda-inner">
+            <header class="scheda-head">
+              <div>
+                <div class="scheda-kicker"><span class="dot"></span>Scheda 08 · Spesa consapevole</div>
+                <h2 class="scheda-title">Come Leggere <em>l'Etichetta Nutrizionale</em></h2>
+              </div>
+              <div class="scheda-badge"><span class="mark"></span>NUTRIMENTE</div>
+            </header>
+
+            <div class="scheda-body mg" style="display:grid; grid-template-columns:1fr 1.25fr; gap:clamp(1rem,2.2vw,2rem); height:100%;">
+
+              <!-- Mock label -->
+              <div style="display:flex; flex-direction:column; justify-content:center;">
+                <div class="g-card" style="padding:0; overflow:hidden;">
+                  <div style="background:var(--brand-800); color:#fff; padding:.55rem .9rem; font-size:.68rem; font-weight:700; letter-spacing:.03em; display:flex; justify-content:space-between;">
+                    <span>VALORI NUTRIZIONALI</span><span style="opacity:.8;">per 100g</span>
+                  </div>
+                  <table style="width:100%; border-collapse:collapse; font-size:.74rem;" id="labelTable">
+                    <tr class="label-row" data-hot="porzione" style="border-bottom:1px solid var(--brand-100);"><td style="padding:.3rem .9rem; font-weight:700;">Energia</td><td style="padding:.3rem .9rem; text-align:right;">450 kcal</td></tr>
+                    <tr style="border-bottom:1px solid var(--brand-100);"><td style="padding:.3rem .9rem; font-weight:700;">Grassi</td><td style="padding:.3rem .9rem; text-align:right;">18 g</td></tr>
+                    <tr class="label-row" data-hot="saturi" style="border-bottom:1px solid var(--brand-100); background:#fcebe8;"><td style="padding:.3rem .9rem .3rem 1.4rem;">di cui saturi</td><td style="padding:.3rem .9rem; text-align:right; color:var(--coral); font-weight:700;">9 g</td></tr>
+                    <tr style="border-bottom:1px solid var(--brand-100);"><td style="padding:.3rem .9rem; font-weight:700;">Carboidrati</td><td style="padding:.3rem .9rem; text-align:right;">58 g</td></tr>
+                    <tr class="label-row" data-hot="zuccheri" style="border-bottom:1px solid var(--brand-100); background:#fcebe8;"><td style="padding:.3rem .9rem .3rem 1.4rem;">di cui zuccheri</td><td style="padding:.3rem .9rem; text-align:right; color:var(--coral); font-weight:700;">32 g</td></tr>
+                    <tr class="label-row" data-hot="fibre" style="border-bottom:1px solid var(--brand-100); background:#eaf3ee;"><td style="padding:.3rem .9rem;">Fibre</td><td style="padding:.3rem .9rem; text-align:right; color:var(--brand-600); font-weight:700;">2 g</td></tr>
+                    <tr style="border-bottom:1px solid var(--brand-100);"><td style="padding:.3rem .9rem; font-weight:700;">Proteine</td><td style="padding:.3rem .9rem; text-align:right;">6 g</td></tr>
+                    <tr class="label-row" data-hot="sale" style="background:#fcebe8;"><td style="padding:.3rem .9rem;">Sale</td><td style="padding:.3rem .9rem; text-align:right; color:var(--coral); font-weight:700;">1,1 g</td></tr>
+                  </table>
+                  <div class="label-row" data-hot="ingredienti" style="padding:.6rem .9rem; border-top:1px dashed var(--brand-200); font-size:.63rem; color:var(--brand-500); line-height:1.4;">
+                    <b style="color:var(--brand-700);">Ingredienti:</b> farina di frumento, zucchero, sciroppo di glucosio-fruttosio, olio di semi, cacao, destrosio, agente lievitante, aromi.
+                  </div>
+                </div>
+                <p style="font-size:.62rem; color:var(--brand-500); margin-top:.4rem; text-align:center;">👆 Tocca una voce dell'etichetta per scoprire il trucco del produttore</p>
+              </div>
+
+              <!-- Hotspot tricks -->
+              <div style="display:flex; flex-direction:column; gap:.35rem; justify-content:center;" id="trickList">
+                <div class="trick-card active" data-trick="porzione" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--brand-700); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">1</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Porzione di riferimento:</b> spesso più piccola di quanto si consumi davvero. <i>Trucco:</i> confronta sempre i valori "per 100g", non solo "per porzione".</p>
+                </div>
+                <div class="trick-card" data-trick="ingredienti" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--brand-700); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">2</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Ordine ingredienti:</b> elencati in ordine decrescente di quantità. <i>Trucco:</i> se zucchero/farina raffinata sono tra i primi 3, il prodotto è poco equilibrato.</p>
+                </div>
+                <div class="trick-card" data-trick="zuccheri" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--coral); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">3</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Zuccheri:</b> meglio sotto 5g/100g per prodotti non dolci. <i>Trucco del produttore:</i> divide lo zucchero in più nomi (destrosio, sciroppo di glucosio-fruttosio, maltosio) per non farlo comparire primo in lista.</p>
+                </div>
+                <div class="trick-card" data-trick="sale" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--coral); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">4</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Sale:</b> meglio sotto 1,5g/100g (≈0,6g di sodio). <i>Trucco:</i> attenzione a "sodio" scritto invece di "sale" — moltiplica il sodio ×2,5 per ottenere il sale reale.</p>
+                </div>
+                <div class="trick-card" data-trick="saturi" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--coral); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">5</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Grassi saturi:</b> meglio restare sotto 5g/100g. <i>Trucco:</i> "oli vegetali" generico in etichetta può nascondere palma o cocco, ricchi di saturi.</p>
+                </div>
+                <div class="trick-card" data-trick="fibre" style="display:flex; gap:.55rem; align-items:flex-start; padding:.4rem .55rem; border-radius:.5rem;">
+                  <span style="flex-shrink:0; width:1.3rem; height:1.3rem; border-radius:99px; background:var(--brand-600); color:#fff; font-size:.64rem; font-weight:700; display:flex; align-items:center; justify-content:center;">6</span>
+                  <p style="font-size:.75rem; line-height:1.35;"><b>Fibre:</b> un valore bonus, meglio se sopra 3g/100g. <i>Trucco:</i> "integrale" in etichetta non basta — controlla che la farina integrale sia il primo ingrediente.</p>
+                </div>
+                <div style="margin-top:.2rem; background:var(--apricot-100); border:1px solid var(--apricot-300); border-radius:.7rem; padding:.5rem .8rem; font-size:.7rem; color:var(--apricot-600); font-weight:600;">
+                  Guarda sempre oltre le calorie: la qualità della lista ingredienti conta più del solo valore energetico.
+                </div>
+              </div>
+            </div>
+
+            <footer class="scheda-foot"><span><b>NUTRIMENTE</b> · Dott.ssa Alessia Fortina</span><span>Scheda 8 / 8</span></footer>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ===================== TOOLBAR ===================== -->
+    <div class="toolbar">
+      <div class="tb-group">
+        <button class="tb-btn" id="prevBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          Precedente
+        </button>
+        <button class="tb-btn" id="nextBtn">
+          Successiva
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="tb-center">
+        <span class="tb-counter" id="tbCounter">Scheda 1 / 8</span>
+        <div class="tb-track" id="tbTrack"></div>
+      </div>
+
+      <div class="tb-group">
+        <button class="tb-btn primary" id="printBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+          Stampa / Scarica PDF
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var TOTAL = 8;
+  var current = 1;
+  var app = document.getElementById('app');
+  var schede = Array.prototype.slice.call(document.querySelectorAll('.scheda'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var mTabs = Array.prototype.slice.call(document.querySelectorAll('.mtab'));
+  var tbCounter = document.getElementById('tbCounter');
+  var tbTrack = document.getElementById('tbTrack');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var sidebarToggle = document.getElementById('sidebarToggle');
+  var scrim = document.getElementById('scrim');
+  var printBtn = document.getElementById('printBtn');
+
+  for (var i = 1; i <= TOTAL; i++) {
+    var dot = document.createElement('i');
+    dot.dataset.i = i;
+    tbTrack.appendChild(dot);
+  }
+
+  function goTo(n){
+    n = Math.max(1, Math.min(TOTAL, n));
+    current = n;
+    schede.forEach(function(s){
+      var slideN = parseInt(s.dataset.slide, 10);
+      s.classList.toggle('active', slideN === n);
+    });
+    navItems.forEach(function(b){
+      b.classList.toggle('active', parseInt(b.dataset.goto,10) === n);
+    });
+    mTabs.forEach(function(b){
+      var on = parseInt(b.dataset.goto,10) === n;
+      b.classList.toggle('active', on);
+      if (on) b.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+    });
+    Array.prototype.forEach.call(tbTrack.children, function(d){
+      d.classList.toggle('on', parseInt(d.dataset.i,10) === n);
+    });
+    tbCounter.textContent = 'Scheda ' + n + ' / ' + TOTAL;
+    prevBtn.disabled = (n === 1);
+    nextBtn.disabled = (n === TOTAL);
+    if (window.innerWidth <= 980) closeSidebar();
+    if (window.innerWidth < 768) window.scrollTo(0, 0);
+  }
+
+  navItems.concat(mTabs).forEach(function(b){
+    b.addEventListener('click', function(){ goTo(parseInt(b.dataset.goto,10)); });
+  });
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){ goTo(current + 1); });
+
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { goTo(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); }
+  });
+
+  var touchX = null;
+  var viewport = document.getElementById('slideViewport');
+  viewport.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
+  viewport.addEventListener('touchend', function(e){
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+    touchX = null;
+  }, {passive:true});
+
+  var sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+  function openSidebar(){ app.classList.remove('sidebar-collapsed'); if (window.innerWidth <= 980) scrim.classList.add('show'); }
+  function closeSidebar(){ app.classList.add('sidebar-collapsed'); scrim.classList.remove('show'); }
+  sidebarToggle.addEventListener('click', openSidebar);
+  sidebarCloseBtn.addEventListener('click', closeSidebar);
+  scrim.addEventListener('click', closeSidebar);
+  if (window.innerWidth <= 980) closeSidebar();
+
+  printBtn.addEventListener('click', function(){ window.print(); });
+
+  // ---- Tap-to-focus (modalità spiegazione da visita) ----
+  document.addEventListener('click', function(e){
+    var card = e.target.closest('.focusable');
+    var scheda = e.target.closest('.scheda');
+    if (!scheda) return;
+    if (e.target.closest('.flip-card') || e.target.closest('input')) return;
+    var wasFocused = card && card.classList.contains('is-focused');
+    Array.prototype.forEach.call(scheda.querySelectorAll('.focusable.is-focused'), function(el){
+      el.classList.remove('is-focused');
+    });
+    if (card && !wasFocused) card.classList.add('is-focused');
+  });
+
+  /* ================= SCHEDA 1 — PLATE BUILDER ================= */
+  (function(){
+    var proportions = {
+      sedentario: { verdure:50, carbo:25, proteine:25 },
+      sportivo:   { verdure:35, carbo:40, proteine:25 }
+    };
+    var ingredients = {
+      verdure: [
+        {id:'broccoli', name:'Broccoli al vapore', em:'🥦'},
+        {id:'insalata', name:'Insalata mista', em:'🥬'},
+        {id:'zucchine', name:'Zucchine grigliate', em:'🥒'},
+        {id:'carote', name:'Carote julienne', em:'🥕'},
+        {id:'spinaci', name:'Spinaci', em:'🍃'},
+        {id:'pomodorini', name:'Pomodorini', em:'🍅'}
+      ],
+      carbo: [
+        {id:'riso', name:'Riso venere', em:'🍚'},
+        {id:'quinoa', name:'Quinoa', em:'🌾'},
+        {id:'patate', name:'Patate al forno', em:'🥔'},
+        {id:'pane', name:'Pane integrale', em:'🍞'},
+        {id:'farro', name:'Farro', em:'🌿'},
+        {id:'pasta', name:'Pasta integrale', em:'🍝'}
+      ],
+      proteine: [
+        {id:'salmone', name:'Salmone', em:'🐟'},
+        {id:'pollo', name:'Petto di pollo', em:'🍗'},
+        {id:'ceci', name:'Ceci', em:'🟤'},
+        {id:'uova', name:'Uova bio', em:'🥚'},
+        {id:'tonno', name:'Tonno al naturale', em:'🐟'},
+        {id:'tofu', name:'Tofu', em:'🧊'}
+      ],
+      grassi: [
+        {id:'evo', name:'Olio EVO', em:'🟢'},
+        {id:'avocado', name:'Avocado', em:'🥑'},
+        {id:'semi', name:'Semi di zucca', em:'🎃'},
+        {id:'mandorle', name:'Mandorle', em:'🌰'}
+      ]
+    };
+    var demoPick = { verdure:'broccoli', carbo:'riso', proteine:'salmone', grassi:'evo' };
+    var selected = { verdure:new Set(), carbo:new Set(), proteine:new Set(), grassi:new Set() };
+    var currentMode = 'sedentario';
+    var currentTab = 'verdure';
+    var sectorAngles = { verdure:[0,180], carbo:[180,270], proteine:[270,360] };
+
+    var svgSectors = document.getElementById('plateSectors');
+    var centerHole = document.getElementById('plateCenterHole');
+    var centerIco = document.getElementById('plateCenterIco');
+    var centerPct = document.getElementById('plateCenterPct');
+    var plateLabels = document.getElementById('plateLabels');
+    var ingGrid = document.getElementById('ingGrid');
+    var ingTabs = document.getElementById('ingTabs');
+    var balanceTrack = document.getElementById('balanceTrack');
+    var balanceBadge = document.getElementById('balanceBadge');
+    var balanceText = document.getElementById('balanceText');
+    var modeToggle = document.getElementById('plateModeToggle');
+    var demoBtn = document.getElementById('demoPlateBtn');
+
+    function polar(cx,cy,r,angle){
+      var rad = (angle - 90) * Math.PI / 180;
+      return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+    }
+    function arcPath(cx,cy,r,a0,a1){
+      if (a1 - a0 >= 359.999) a1 = a0 + 359.999;
+      var start = polar(cx,cy,r,a1);
+      var end = polar(cx,cy,r,a0);
+      var large = (a1 - a0) <= 180 ? '0' : '1';
+      return 'M '+cx+' '+cy+' L '+start.x+' '+start.y+' A '+r+' '+r+' 0 '+large+' 0 '+end.x+' '+end.y+' Z';
+    }
+
+    function renderPlate(){
+      var p = proportions[currentMode];
+      var a0 = 0, a1 = a0 + p.verdure*3.6, a2 = a1 + p.carbo*3.6, a3 = 360;
+      sectorAngles = { verdure:[a0,a1], carbo:[a1,a2], proteine:[a2,a3] };
+      var dV = arcPath(100,100,96,a0,a1);
+      var dC = arcPath(100,100,96,a1,a2);
+      var dP = arcPath(100,100,96,a2,a3);
+      svgSectors.innerHTML =
+        '<path class="sector sector-verdure" d="'+dV+'"></path>' +
+        '<path class="sector sector-carbo" d="'+dC+'"></path>' +
+        '<path class="sector sector-proteine" d="'+dP+'"></path>';
+      centerPct.textContent = p.verdure+' · '+p.carbo+' · '+p.proteine;
+      applyFillState();
+      renderFloatingBadges();
+    }
+
+    function applyFillState(){
+      var v = svgSectors.querySelector('.sector-verdure');
+      var c = svgSectors.querySelector('.sector-carbo');
+      var pr = svgSectors.querySelector('.sector-proteine');
+      [ [v,'verdure'], [c,'carbo'], [pr,'proteine'] ].forEach(function(pair){
+        var el = pair[0], cat = pair[1];
+        var shouldFill = selected[cat].size > 0;
+        var wasFilled = el.classList.contains('filled');
+        el.classList.toggle('filled', shouldFill);
+        if (shouldFill && !wasFilled) {
+          el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+        }
+      });
+      var grassiOn = selected.grassi.size > 0;
+      centerHole.classList.toggle('filled', grassiOn);
+      centerIco.classList.toggle('show', grassiOn);
+    }
+
+    function renderFloatingBadges(){
+      var html = '';
+      ['verdure','carbo','proteine'].forEach(function(cat){
+        var items = Array.from(selected[cat]).map(function(id){
+          return ingredients[cat].filter(function(i){ return i.id === id; })[0];
+        }).filter(Boolean).slice(0, 5);
+        if (!items.length) return;
+        var range = sectorAngles[cat];
+        var mid = (range[0] + range[1]) / 2;
+        var span = Math.min(range[1] - range[0] - 10, 15 * (items.length - 1));
+        items.forEach(function(ing, i){
+          var angle = items.length === 1 ? mid : mid - span/2 + (span/(items.length-1))*i;
+          var pos = polar(100, 100, 118, angle);
+          var left = (pos.x/200*100).toFixed(2);
+          var top = (pos.y/200*100).toFixed(2);
+          html += '<div class="plate-food-badge" style="left:'+left+'%; top:'+top+'%; animation-delay:'+(i*.05)+'s;" title="'+ing.name+'">'+ing.em+'</div>';
+        });
+      });
+      plateLabels.innerHTML = html;
+    }
+
+    function renderIngredients(){
+      ingGrid.innerHTML = ingredients[currentTab].map(function(ing){
+        var isSel = selected[currentTab].has(ing.id);
+        return '<button class="ing-chip'+(isSel?' selected':'')+'" data-cat="'+currentTab+'" data-id="'+ing.id+'">' +
+               '<span class="check">✓</span><span class="em">'+ing.em+'</span><span>'+ing.name+'</span></button>';
+      }).join('');
+    }
+
+    function updateBalance(){
+      Array.prototype.forEach.call(balanceTrack.children, function(seg){
+        seg.classList.toggle('on', selected[seg.dataset.cat].size > 0);
+      });
+      var coreFilled = ['verdure','carbo','proteine'].filter(function(c){ return selected[c].size > 0; }).length;
+      balanceBadge.classList.remove('b-complete');
+      if (coreFilled === 0) {
+        balanceText.textContent = 'Seleziona almeno una fonte proteica e delle verdure…';
+      } else if (coreFilled < 3) {
+        balanceText.textContent = 'Continua così! Manca ancora qualche categoria…';
+      } else {
+        balanceText.textContent = 'Piatto Perfettamente Bilanciato! ✨';
+        balanceBadge.classList.add('b-complete');
+      }
+    }
+
+    function refreshAll(){
+      renderIngredients();
+      applyFillState();
+      renderFloatingBadges();
+      updateBalance();
+    }
+
+    ingTabs.addEventListener('click', function(e){
+      var btn = e.target.closest('.ing-tab');
+      if (!btn) return;
+      currentTab = btn.dataset.cat;
+      Array.prototype.forEach.call(ingTabs.children, function(b){ b.classList.toggle('on', b === btn); });
+      renderIngredients();
+    });
+
+    ingGrid.addEventListener('click', function(e){
+      var chip = e.target.closest('.ing-chip');
+      if (!chip) return;
+      var cat = chip.dataset.cat, id = chip.dataset.id;
+      if (selected[cat].has(id)) selected[cat].delete(id); else selected[cat].add(id);
+      chip.classList.toggle('selected');
+      applyFillState();
+      renderFloatingBadges();
+      updateBalance();
+    });
+
+    modeToggle.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      currentMode = btn.dataset.mode;
+      Array.prototype.forEach.call(modeToggle.children, function(b){ b.classList.toggle('on', b === btn); });
+      renderPlate();
+    });
+
+    demoBtn.addEventListener('click', function(){
+      Object.keys(selected).forEach(function(cat){ selected[cat].clear(); });
+      Object.keys(demoPick).forEach(function(cat){ selected[cat].add(demoPick[cat]); });
+      refreshAll();
+    });
+
+    renderPlate();
+    renderIngredients();
+    updateBalance();
+  })();
+
+  /* ================= SCHEDA 3 — FLIP SWAP CARDS ================= */
+  (function(){
+    var list = document.getElementById('swapList');
+    if (!list) return;
+    list.addEventListener('click', function(e){
+      var card = e.target.closest('.flip-card');
+      if (!card) return;
+      card.classList.toggle('flipped');
+    });
+  })();
+
+  /* ================= SCHEDA 4 — RAINBOW HIGHLIGHT ================= */
+  (function(){
+    var scheda4 = document.getElementById('scheda-4');
+    if (!scheda4) return;
+    var washes = ['wash-arancione','wash-rosso','wash-verde','wash-viola','wash-bianco'];
+    var colorMap = { arancione:'wash-arancione', rosso:'wash-rosso', verde:'wash-verde', viola:'wash-viola', bianco:'wash-bianco' };
+    var whyMap = {
+      arancione: 'Beta-carotene e Vitamina A si accumulano nella retina e nel derma: un colore che non può mancare almeno 2-3 volte a settimana.',
+      rosso: 'Il licopene del pomodoro cotto è più biodisponibile: abbinalo sempre a un filo di olio EVO per assorbirlo meglio.',
+      verde: 'Le verdure a foglia verde scuro sono la principale fonte alimentare di folati, essenziali per la sintesi del DNA.',
+      viola: 'Le antocianine migliorano il microcircolo e sono tra gli antiossidanti più potenti in natura: perfette a fine giornata.',
+      bianco: "L'allicina di aglio e cipolla ha un'azione di supporto al sistema immunitario, soprattutto se consumati crudi."
+    };
+    scheda4.querySelectorAll('.rainbow-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        var color = card.dataset.color;
+        washes.forEach(function(w){ scheda4.classList.remove(w); });
+        scheda4.classList.add(colorMap[color]);
+        var foot = document.getElementById('rainbowFoot');
+        foot.innerHTML = '<b>Perché conta:</b> ' + whyMap[color];
+      });
+    });
+  })();
+
+  /* ================= SCHEDA 5 — NICHEL FILTRI + RICERCA ================= */
+  (function(){
+    var filters = document.getElementById('nichelFilters');
+    var search = document.getElementById('nichelSearch');
+    var emptyMsg = document.getElementById('nichelEmpty');
+    if (!filters) return;
+    var pills = Array.prototype.slice.call(document.querySelectorAll('.nichel-pill'));
+    var activeCat = 'tutti';
+
+    function applyFilters(){
+      var term = search.value.trim().toLowerCase();
+      var visibleCount = 0;
+      pills.forEach(function(p){
+        var matchesCat = activeCat === 'tutti' || p.dataset.cat === activeCat;
+        var matchesTerm = !term || p.dataset.name.indexOf(term) !== -1 || p.textContent.toLowerCase().indexOf(term) !== -1;
+        var show = matchesCat && matchesTerm;
+        p.classList.toggle('hide', !show);
+        p.classList.toggle('match-glow', !!term && matchesTerm);
+        if (show) visibleCount++;
+      });
+      emptyMsg.style.display = visibleCount === 0 ? 'flex' : 'none';
+    }
+
+    filters.addEventListener('click', function(e){
+      var btn = e.target.closest('.nichel-filter');
+      if (!btn) return;
+      activeCat = btn.dataset.cat;
+      Array.prototype.forEach.call(filters.children, function(b){ b.classList.toggle('on', b === btn); });
+      applyFilters();
+    });
+    search.addEventListener('input', applyFilters);
+  })();
+
+  /* ================= SCHEDA 6 — BICCHIERI + SLIDER URINE ================= */
+  (function(){
+    var targets = [7, 9, 12];
+    var waterTabs = Array.prototype.slice.call(document.querySelectorAll('.wtab'));
+    var glassRow = document.getElementById('glassRow');
+    var waterCount = document.getElementById('waterCount');
+    var waterMsg = document.getElementById('waterMsg');
+    var level = 0;
+    var filledCount = 0;
+
+    function renderGlasses(){
+      var target = targets[level];
+      glassRow.innerHTML = '';
+      for (var i = 0; i < target; i++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'glass-btn' + (i < filledCount ? ' filled' : '');
+        b.dataset.i = i;
+        b.innerHTML = '<span class="fill"></span>';
+        glassRow.appendChild(b);
+      }
+      waterCount.textContent = filledCount + ' / ' + target;
+      if (filledCount === 0) waterMsg.textContent = 'Tocca i bicchieri per registrare quanto hai bevuto';
+      else if (filledCount < target) waterMsg.textContent = 'Continua così, mancano ' + (target - filledCount) + ' bicchieri';
+      else waterMsg.textContent = 'Obiettivo raggiunto! 💧';
+    }
+
+    waterTabs.forEach(function(t, idx){
+      t.addEventListener('click', function(){
+        level = idx; filledCount = Math.min(filledCount, targets[level]);
+        waterTabs.forEach(function(w){
+          var on = w === t;
+          w.style.background = on ? 'var(--brand-700)' : '#fff';
+          w.style.color = on ? '#fff' : 'var(--brand-700)';
+          w.style.borderColor = on ? 'var(--brand-700)' : 'var(--brand-200)';
+        });
+        renderGlasses();
+      });
+    });
+
+    glassRow.addEventListener('click', function(e){
+      var g = e.target.closest('.glass-btn');
+      if (!g) return;
+      var i = parseInt(g.dataset.i, 10);
+      filledCount = (filledCount === i + 1) ? i : i + 1;
+      renderGlasses();
+    });
+
+    waterTabs[0].click();
+
+    var urineRange = document.getElementById('urineRange');
+    var urineMsg = document.getElementById('urineMsg');
+    var urineDetail = document.getElementById('urineDetail');
+    var urineZonePill = document.getElementById('urineZonePill');
+    function updateUrine(){
+      var v = parseInt(urineRange.value, 10);
+      urineZonePill.className = 'pill';
+      if (v <= 35) {
+        urineZonePill.classList.add('pill-green'); urineZonePill.textContent = '1-3 · Ottimale';
+        urineMsg.textContent = 'Idratazione Perfetta'; urineMsg.style.color = 'var(--brand-700)';
+        urineDetail.textContent = 'Trasparente / giallo paglierino chiaro: continua così.';
+      } else if (v <= 70) {
+        urineZonePill.classList.add('pill-gold'); urineZonePill.textContent = '4-5 · Attenzione';
+        urineMsg.textContent = 'Inizia a bere di più'; urineMsg.style.color = '#8a6410';
+        urineDetail.textContent = "Giallo intenso: aumenta l'apporto di acqua nelle prossime ore.";
+      } else {
+        urineZonePill.classList.add('pill-coral'); urineZonePill.textContent = '6-8 · Allerta';
+        urineMsg.textContent = 'Disidratazione Severa'; urineMsg.style.color = 'var(--coral)';
+        urineDetail.textContent = 'Ambrato scuro: segnale da non ignorare, idratati subito.';
+      }
+    }
+    urineRange.addEventListener('input', updateUrine);
+    updateUrine();
+  })();
+
+  /* ================= SCHEDA 8 — ETICHETTA HOTSPOT ================= */
+  (function(){
+    var table = document.getElementById('labelTable');
+    var trickList = document.getElementById('trickList');
+    if (!table || !trickList) return;
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.label-row'));
+    var tricks = Array.prototype.slice.call(document.querySelectorAll('.trick-card'));
+
+    function activate(key){
+      rows.forEach(function(r){ r.classList.toggle('hot', r.dataset.hot === key); });
+      tricks.forEach(function(t){ t.classList.toggle('active', t.dataset.trick === key); });
+      var t = trickList.querySelector('.trick-card[data-trick="'+key+'"]');
+      if (t) t.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }
+    rows.forEach(function(r){
+      r.addEventListener('mouseenter', function(){ activate(r.dataset.hot); });
+      r.addEventListener('click', function(){ activate(r.dataset.hot); });
+    });
+    tricks.forEach(function(t){
+      t.addEventListener('click', function(){ activate(t.dataset.trick); });
+    });
+  })();
+
+  goTo(1);
+})();
+</script>
+
+</body>
+</html>
